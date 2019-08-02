@@ -1,49 +1,57 @@
 ﻿using AutoTrader.Core.Enums;
-using AutoTrader.Core.Models;
+using AutoTrader.Core.Services;
+using AutoTrader.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Services
+namespace AutoTrader.Services.Services
 {
     public class CacheServiceStub : ICacheService
     {
-        public List<ReleaseCategory> Categories { get; set; }
-        public List<ReleaseSection> Sections { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Section> Sections { get; set; }
+
+        public Section GetSection(string name)
+        {
+            if (Sections == null)
+                return null;
+
+            return Sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+        }
 
         public Task ReadCache()
         {
-            Categories = new List<ReleaseCategory>
+            Categories = new List<Category>
             {
-                new ReleaseCategory
+                new Category
                 {
                     Name = "Audio",
-                    Type = ReleaseCategoryType.Audio,
+                    Type = CategoryType.Audio,
                     Description = "Audio Category",
                 }
             };
 
-            Categories[0].Sections = new List<ReleaseSection>
+            Categories[0].Sections = new List<Section>
             {
-                new ReleaseSection
+                new Section
                 {
                     Name = "Mp3",
                     Description = "Mp3 Section",
                 },
-                new ReleaseSection
+                new Section
                 {
                     Name = "Flac",
                     Description = "Flac Category"
                 }
             };
 
-            var mp3SectionRuleSet = new ReleaseSectionRuleSet
+            var mp3SectionRuleSet = new RuleSet
             {
                 Delimiter = '-'
             };
-            var flacSectionRuleSet = new ReleaseSectionRuleSet
+            var flacSectionRuleSet = new RuleSet
             {
                 Delimiter = '-'
             };

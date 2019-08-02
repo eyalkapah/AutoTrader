@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Enums
+namespace AutoTrader.Models.Entities
 {
-    public enum ReleaseCategoryType
+    public class RuleSet
     {
-        Audio,
-        Video,
-        Data,
-        Unknown
+        public char Delimiter { get; set; }
     }
 }

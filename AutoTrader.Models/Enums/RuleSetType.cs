@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Models
+namespace AutoTrader.Models.Enums
 {
-    public class ReleaseSectionRuleSet
+    public enum RuleSetType
     {
-        public char Delimiter { get; set; }
+        General = 1,
     }
 }

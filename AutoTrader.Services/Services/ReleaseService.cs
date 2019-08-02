@@ -1,14 +1,13 @@
 ﻿using AutoTrader.Core.Enums;
-using AutoTrader.Core.Exceptions;
-using AutoTrader.Core.Models.Release;
+using AutoTrader.Interfaces.Interfaces;
+using AutoTrader.Models.Entities;
+using AutoTrader.Models.Exceptions;
+using AutoTrader.Models.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Services
+namespace AutoTrader.Services.Services
 {
     public class ReleaseService
     {
@@ -29,21 +28,7 @@ namespace AutoTrader.Core.Services
                 if (string.IsNullOrEmpty(sectionName))
                     throw new ArgumentNullException(sectionName);
 
-                var categoryType = await _categoryService.GetCategoryType(sectionName);
-
-                switch (categoryType)
-                {
-                    case ReleaseCategoryType.Audio:
-                        var audioRelease = new AudioRelease(releaseName);
-
-                        break;
-
-                    case ReleaseCategoryType.Unknown:
-                        break;
-
-                    default:
-                        break;
-                }
+                await ProcessRelease(releaseName, sectionName)
             }
             catch (UnknownReleaseCategoryException ex)
             {
@@ -59,6 +44,23 @@ namespace AutoTrader.Core.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        public async Task ProcessRelease(string releaseName, string sectionName)
+        {
+            var categoryType = await _categoryService.GetCategoryType(sectionName);
+
+            switch (categoryType)
+            {
+                case CategoryType.Audio:
+                    var audioRelease = new AudioRelease(releaseName);
+                    audioRelease.ProcessRelease()
+
+                    break;
+
+                case CategoryType.Unknown:
+                    break;
+            }
         }
     }
 }

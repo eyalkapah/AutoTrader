@@ -5,10 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross" Version="6.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
+    <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
     <ProjectReference Include="..\AutoTrader.Shared\AutoTrader.Shared.csproj" />
   </ItemGroup>
+
 </Project>

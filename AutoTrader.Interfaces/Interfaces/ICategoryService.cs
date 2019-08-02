@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using AutoTrader.Core.Enums;
 
-namespace AutoTrader.Core.Services
+namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ICategoryService
     {
-        Task<ReleaseCategoryType> GetCategoryType(string sectionName);
+        Task<CategoryType> GetCategoryType(string sectionName);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Exceptions
+namespace AutoTrader.Models.Exceptions
 {
     public class UnknownReleaseCategoryException : Exception
     {
