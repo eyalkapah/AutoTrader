@@ -1,0 +1,20 @@
+﻿<views:MvxWindowsPage
+    x:Class="AutoTrader.Windows.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:AutoTrader.Windows.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:MvvmCross.Platforms.Uap.Views"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="36"
+            Foreground="Black"
+            Text="{x:Bind Vm.Title, Mode=OneWay, FallbackValue='N/A'}" />
+    </Grid>
+</views:MvxWindowsPage>
