@@ -5,14 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MvvmCross" Version="6.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Shared\AutoTrader.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
