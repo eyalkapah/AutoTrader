@@ -11,7 +11,7 @@ namespace AutoTrader.Models.Extensions
     {
         public static Task<ReleaseBase> ProcessRelease(this ReleaseBase release, Section section)
         {
-            return Task.CompletedTask;
+            return null;
         }
     }
 }

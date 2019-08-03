@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum RuleSetType
+    public enum WordPermission
     {
-        BuiltIn = 1,
-        Custom
+        Forbidden = 1,
+        Mandatory
     }
 }

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Interfaces.Interfaces
 {
-    public interface IDataProvider
+    public interface IDataProviderService
     {
-        Task<List<CategoryContract>> GetCategoriesAsync();
+        Task<SettingsContract> GetSettingsAsync();
     }
 }

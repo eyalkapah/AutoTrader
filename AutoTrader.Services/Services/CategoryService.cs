@@ -13,44 +13,28 @@ namespace AutoTrader.Services.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICacheService _cacheService;
-        private readonly DataProviderService _dataProviderService;
 
-        public CategoryService(ICacheService cacheService, DataProviderService dataProviderService)
+        public CategoryService(ICacheService cacheService)
         {
             _cacheService = cacheService;
-            _dataProviderService = dataProviderService;
         }
 
-        public Task<CategoryType> GetCategoryType(string sectionName)
+        public async Task<CategoryType> GetCategoryType(string sectionName)
         {
-            foreach (var category in _cacheService.Categories)
+            var categories = await _cacheService.GetCategories();
+
+            foreach (var category in categories)
             {
                 if (category.Sections.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    return Task.FromResult(category.Type);
-                }
+                    return category.Type;
             }
 
             throw new UnknownCategoryException(sectionName);
         }
 
-        public async Task<List<Category>> GetCateogories()
+        public Task<List<Category>> GetCateogories()
         {
-            if (_cacheService.Categories != null)
-                return _cacheService.Categories;
-
-            var contracts = await _dataProviderService.GetCategoriesAsync();
-
-            var categories = new List<Category>();
-
-            foreach (var category in contracts)
-            {
-                categories.Add(ContractFactory.GetReleaseCategory(category));
-            }
-
-            _cacheService.Categories = categories;
-
-            return categories;
+            return _cacheService.GetCategories();
         }
     }
 }

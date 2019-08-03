@@ -8,58 +8,56 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
 {
-    public class CacheServiceStub : ICacheService
+    public class CacheService : ICacheService
     {
+        private readonly DataProviderService _dataProviderService;
+
         public List<Category> Categories { get; set; }
         public List<Section> Sections { get; set; }
 
-        public Section GetSection(string name)
+        public CacheService(DataProviderService dataProviderService)
         {
-            if (Sections == null)
-                return null;
+            _dataProviderService = dataProviderService;
+        }
+
+        public async Task<List<Category>> GetCategories()
+        {
+            await LoadSettingsIfNeeded();
+
+            return Categories;
+        }
+
+        public async Task<Section> GetSection(string name)
+        {
+            await LoadSettingsIfNeeded();
 
             return Sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public Task ReadCache()
+        private async Task LoadSettingsIfNeeded()
         {
-            Categories = new List<Category>
-            {
-                new Category
-                {
-                    Name = "Audio",
-                    Type = CategoryType.Audio,
-                    Description = "Audio Category",
-                }
-            };
+            if (Categories == null)
+                await LoadSettings();
+        }
 
-            Categories[0].Sections = new List<Section>
-            {
-                new Section
-                {
-                    Name = "Mp3",
-                    Description = "Mp3 Section",
-                },
-                new Section
-                {
-                    Name = "Flac",
-                    Description = "Flac Category"
-                }
-            };
+        public async Task LoadSettings()
+        {
+            var settingsContract = await _dataProviderService.GetSettingsAsync();
 
-            var mp3SectionRuleSet = new RuleSet
-            {
-                Delimiter = '-'
-            };
-            var flacSectionRuleSet = new RuleSet
-            {
-                Delimiter = '-'
-            };
+            var categories = new List<Category>();
+            var ruleSet = new List<RuleSet>();
 
-            Categories[0].Sections[0].RuleSet.Add(mp3SectionRuleSet);
-            Categories[0].Sections[1].RuleSet.Add(flacSectionRuleSet);
+            foreach (var category in settingsContract.Categories)
+            {
+                categories.Add(ContractFactory.GetReleaseCategory(category));
+            }
 
-            return Task.CompletedTask;
+            foreach (var rule in settingsContract.RuleSet)
+            {
+                ruleSet.Add(ContractFactory.GetRule(rule));
+            }
+
+            Categories = categories;
         }
     }
 }

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Models.Enums
+namespace AutoTrader.Models.Entities
 {
-    public enum RuleSetType
+    public class MandatoryRuleSet
     {
-        BuiltIn = 1,
-        Custom
+        public char Delimiter { get; set; }
     }
 }

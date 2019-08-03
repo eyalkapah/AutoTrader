@@ -12,7 +12,7 @@ namespace AutoTrader.Services.Services
 {
     public static class DataProvider
     {
-        public async static Task<List<CategoryContract>> GetCategoriesAsync()
+        public async static Task<SettingsContract> GetSettings()
         {
             try
             {
@@ -22,14 +22,14 @@ namespace AutoTrader.Services.Services
 
                 var assembly = Assembly.Load(new AssemblyName(name));
 
-                var stream = assembly.GetManifestResourceStream($"{name}.Data.categories.json");
+                var stream = assembly.GetManifestResourceStream($"{name}.Data.settings.json");
 
                 using (var reader = new StreamReader(stream))
 
                 {
                     string json = await reader.ReadToEndAsync();
 
-                    return JsonConvert.DeserializeObject<List<CategoryContract>>(json);
+                    return JsonConvert.DeserializeObject<SettingsContract>(json);
                 }
             }
             catch (Exception ex)

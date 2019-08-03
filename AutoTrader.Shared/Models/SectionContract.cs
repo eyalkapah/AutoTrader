@@ -15,7 +15,10 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("delimiter")]
+        public char Delimiter { get; set; }
+
         [JsonProperty("ruleset")]
-        public List<RuleSetContract> RuleSet { get; set; }
+        public List<string> RulesSet { get; set; }
     }
 }

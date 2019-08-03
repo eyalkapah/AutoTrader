@@ -28,7 +28,7 @@ namespace AutoTrader.Services.Services
                 if (string.IsNullOrEmpty(sectionName))
                     throw new ArgumentNullException(sectionName);
 
-                await ProcessRelease(releaseName, sectionName)
+                await ProcessRelease(releaseName, sectionName);
             }
             catch (UnknownReleaseCategoryException ex)
             {
@@ -42,8 +42,6 @@ namespace AutoTrader.Services.Services
             {
                 throw;
             }
-
-            return Task.CompletedTask;
         }
 
         public async Task ProcessRelease(string releaseName, string sectionName)

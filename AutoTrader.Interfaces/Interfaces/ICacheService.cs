@@ -7,11 +7,8 @@ namespace AutoTrader.Core.Services
 {
     public interface ICacheService
     {
-        List<Category> Categories { get; set; }
-        List<Section> Sections { get; set; }
+        Task<List<Category>> GetCategories();
 
-        Section GetSection(string name);
-
-        Task ReadCache();
+        Task<Section> GetSection(string name);
     }
 }

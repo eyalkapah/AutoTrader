@@ -9,19 +9,11 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
 {
-    public class DataProviderService : IDataProvider
+    public class DataProviderService : IDataProviderService
     {
-        public async Task<List<CategoryContract>> GetCategoriesAsync()
+        public Task<SettingsContract> GetSettingsAsync()
         {
-            try
-            {
-                var categories = await DataProvider.GetCategoriesAsync();
-                return categories;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return DataProvider.GetSettings();
         }
     }
 }

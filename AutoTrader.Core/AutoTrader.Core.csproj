@@ -11,4 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Shared\AutoTrader.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

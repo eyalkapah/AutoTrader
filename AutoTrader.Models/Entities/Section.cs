@@ -11,6 +11,7 @@ namespace AutoTrader.Models.Entities
         public string Description { get; set; }
         public string Name { get; set; }
         public List<RuleSet> RuleSet { get; set; }
+        public char Delimiter { get; set; }
 
         public Section()
         {

@@ -1,4 +1,5 @@
 ﻿using AutoTrader.Core.Services;
+using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,9 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Section> GetSection(string sectionName)
+        public Task<Section> GetSection(string sectionName)
         {
-            if (_cacheService.Sections != null)
-                return _cacheService.GetSection(sectionName);
+            return _cacheService.GetSection(sectionName);
         }
     }
 }
