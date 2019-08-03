@@ -1,0 +1,44 @@
+{
+  "categories": [
+    {
+      "name": "audio",
+      "type": 1,
+      "description": "Audio Category",
+      "sections": [
+        {
+          "name": "Mp3",
+          "description": "Mp3 Section",
+          "delimiter": "-",
+          "ruleset": [
+            "0f8fad5b-d9cb-469f-a165-70867728950e"
+          ]
+        },
+        {
+          "name": "Flac",
+          "description": "Flac Section",
+          "delimiter": "-",
+          "ruleset": [
+            "0f8fad5b-d9cb-469f-a165-70867728950e"
+          ]
+        }
+      ]
+    }
+  ],
+  "ruleSets": [
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+      "name": "Porn Banned Words",
+      "type": 1,
+      "words": [
+        {
+          "name": "FUCK",
+          "description": "",
+          "classification": "Rude Words",
+          "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
+          "ignore": "",
+          "permission": 1
+        }
+      ]
+    }
+  ]
+}
