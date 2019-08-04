@@ -12,10 +12,12 @@ namespace AutoTrader.Services.Services
     public class ReleaseService
     {
         private readonly ICategoryService _categoryService;
+        private readonly ISectionService _sectionService;
 
-        public ReleaseService(ICategoryService categoryService)
+        public ReleaseService(ICategoryService categoryService, ISectionService sectionService)
         {
             _categoryService = categoryService;
+            _sectionService = sectionService;
         }
 
         public async Task BuildReleaseAsync(string releaseName, string sectionName)
@@ -46,13 +48,15 @@ namespace AutoTrader.Services.Services
 
         public async Task ProcessRelease(string releaseName, string sectionName)
         {
-            var categoryType = await _categoryService.GetCategoryType(sectionName);
+            var category = await _categoryService.GetCategoryAsync(sectionName);
+            var section = await _sectionService.GetSection(sectionName);
 
-            switch (categoryType)
+            switch (category.Type)
             {
                 case CategoryType.Audio:
                     var audioRelease = new AudioRelease(releaseName);
-                    audioRelease.ProcessRelease()
+                    audioRelease.ExtractGroup();
+                    audioRelease.ExtractArtistAndTitle(section.Delimiter);
 
                     break;
 

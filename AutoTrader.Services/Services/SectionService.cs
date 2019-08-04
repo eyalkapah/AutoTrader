@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
 {
-    public class SectionService
+    public class SectionService : ISectionService
     {
         private readonly ICacheService _cacheService;
 
@@ -18,9 +18,11 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public Task<Section> GetSection(string sectionName)
+        public async Task<Section> GetSection(string name)
         {
-            return _cacheService.GetSection(sectionName);
+            var sections = await _cacheService.GetSectionsAsync();
+
+            return sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

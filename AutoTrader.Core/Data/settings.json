@@ -9,36 +9,105 @@
           "name": "Mp3",
           "description": "Mp3 Section",
           "delimiter": "-",
-          "ruleset": [
-            "0f8fad5b-d9cb-469f-a165-70867728950e"
-          ]
+          "ruleset": {
+            "strings": [
+              {
+                "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+                "name": "Porn Banned Words Rule",
+                "type": 1,
+                "words": [
+                  {
+                    "name": "FUCK",
+                    "description": "",
+                    "classification": "Rude Words",
+                    "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
+                    "ignore": "",
+                    "permission": 1
+                  }
+                ]
+              }
+            ],
+            "ranges": [
+              {
+                "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
+                "name": "Current Year Range Rule",
+                "description": "",
+                "type": 1,
+                "minimum": 1970,
+                "maxmimum": 2019,
+                "permission": 1
+              }
+            ]
+          }
         },
         {
           "name": "Flac",
           "description": "Flac Section",
           "delimiter": "-",
           "ruleset": [
-            "0f8fad5b-d9cb-469f-a165-70867728950e"
+            {
+              "strings": [
+                {
+                  "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+                  "name": "Porn Banned Words Rule",
+                  "type": 1,
+                  "words": [
+                    {
+                      "name": "FUCK",
+                      "description": "",
+                      "classification": "Rude Words",
+                      "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
+                      "ignore": "",
+                      "permission": 1
+                    }
+                  ]
+                }
+              ],
+              "ranges": [
+                {
+                  "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
+                  "name": "Current Year Range Rule",
+                  "description": "",
+                  "type": 1,
+                  "minimum": 1970,
+                  "maxmimum": 2019,
+                  "permission": 1
+                }
+              ]
+            }
           ]
         }
       ]
     }
   ],
-  "ruleSets": [
-    {
-      "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
-      "name": "Porn Banned Words",
-      "type": 1,
-      "words": [
-        {
-          "name": "FUCK",
-          "description": "",
-          "classification": "Rude Words",
-          "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
-          "ignore": "",
-          "permission": 1
-        }
-      ]
-    }
-  ]
+  "ruleSets": {
+    "strings": [
+      {
+        "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+        "name": "Porn Banned Words Rule",
+        "type": 1,
+        "words": [
+          {
+            "name": "FUCK",
+            "description": "",
+            "classification": "Rude Words",
+            "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
+            "ignore": "",
+            "permission": 1
+          }
+        ]
+      }
+    ],
+    "ranges": [
+      {
+        "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
+        "name": "Current Year Range Rule",
+        "description": "",
+        "type": 1,
+        "minimum": 1970,
+        "maxmimum": 2019,
+        "permission": 1
+      }
+    ]
+  }
 }

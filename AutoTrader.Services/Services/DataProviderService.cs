@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Core.Services;
 using AutoTrader.Interfaces.Interfaces;
+using AutoTrader.Models.Entities;
 using AutoTrader.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,12 @@ namespace AutoTrader.Services.Services
     {
         public Task<SettingsContract> GetSettingsAsync()
         {
-            return DataProvider.GetSettings();
+            return DataProvider.GetSettingsAsync();
+        }
+
+        public Task<List<CategoryContract>> GetCategoriesAsync()
+        {
+            return DataProvider.GetCategoriesAsync();
         }
     }
 }

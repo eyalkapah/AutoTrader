@@ -33,32 +33,51 @@ namespace AutoTrader.Services.Services
                 Name = section.Name,
                 Description = section.Description,
                 Delimiter = section.Delimiter,
-                RuleSet = section.RulesSet.Select(rule => GetReleaseSectionRuleSet(rule)).ToList()
+                RuleSet = GetRuleSet(section.RulesSet)
             };
-
-            var ruleSetIds = section
         }
 
-        public static RuleSet GetReleaseSectionRuleSet(RuleSetContract ruleSet)
+        public static RuleSet GetRuleSet(RuleSetContract ruleSetsContract)
         {
-            if (ruleSet == null)
+            if (ruleSetsContract == null)
                 return null;
 
             return new RuleSet
             {
-                Delimiter = ruleSet.Delimiter
+                Strings = ruleSetsContract.Strings.Select(s => GetStringRuleSet(s)).ToList(),
+                Ranges = ruleSetsContract.Ranges.Select(r => GetRangeRuleSet(r)).ToList()
             };
         }
 
-        internal static RuleSet GetRule(RuleSetContract rule)
+        private static RangeRuleSet GetRangeRuleSet(RangeRuleSetContract rule)
         {
-            return new RuleSet
+            if (rule == null)
+                return null;
+
+            return new RangeRuleSet
+            {
+                Id = rule.Id,
+                Name = rule.Name,
+                Description = rule.Description,
+                Minimum = rule.Minimum,
+                Maxmimum = rule.Maxmimum,
+                Type = (RuleSetType)rule.Type,
+                Permission = (RuleSetPermission)rule.Permission
+            };
+        }
+
+        public static StringRuleSet GetStringRuleSet(StringRuleSetContract rule)
+        {
+            if (rule == null)
+                return null;
+
+            return new StringRuleSet
             {
                 Id = rule.Id,
                 Name = rule.Name,
                 Type = (RuleSetType)rule.Type,
                 Words = rule.Words.Select(w => GetWord(w)).ToList()
-            }
+            };
         }
 
         private static Word GetWord(WordContract w)
@@ -68,7 +87,7 @@ namespace AutoTrader.Services.Services
                 Name = w.Name,
                 Description = w.Description,
                 Classification = w.Classification,
-                Permission = (WordPermission)w.Permission,
+                Permission = (RuleSetPermission)w.Permission,
                 Pattern = w.Pattern,
                 Ignore = w.Ignore
             };

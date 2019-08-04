@@ -12,7 +12,7 @@ namespace AutoTrader.Services.Services
 {
     public static class DataProvider
     {
-        public async static Task<SettingsContract> GetSettings()
+        public async static Task<SettingsContract> GetSettingsAsync()
         {
             try
             {
@@ -38,6 +38,30 @@ namespace AutoTrader.Services.Services
             }
         }
 
+        public async static Task<List<CategoryContract>> GetCategoriesAsync()
+        {
+            try
+            {
+                //// Read RecipeData.json from this PCL's DataModel folder
 
+                var name = typeof(DataProvider).AssemblyQualifiedName.Split(',')[1].Trim();
+
+                var assembly = Assembly.Load(new AssemblyName(name));
+
+                var stream = assembly.GetManifestResourceStream($"{name}.Data.settings.json");
+
+                using (var reader = new StreamReader(stream))
+
+                {
+                    string json = await reader.ReadToEndAsync();
+
+                    return JsonConvert.DeserializeObject<List<CategoryContract>>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

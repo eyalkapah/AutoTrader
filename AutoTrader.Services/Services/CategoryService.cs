@@ -19,9 +19,22 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
+        public async Task<Category> GetCategoryAsync(string sectionName)
+        {
+            var categories = await GetCateogoriesAsync();
+
+            foreach (var category in categories)
+            {
+                if (category.Sections.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
+                    return category;
+            }
+
+            return null;
+        }
+
         public async Task<CategoryType> GetCategoryType(string sectionName)
         {
-            var categories = await _cacheService.GetCategories();
+            var categories = await _cacheService.GetCategoriesAsync();
 
             foreach (var category in categories)
             {
@@ -32,9 +45,9 @@ namespace AutoTrader.Services.Services
             throw new UnknownCategoryException(sectionName);
         }
 
-        public Task<List<Category>> GetCateogories()
+        public Task<List<Category>> GetCateogoriesAsync()
         {
-            return _cacheService.GetCategories();
+            return _cacheService.GetCategoriesAsync();
         }
     }
 }

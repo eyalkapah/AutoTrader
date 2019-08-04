@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum WordPermission
+    public enum RuleSetPermission
     {
         Forbidden = 1,
         Mandatory

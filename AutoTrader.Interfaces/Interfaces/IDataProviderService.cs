@@ -7,5 +7,7 @@ namespace AutoTrader.Interfaces.Interfaces
     public interface IDataProviderService
     {
         Task<SettingsContract> GetSettingsAsync();
+
+        Task<List<CategoryContract>> GetCategoriesAsync();
     }
 }

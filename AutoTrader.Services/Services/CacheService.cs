@@ -20,44 +20,38 @@ namespace AutoTrader.Services.Services
             _dataProviderService = dataProviderService;
         }
 
-        public async Task<List<Category>> GetCategories()
+        public async Task<List<Category>> GetCategoriesAsync()
         {
             await LoadSettingsIfNeeded();
 
             return Categories;
         }
 
-        public async Task<Section> GetSection(string name)
+        public async Task<List<Section>> GetSectionsAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            return Sections;
         }
 
-        private async Task LoadSettingsIfNeeded()
-        {
-            if (Categories == null)
-                await LoadSettings();
-        }
-
-        public async Task LoadSettings()
+        private async Task LoadSettings()
         {
             var settingsContract = await _dataProviderService.GetSettingsAsync();
 
             var categories = new List<Category>();
-            var ruleSet = new List<RuleSet>();
 
             foreach (var category in settingsContract.Categories)
             {
                 categories.Add(ContractFactory.GetReleaseCategory(category));
             }
 
-            foreach (var rule in settingsContract.RuleSet)
-            {
-                ruleSet.Add(ContractFactory.GetRule(rule));
-            }
-
             Categories = categories;
+        }
+
+        private async Task LoadSettingsIfNeeded()
+        {
+            if (Categories == null)
+                await LoadSettings();
         }
     }
 }
