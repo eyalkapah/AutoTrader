@@ -58,7 +58,6 @@
                       "classification": "Rude Words",
                       "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
                       "ignore": "",
-                      "permission": 1
                     }
                   ]
                 }
