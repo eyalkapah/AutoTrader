@@ -12,7 +12,13 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("categories")]
         public CategoryContract[] Categories { get; set; }
 
-        [JsonProperty("rulesets")]
-        public RuleSetContract RuleSet { get; set; }
+        [JsonProperty("sites")]
+        public SiteContract[] Sites { get; set; }
+
+        [JsonProperty("words")]
+        public WordContract[] Words { get; set; }
+
+        [JsonProperty("complexWords")]
+        public ComplexWordContract[] ComplexWords { get; set; }
     }
 }

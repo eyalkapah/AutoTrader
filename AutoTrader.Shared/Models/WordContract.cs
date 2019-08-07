@@ -9,6 +9,9 @@ namespace AutoTrader.Shared.Models
 {
     public class WordContract
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -24,7 +27,7 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("ignore")]
         public string Ignore { get; set; }
 
-        [JsonProperty("permission")]
-        public int Permission { get; set; }
+        [JsonProperty("forbidden")]
+        public string Forbidden { get; set; }
     }
 }

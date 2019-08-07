@@ -11,6 +11,7 @@ namespace AutoTrader.Models.Enums
         On = 1,
         UploadOnly,
         DownloadOnly,
-        Off
+        Off,
+        Mixed
     }
 }

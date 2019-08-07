@@ -42,7 +42,7 @@ namespace AutoTrader.Services.Services
 
             foreach (var category in settingsContract.Categories)
             {
-                categories.Add(ContractFactory.GetReleaseCategory(category));
+                categories.Add(ContractFactory.GetCategory(category));
             }
 
             Categories = categories;

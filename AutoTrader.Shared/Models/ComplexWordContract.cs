@@ -22,6 +22,6 @@ namespace AutoTrader.Shared.Models
         public string Description { get; set; }
 
         [JsonProperty("words")]
-        public WordContainerContract[] Words { get; set; }
+        public string[] Words { get; set; }
     }
 }

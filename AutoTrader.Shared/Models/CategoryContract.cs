@@ -9,6 +9,9 @@ namespace AutoTrader.Shared.Models
 {
     public class CategoryContract
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
 
@@ -16,7 +19,7 @@ namespace AutoTrader.Shared.Models
         public string Name { get; set; }
 
         [JsonProperty("sections")]
-        public List<SectionContract> Sections { get; set; }
+        public SectionContract[] Sections { get; set; }
 
         [JsonProperty("type")]
         public int Type { get; set; }

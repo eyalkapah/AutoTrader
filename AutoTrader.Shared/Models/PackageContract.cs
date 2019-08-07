@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Shared.Models
 {
-    public class SectionContract
+    public class PackageContract
     {
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("description")]
-        public string Description { get; set; }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("delimiter")]
-        public char Delimiter { get; set; }
+        [JsonProperty("wordId")]
+        public string WordId { get; set; }
+
+        [JsonProperty("applicability")]
+        public int Applicability { get; set; }
     }
 }

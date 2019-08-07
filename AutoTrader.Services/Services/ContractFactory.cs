@@ -9,87 +9,107 @@ namespace AutoTrader.Services.Services
 {
     public static class ContractFactory
     {
-        public static Category GetReleaseCategory(CategoryContract category)
+        public static Category GetCategory(CategoryContract category)
         {
             if (category == null)
                 return null;
 
             return new Category
             {
+                Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
                 Type = (CategoryType)category.Type,
-                Sections = category.Sections.Select(section => GetReleaseSection(section)).ToList()
+                Sections = category.Sections.Select(section => GetSection(section)).ToList()
             };
         }
 
-        public static Section GetReleaseSection(SectionContract section)
+        public static Section GetSection(SectionContract section)
         {
             if (section == null)
                 return null;
 
             return new Section
             {
+                Id = section.Id,
                 Name = section.Name,
                 Description = section.Description,
                 Delimiter = section.Delimiter,
-                RuleSet = GetRuleSet(section.RulesSet)
             };
         }
 
-        public static RuleSet GetRuleSet(RuleSetContract ruleSetsContract)
+        public static Site GetSite(SiteContract site)
         {
-            if (ruleSetsContract == null)
+            if (site == null)
                 return null;
 
-            return new RuleSet
+            return new Site
             {
-                Strings = ruleSetsContract.Strings.Select(s => GetStringRuleSet(s)).ToList(),
-                Ranges = ruleSetsContract.Ranges.Select(r => GetRangeRuleSet(r)).ToList()
+                Id = site.Id,
+                Name = site.Name,
+                Status = (SiteStatus)site.Status,
+                Enrollments = site.Enrollments.Select(e => GetEnrollment(e)).ToList()
             };
         }
 
-        private static RangeRuleSet GetRangeRuleSet(RangeRuleSetContract rule)
+        public static Enrollment GetEnrollment(EnrollmentContract enrollment)
         {
-            if (rule == null)
+            if (enrollment == null)
                 return null;
 
-            return new RangeRuleSet
+            return new Enrollment
             {
-                Id = rule.Id,
-                Name = rule.Name,
-                Description = rule.Description,
-                Minimum = rule.Minimum,
-                Maxmimum = rule.Maxmimum,
-                Type = (RuleSetType)rule.Type,
-                Permission = (RuleSetPermission)rule.Permission
+                Id = enrollment.Id,
+                Affils = enrollment.Affils.ToList(),
+                SectionId = enrollment.SectionId,
+                Status = (SiteStatus)enrollment.Status,
+                Packages = enrollment.Packages.Select(p => GetPackage(p)).ToList()
             };
         }
 
-        public static StringRuleSet GetStringRuleSet(StringRuleSetContract rule)
+        public static Package GetPackage(PackageContract package)
         {
-            if (rule == null)
+            if (package == null)
                 return null;
 
-            return new StringRuleSet
+            return new Package
             {
-                Id = rule.Id,
-                Name = rule.Name,
-                Type = (RuleSetType)rule.Type,
-                Words = rule.Words.Select(w => GetWord(w)).ToList()
+                Id = package.Id,
+                Name = package.Name,
+                Applicability = (PackageApplicability)package.Applicability,
+                WordId = package.WordId
             };
         }
 
-        private static Word GetWord(WordContract w)
+        public static Word GetWord(WordContract word)
         {
+            if (word == null)
+                return null;
+
             return new Word
             {
-                Name = w.Name,
-                Description = w.Description,
-                Classification = w.Classification,
-                Permission = (RuleSetPermission)w.Permission,
-                Pattern = w.Pattern,
-                IgnorePattern = w.Ignore
+                Id = word.Id,
+                Name = word.Name,
+                Description = word.Description,
+                Classification = word.Classification,
+                Pattern = word.Pattern,
+                IgnorePattern = word.Ignore,
+                ForbiddenPattern = word.Forbidden
+            };
+        }
+
+        public static ComplexWord GetComplexWord(ComplexWordContract complexWord)
+        {
+            if (complexWord == null)
+                return null;
+
+            return new ComplexWord
+            {
+                Id = complexWord.Id,
+                Name = complexWord.Name,
+                Description = complexWord.Description,
+                Classification = complexWord.Classification,
+                WordIds = complexWord.Words.ToList()
             };
         }
     }

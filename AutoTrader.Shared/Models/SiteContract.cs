@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Shared.Models
 {
-    public class StringRuleSetContract
+    public class SiteContract
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -15,10 +15,10 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("type")]
-        public int Type { get; set; }
+        [JsonProperty("status")]
+        public int Status { get; set; }
 
-        [JsonProperty("words")]
-        public List<WordContract> Words { get; set; }
+        [JsonProperty("enrollments")]
+        public EnrollmentContract[] Enrollments { get; set; }
     }
 }

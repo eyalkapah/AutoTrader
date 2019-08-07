@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum RuleApplicability
+    public enum PackageApplicability
     {
         Banned = 1,
         Allow,

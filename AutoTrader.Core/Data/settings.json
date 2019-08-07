@@ -1,16 +1,19 @@
 {
   "categories": [
     {
+      "id": "cf8fad5b-d9cb-469f-a165-708677289501",
       "name": "audio",
       "type": 1,
       "description": "Audio Category",
       "sections": [
         {
+          "id": "sf8fad5b-d9cb-469f-a165-708677289501",
           "name": "Mp3",
           "description": "Mp3 Section",
           "delimiter": "-"
         },
         {
+          "id": "sf8fad5b-d9cb-469f-a165-708677289502",
           "name": "Flac",
           "description": "Flac Section",
           "delimiter": "-"
@@ -20,42 +23,47 @@
   ],
   "sites": [
     {
-      "id": 1,
+      "id": "sitead5b-d9cb-469f-a165-708677289501",
       "name": "PF",
       "status": 1,
-      "affils": [
-        "TSP",
-        "POW",
-        "ZZZZ",
-        "BPM"
-      ],
-      "sections": [
+      "enrollments": [
         {
-          "id": 1,
-          "name": "mp3",
-          "isEnabled": true,
-          "rules": [
+          "id": "ef8fad5b-d9cb-469f-a165-708677289501",
+          "sectionId": "sf8fad5b-d9cb-469f-a165-708677289501",
+          "affils": [
+            "TSP",
+            "POW",
+            "ZZZZ",
+            "BPM"
+          ],
+          "status": 1,
+          "packages": [
             {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289501",
               "name": "Ban Web Resources",
               "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
               "applicability": 1
             },
             {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289502",
               "name": "Ban Live Resources",
               "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
               "applicability": 1
             },
             {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289503",
               "name": "Ban Internal Resources",
               "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
               "applicability": 1
             },
             {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289504",
               "name": "Allow English Only",
               "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
               "applicability": 1
             },
             {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289505",
               "name": "Allow EN|NL Only",
               "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
               "applicability": 1
@@ -367,75 +375,10 @@
       "classification": "SOURCES",
       "description": "Live regex",
       "words": [
-        {
-          "id": "0f8fad5b-d9cb-469f-a165-70867728951e",
-          "isEnabled": true
-        },
-        {
-          "id": "0f8fad5b-d9cb-469f-a165-70867728951f",
-          "isEnabled": true
-        },
-        {
-          "id": "0f8fad5b-d9cb-469f-a165-70867728951g",
-          "isEnabled": true
-        }
-
+        "0f8fad5b-d9cb-469f-a165-70867728951e",
+        "0f8fad5b-d9cb-469f-a165-70867728951f",
+        "0f8fad5b-d9cb-469f-a165-70867728951g"
       ]
     }
   ]
-  "ruleSets": {
-    "strings": [
-      {
-        "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
-        "name": "Porn Words Rule",
-        "type": 1,
-        "words": [
-          {
-            "name": "FUCK",
-            "description": "",
-            "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
-            "ignore": ""
-          }
-        ]
-      },
-
-      {
-        "id": "0f8fad5b-d9cb-469f-a165-70867728950c",
-        "name": "Year Rule",
-        "type": 1,
-        "words": [
-          {
-            "name": "YEAR",
-            "description": "Describes the release year",
-            "pattern": "[%delimiter%](\\d+\\d+\\d+\\d+)[%delimiter%]",
-            "ignore": ""
-          }
-        ]
-      },
-      {
-        "id": "0f8fad5b-d9cb-469f-a165-70867728950d",
-        "name": "Languages Rule",
-        "type": 1,
-        "words": [
-          {
-            "name": "LANGUAGES",
-            "description": "Describes the release language",
-            "pattern": "[%delimiter%](aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|io|is|it|iu|ja|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)[%delimiter%]",
-            "ignore": "",
-            "forbidden": "[%delimiter%](HE)[%delimiter%]"
-          }
-        ]
-      }
-    ]
-  },
-  "ranges": [
-    {
-      "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
-      "name": "Current Year Range Rule",
-      "description": "",
-      "type": 1,
-      "minimum": 1970,
-      "maxmimum": 2019
-    }
-  ]
-} }
+}

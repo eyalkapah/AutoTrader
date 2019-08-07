@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Entities
 {
-    public class Word
+    public class Word : WordBase
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Classification { get; set; }
         public string Pattern { get; set; }
         public string IgnorePattern { get; set; }
         public string ForbiddenPattern { get; set; }
-        public RuleSetPermission Permission { get; set; }
     }
 }

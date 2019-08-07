@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Entities
 {
-    public class SiteSectionRuleContainer
+    public class WordBase
     {
         public string Id { get; set; }
-        public bool IsEnabled { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Classification { get; set; }
     }
 }

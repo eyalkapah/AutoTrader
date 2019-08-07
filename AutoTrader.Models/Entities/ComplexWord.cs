@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Entities
 {
-    public class ComplexWord
+    public class ComplexWord : WordBase
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Classification { get; set; }
-        public List<Word> Words { get; set; }
-        public RuleSetPermission Permission { get; set; }
+        public List<string> WordIds { get; set; }
+
+        public ComplexWord()
+        {
+            WordIds = new List<string>();
+        }
     }
 }
