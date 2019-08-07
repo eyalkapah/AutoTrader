@@ -11,7 +11,7 @@ namespace AutoTrader.Models.Extensions
 {
     public static class RuleSetExtensions
     {
-        public static RuleSetResult ProcessRuleSet(this StringRuleSet stringRuleSet, string releaseName)
+        public static RuleSetResult ProcessStringRuleSet(this StringRuleSet stringRuleSet, string releaseName, Dictionary<string, string> constants)
         {
             var result = new RuleSetResult { RuleSet = stringRuleSet };
 
@@ -19,18 +19,18 @@ namespace AutoTrader.Models.Extensions
 
             Parallel.ForEach(stringRuleSet.Words, word =>
             {
-                var match = Regex.Match(releaseName, word.Pattern, RegexOptions.IgnoreCase);
+                var match = DoMatch(releaseName, constants, word.Pattern);
 
                 if (match.Success)
                 {
                     // If no Ignore words for this banned word -> Invalid !
-                    if (string.IsNullOrEmpty(word.Ignore))
+                    if (string.IsNullOrEmpty(word.IgnorePattern))
                         words.Add(word.Name);
 
                     // If ignore word wasn't appeared -> Invalid !
                     else
                     {
-                        match = Regex.Match(releaseName, word.Ignore, RegexOptions.IgnoreCase);
+                        match = DoMatch(releaseName, constants, word.IgnorePattern);
 
                         if (!match.Success)
                             words.Add(word.Name);
@@ -40,6 +40,16 @@ namespace AutoTrader.Models.Extensions
 
             result.Matches = words.ToList();
             return result;
+        }
+
+        private static Match DoMatch(string releaseName, Dictionary<string, string> constants, string originalWord)
+        {
+            var pattern = originalWord;
+
+            foreach (var key in constants.Keys)
+                pattern = Regex.Replace(pattern, key, constants[key]);
+
+            return Regex.Match(releaseName, pattern, RegexOptions.IgnoreCase);
         }
     }
 }

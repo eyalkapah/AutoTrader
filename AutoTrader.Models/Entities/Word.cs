@@ -13,7 +13,8 @@ namespace AutoTrader.Models.Entities
         public string Description { get; set; }
         public string Classification { get; set; }
         public string Pattern { get; set; }
-        public string Ignore { get; set; }
+        public string IgnorePattern { get; set; }
+        public string ForbiddenPattern { get; set; }
         public RuleSetPermission Permission { get; set; }
     }
 }

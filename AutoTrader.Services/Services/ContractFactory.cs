@@ -89,7 +89,7 @@ namespace AutoTrader.Services.Services
                 Classification = w.Classification,
                 Permission = (RuleSetPermission)w.Permission,
                 Pattern = w.Pattern,
-                Ignore = w.Ignore
+                IgnorePattern = w.Ignore
             };
         }
     }

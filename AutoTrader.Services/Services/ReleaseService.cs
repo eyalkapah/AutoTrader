@@ -58,6 +58,16 @@ namespace AutoTrader.Services.Services
                     audioRelease.ExtractGroup();
                     audioRelease.ExtractArtistAndTitle(section.Delimiter);
 
+                    Parallel.ForEach(section.RuleSet.Strings, rule =>
+                    {
+                        rule.ProcessStringRuleSet(releaseName);
+                    });
+
+                    Parallel.ForEach(section.RuleSet.Ranges, rule =>
+                    {
+                        rule.ProcessRuleSet(releaseName);
+                    });
+
                     break;
 
                 case CategoryType.Unknown:

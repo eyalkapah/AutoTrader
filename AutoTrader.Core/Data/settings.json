@@ -25,6 +25,34 @@
                     "permission": 1
                   }
                 ]
+              },
+              {
+                "id": "0f8fad5b-d9cb-469f-a165-70867728950b",
+                "name": "Internal Release Rule",
+                "type": 1,
+                "words": [
+                  {
+                    "name": "INTERNAL",
+                    "description": "Describes if the released for internal purpose",
+                    "pattern": "([-_]+INT)$|([-_\\(.]+INTERNAL[-_\\).]+)",
+                    "ignore": "",
+                    "permission": 1
+                  }
+                ]
+              },
+              {
+                "id": "0f8fad5b-d9cb-469f-a165-70867728950c",
+                "name": "Year Rule",
+                "type": 1,
+                "words": [
+                  {
+                    "name": "YEAR",
+                    "description": "Describes the release year",
+                    "pattern": "[{%delimiter%}](\\d+\\d+\\d+\\d+)[{%delimiter%}]",
+                    "ignore": "",
+                    "permission": 1
+                  }
+                ]
               }
             ],
             "ranges": [
@@ -58,6 +86,21 @@
                       "classification": "Rude Words",
                       "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
                       "ignore": "",
+                      "permission": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "0f8fad5b-d9cb-469f-a165-70867728950b",
+                  "name": "Internal Release Rule",
+                  "type": 1,
+                  "words": [
+                    {
+                      "name": "INTERNAL",
+                      "description": "Describes if the released for internal purpose",
+                      "pattern": "([-_]+INT)$|([-_\\(.]+INTERNAL[-_\\).]+)",
+                      "ignore": "",
+                      "permission": 1
                     }
                   ]
                 }
@@ -83,16 +126,40 @@
     "strings": [
       {
         "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
-        "name": "Porn Banned Words Rule",
+        "name": "Porn Words Rule",
         "type": 1,
         "words": [
           {
             "name": "FUCK",
             "description": "",
-            "classification": "Rude Words",
             "pattern": "(?&lt;!noize)((f([-_.]+)?)+|(p([-_.]+)?)+(h+([-_.]+)?)+)+([auo40]+([-_.]+)?)+((c+([-_.]+)?)?)+[kq]+",
-            "ignore": "",
-            "permission": 1
+            "ignore": ""
+          }
+        ]
+      },
+      {
+        "id": "0f8fad5b-d9cb-469f-a165-70867728950b",
+        "name": "Internal Release Rule",
+        "type": 1,
+        "words": [
+          {
+            "name": "INTERNAL",
+            "description": "Describes if the released for internal purpose",
+            "pattern": "([-_]+INT)$|([-_\\(.]+INTERNAL[-_\\).]+)",
+            "ignore": ""
+          }
+        ]
+      },
+      {
+        "id": "0f8fad5b-d9cb-469f-a165-70867728950c",
+        "name": "Year Rule",
+        "type": 1,
+        "words": [
+          {
+            "name": "YEAR",
+            "description": "Describes the release year",
+            "pattern": "[{%delimiter%}](\\d+\\d+\\d+\\d+)[{%delimiter%}]",
+            "ignore": ""
           }
         ]
       }
@@ -104,8 +171,7 @@
         "description": "",
         "type": 1,
         "minimum": 1970,
-        "maxmimum": 2019,
-        "permission": 1
+        "maxmimum": 2019
       }
     ]
   }

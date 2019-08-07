@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoTrader.Models.Entities.RuleSetEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
