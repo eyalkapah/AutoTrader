@@ -12,21 +12,25 @@ namespace AutoTrader.Services.Services
     public class SectionService : ISectionService
     {
         private readonly ICacheService _cacheService;
+        private readonly IPackageService _packageService;
 
-        public SectionService(ICacheService cacheService)
+        public SectionService(ICacheService cacheService, IPackageService packageService)
         {
             _cacheService = cacheService;
+            _packageService = packageService;
         }
 
         public async Task<Section> GetSection(string name)
         {
             var sections = await _cacheService.GetSectionsAsync();
 
-            foreach (var section in sections)
+            foreach (var s in sections)
             {
-                var package = section.Package;
+                if (await _packageService.IsPackageValidAsync(s.Package, name))
+                    return s;
             }
-            return sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
+
+            return null;
         }
     }
 }

@@ -8,8 +8,7 @@ namespace AutoTrader.Models.Enums
 {
     public enum PackageApplicability
     {
-        Banned = 1,
-        Allow,
-        Must
+        Must = 1,
+        Banned
     }
 }

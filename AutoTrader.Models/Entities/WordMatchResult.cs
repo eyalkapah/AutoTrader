@@ -9,8 +9,7 @@ namespace AutoTrader.Models.Entities
 {
     public class WordMatchResult
     {
-        public Match Pattern { get; set; }
         public Match IgnorePattern { get; set; }
-        public Match Forbidden { get; set; }
+        public Match Pattern { get; set; }
     }
 }

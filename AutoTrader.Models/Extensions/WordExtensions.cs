@@ -16,7 +16,6 @@ namespace AutoTrader.Models.Extensions
             {
                 Pattern = DoMatch(text, constants, word.Pattern),
                 IgnorePattern = DoMatch(text, constants, word.IgnorePattern),
-                Forbidden = DoMatch(text, constants, word.ForbiddenPattern)
             };
         }
 
