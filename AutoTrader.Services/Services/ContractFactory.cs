@@ -35,6 +35,7 @@ namespace AutoTrader.Services.Services
                 Name = section.Name,
                 Description = section.Description,
                 Delimiter = section.Delimiter,
+                Package = GetPackage(section.Package)
             };
         }
 

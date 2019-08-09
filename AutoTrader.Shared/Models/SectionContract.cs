@@ -20,5 +20,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("delimiter")]
         public char Delimiter { get; set; }
+
+        [JsonProperty("package")]
+        public PackageContract Package { get; set; }
     }
 }

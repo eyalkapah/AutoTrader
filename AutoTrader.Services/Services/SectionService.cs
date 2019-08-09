@@ -22,6 +22,10 @@ namespace AutoTrader.Services.Services
         {
             var sections = await _cacheService.GetSectionsAsync();
 
+            foreach (var section in sections)
+            {
+                var package = section.Package;
+            }
             return sections.FirstOrDefault(s => s.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
     }

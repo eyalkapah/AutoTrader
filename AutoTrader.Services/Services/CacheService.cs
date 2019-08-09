@@ -12,8 +12,9 @@ namespace AutoTrader.Services.Services
     {
         private readonly DataProviderService _dataProviderService;
 
-        public List<Category> Categories { get; set; }
-        public List<Section> Sections { get; set; }
+        public List<Category> Categories { get; set; } = new List<Category>();
+        public List<Section> Sections { get; set; } = new List<Section>();
+        public List<Word> Words { get; set; } = new List<Word>();
 
         public CacheService(DataProviderService dataProviderService)
         {
@@ -34,23 +35,27 @@ namespace AutoTrader.Services.Services
             return Sections;
         }
 
+        public async Task<List<Word>> GetWordsAsync()
+        {
+            await LoadSettingsIfNeeded();
+
+            return Words;
+        }
+
         private async Task LoadSettings()
         {
             var settingsContract = await _dataProviderService.GetSettingsAsync();
 
-            var categories = new List<Category>();
+            Categories = settingsContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
 
-            foreach (var category in settingsContract.Categories)
-            {
-                categories.Add(ContractFactory.GetCategory(category));
-            }
+            Sections = Categories.SelectMany(c => c.Sections).ToList();
 
-            Categories = categories;
+            Words = settingsContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
         }
 
         private async Task LoadSettingsIfNeeded()
         {
-            if (Categories == null)
+            if (Categories == null || Sections == null || Words == null)
                 await LoadSettings();
         }
     }

@@ -9,6 +9,12 @@
         {
           "id": "sf8fad5b-d9cb-469f-a165-708677289501",
           "name": "Mp3",
+          "package": {
+            "id": "pscfad5b-d9cb-469f-a165-70867728950a",
+            "wordId": "secfad5b-d9cb-469f-a165-70867728950a",
+            "name": "Mp3 patterns",
+            "applicability": 3
+          },
           "description": "Mp3 Section",
           "delimiter": "-"
         },
@@ -74,6 +80,15 @@
     }
   ],
   "words": [
+    {
+      "id": "secfad5b-d9cb-469f-a165-70867728950a",
+      "name": "MP3",
+      "classification": "SECTION",
+      "description": "Mp3 section",
+      "pattern": "(mp3)",
+      "ignore": "",
+      "forbidden": "(flac)"
+    },
     {
       "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
       "name": "EN_ONLY",
@@ -366,7 +381,6 @@
       "pattern": "[%delimiter%](SAT)[%delimiter%]",
       "ignore": ""
     }
-
   ],
   "complexWords": [
     {
