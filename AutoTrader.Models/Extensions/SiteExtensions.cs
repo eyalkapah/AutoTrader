@@ -71,11 +71,11 @@ namespace AutoTrader.Models.Extensions
                         race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SectionUploadOnlyAffiliate));
                         continue;
                     }
-                    {
-                        race.Affiliates.Add(site, );
-                        continue;
-                    }
+
+                    race.Affiliates.Add(site.);
+                    continue;
                 }
             }
         }
     }
+}
