@@ -32,6 +32,11 @@
       "id": "sitead5b-d9cb-469f-a165-708677289501",
       "name": "PF",
       "status": 1,
+      "logins": {
+        "total": 2,
+        "download": 2,
+        "upload": 2
+      },
       "enrollments": [
         {
           "id": "ef8fad5b-d9cb-469f-a165-708677289501",

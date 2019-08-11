@@ -11,6 +11,8 @@ namespace AutoTrader.Core.Services
 
         Task<List<Section>> GetSectionsAsync();
 
+        Task<List<Site>> GetSitesAsync();
+
         Task<List<Word>> GetWordsAsync();
     }
 }

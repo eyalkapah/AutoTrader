@@ -1,10 +1,12 @@
 ﻿using AutoTrader.Core.Enums;
 using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Enums;
 using AutoTrader.Models.Exceptions;
 using AutoTrader.Models.Extensions;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
@@ -13,11 +15,13 @@ namespace AutoTrader.Services.Services
     {
         private readonly ICategoryService _categoryService;
         private readonly ISectionService _sectionService;
+        private readonly ISiteService _siteService;
 
-        public ReleaseService(ICategoryService categoryService, ISectionService sectionService)
+        public ReleaseService(ICategoryService categoryService, ISectionService sectionService, ISiteService siteService)
         {
             _categoryService = categoryService;
             _sectionService = sectionService;
+            _siteService = siteService;
         }
 
         public async Task BuildReleaseAsync(string releaseName, string sectionName)
@@ -50,6 +54,7 @@ namespace AutoTrader.Services.Services
         {
             var category = await _categoryService.GetCategoryAsync(sectionName);
             var section = await _sectionService.GetSection(sectionName);
+            var sites = await _siteService.GetParticipatingSites(section.Id);
 
             switch (category.Type)
             {
@@ -58,21 +63,23 @@ namespace AutoTrader.Services.Services
                     audioRelease.ExtractGroup();
                     audioRelease.ExtractArtistAndTitle(section.Delimiter);
 
-                    Parallel.ForEach(section.RuleSet.Strings, rule =>
-                    {
-                        rule.ProcessStringRuleSet(releaseName);
-                    });
+                    var publishers = sites.
+                    }
+            Parallel.ForEach(section.RuleSet.Strings, rule =>
+            {
+                rule.ProcessStringRuleSet(releaseName);
+            });
 
-                    Parallel.ForEach(section.RuleSet.Ranges, rule =>
-                    {
-                        rule.ProcessRuleSet(releaseName);
-                    });
+            Parallel.ForEach(section.RuleSet.Ranges, rule =>
+            {
+                rule.ProcessRuleSet(releaseName);
+            });
 
-                    break;
+            break;
 
                 case CategoryType.Unknown:
                     break;
-            }
         }
     }
+}
 }

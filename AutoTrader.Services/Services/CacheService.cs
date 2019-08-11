@@ -15,6 +15,7 @@ namespace AutoTrader.Services.Services
         public List<Category> Categories { get; set; } = new List<Category>();
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<Word> Words { get; set; } = new List<Word>();
+        public List<Site> Sites { get; set; } = new List<Site>();
 
         public CacheService(DataProviderService dataProviderService)
         {
@@ -42,6 +43,13 @@ namespace AutoTrader.Services.Services
             return Words;
         }
 
+        public async Task<List<Site>> GetSitesAsync()
+        {
+            await LoadSettingsIfNeeded();
+
+            return Sites;
+        }
+
         private async Task LoadSettings()
         {
             var settingsContract = await _dataProviderService.GetSettingsAsync();
@@ -51,6 +59,8 @@ namespace AutoTrader.Services.Services
             Sections = Categories.SelectMany(c => c.Sections).ToList();
 
             Words = settingsContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
+
+            Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s)).ToList();
         }
 
         private async Task LoadSettingsIfNeeded()
