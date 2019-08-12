@@ -36,6 +36,8 @@ namespace AutoTrader.Services.Services
             var race = new Race(section, release, sites);
             race.FilterNonSectionSites();
             race.FilterOffStatusSites();
+            race.FilterAffiliateUploadOnly();
+            race.BuildParticipants();
         }
     }
 }

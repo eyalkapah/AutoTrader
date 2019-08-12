@@ -12,90 +12,95 @@ namespace AutoTrader.Models.Extensions
     {
         public static void FilterNonSectionSites(this Race race)
         {
-            FilterInParallel(race, site => !site.Enrollments.Any(e => e.SectionId.Equals(race.Section.Id)), DisqualificationType.SectionNotExist);
+            IterateParallel(race, FilterNonSectionSitesAction);
         }
 
         public static void FilterOffStatusSites(this Race race)
         {
-            FilterInParallel(race, site => site.Status == SiteStatus.Off, DisqualificationType.SiteStatusOff);
+            IterateParallel(race, FilterOffStatusAction);
         }
 
-        public static void FilterOffStatusEnrollments(this Race race)
+        public static void FilterAffiliateUploadOnly(this Race race)
         {
-            Parallel.ForEach(race.QualifiedSites.SelectMany(s => s.Enrollments.Where(e => e.SectionId.Equals(race.Section.Id))), (e, s) =>
+            IterateParallel(race, FilterAffiliateUploadOnlyAction);
+        }
+
+        public static void BuildParticipants(this Race race)
+        {
+            IterateParallel(race, BuildParticipantsAction);
+        }
+
+        private static void FilterNonSectionSitesAction(this Race race, Site site)
+        {
+            if (!site.Enrollments.Any(e => e.SectionId.Equals(race.Section.Id)))
             {
-                if (e.Status == SiteStatus.Off)
+                race.DismissSite(site, DisqualificationType.SectionNotExist);
+            }
+        }
+
+        private static void FilterOffStatusAction(this Race race, Site site)
+        {
+            if (site.Status == SiteStatus.Off)
+            {
+                race.DismissSite(site, DisqualificationType.SiteStatusOff);
+            }
+            else
+            {
+                var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+
+                if (enrollment.Status == SiteStatus.Off)
                 {
-                    race.DismissSite(s, DisqualificationType.SectionStatusOff);
+                    race.DismissSite(site, DisqualificationType.SectionStatusOff);
                 }
+            }
+        }
+
+        private static void FilterAffiliateUploadOnlyAction(Race race, Site site)
+        {
+            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+
+            // Affiliate upload only
+            if (enrollment.Affils.Contains(race.Release.Group))
+            {
+                // Site upload only
+                if (site.Status == SiteStatus.UploadOnly)
+                {
+                    race.DismissSite(site, DisqualificationType.SiteUploadOnlyAffiliate);
+                }
+
+                // Section upload only
+                if (site.Status == SiteStatus.Mixed && enrollment.Status == SiteStatus.UploadOnly)
+                {
+                    race.DismissSite(site, DisqualificationType.SectionUploadOnlyAffiliate);
+                }
+            }
+        }
+
+        private static void BuildParticipantsAction(this Race race, Site site)
+        {
+            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+            var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
+
+            race.Participants.Add(new Participant
+            {
+                Site = site,
+                Enrollment = enrollment,
+                Logins = new Logins
+                {
+                    Total = site.Logins.Total,
+                    Download = site.Logins.Download,
+                    Upload = site.Logins.Upload
+                },
+                Role = isAffiliate ? ParticipatorRole.Affiliate : ParticipatorRole.Regular
             });
         }
 
-        private static void FilterInParallel(Race race, Func<Site, bool> predicate, DisqualificationType disqualification)
+        private static void IterateParallel(Race race, Action<Race, Site> parallelAction)
         {
             Parallel.ForEach(race.QualifiedSites, site =>
             {
-                if (predicate(site))
-                {
-                    race.DismissSite(site, disqualification);
-                }
+                parallelAction(race, site);
             });
-        }
-
-        public static Race GetParticipatingEnrolls(this Race race, IEnumerable<Site> allsites)
-        {
-            var sites = allsites.Where(s => s.Status != SiteStatus.Off);
-
-            sites = sites.Where(s => !race.DismissedSites.Any(d => d.Site.Id == s.Id));
-
-            var enrolls = sites.SelectMany(s => s.Enrollments.Where(e => e.SectionId.Equals(sectionId) && e.Status != SiteStatus.Off));
-
-            foreach (var site in sites)
-            {
-                var enrollment = site.Enrollments.First(e => e.SectionId.Equals(sectionId));
-
-                // Section status off
-                if (enrollment.Status == SiteStatus.Off)
-                {
-                    race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SectionStatusOff));
-                    continue;
-                }
-
-                // Affiliate upload only
-                if (enrollment.Affils.Contains(release.Group))
-                {
-                    // Site upload only
-                    if (site.Status == SiteStatus.UploadOnly)
-                    {
-                        race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SiteUploadOnlyAffiliate));
-                        continue;
-                    }
-
-                    // Section upload only
-                    if (site.Status == SiteStatus.Mixed && enrollment.Status == SiteStatus.UploadOnly)
-                    {
-                        race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SectionUploadOnlyAffiliate));
-                        continue;
-                    }
-
-                    // Affiliate
-                    {
-                        race.Participants.Add(new Participant
-                        {
-                            Site = site,
-                            Enrollment = enrollment,
-                            Logins = new Logins
-                            {
-                                Total = site.Logins.Total,
-                                Upload = site.Logins.Upload,
-                                Download = site.Logins.Download
-                            },
-                            Role = ParticipatorRole.Affiliate
-                        });
-                        continue;
-                    }
-                }
-            }
         }
     }
 }
