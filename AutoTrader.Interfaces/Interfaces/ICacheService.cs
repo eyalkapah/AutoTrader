@@ -14,5 +14,7 @@ namespace AutoTrader.Core.Services
         Task<List<Site>> GetSitesAsync();
 
         Task<List<Word>> GetWordsAsync();
+
+        Task<List<PreDb>> GetPreDbsAsync();
     }
 }

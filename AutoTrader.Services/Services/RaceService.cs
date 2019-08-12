@@ -17,18 +17,46 @@ namespace AutoTrader.Services.Services
         private readonly ISectionService _sectionService;
         private readonly ISiteService _siteService;
 
+        public List<Race> Races { get; set; }
+
         public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService)
         {
+            Races = new List<Race>();
+
             _releaseService = releaseService;
             _categoryService = categoryService;
             _sectionService = sectionService;
             _siteService = siteService;
         }
 
-        public async Task BuildRace(string releaseName, string sectionName, string publisher)
+        public async Task RaceAsync(string releaseName, string sectionName, IrcPublisher publisher)
         {
-            var category = await _categoryService.GetCategoryAsync(sectionName);
             var section = await _sectionService.GetSectionAsync(sectionName);
+
+            if (section == null)
+                return;
+
+            var race = GetRace(releaseName, section.Id);
+
+            var site = _siteService.GetSiteAsync(publisher);
+
+            if (site != null)
+            {
+            }
+
+            if (race == null)
+            {
+                race = await BuildRaceAsync(releaseName, section, publisher);
+                Races.Add(race);
+            }
+            else
+            {
+            }
+        }
+
+        public async Task<Race> BuildRaceAsync(string releaseName, Section section, string publisher)
+        {
+            var category = await _categoryService.GetCategoryAsync(section.Name);
             var sites = await _siteService.GetSitesAsync();
 
             var release = await _releaseService.BuildReleaseAsync(releaseName, category.Type, section.Delimiter);
@@ -39,12 +67,17 @@ namespace AutoTrader.Services.Services
             race.FilterAffiliateUploadOnly();
             race.BuildParticipantsQueue();
 
-            var site = _siteService.GetSiteAsync(publisher);
+            return race;
         }
 
         public async Task StartRaceAsync(Race race)
         {
             var participant = race.GetSourceSite();
+        }
+
+        private Race GetRace(string releaseName, string sectionId)
+        {
+            return Races.FirstOrDefault(r => r.Release.Name.Equals(releaseName) && r.Section.Id.Equals(sectionId));
         }
     }
 }

@@ -89,6 +89,20 @@ namespace AutoTrader.Services.Services
             };
         }
 
+        internal static PreDb GetPreDb(PreDbContract preDb)
+        {
+            if (preDb == null)
+                return null;
+
+            return new PreDb
+            {
+                Id = preDb.Id,
+                Channel = preDb.Channel,
+                Bot = preDb.Bot,
+                IsEnabled = preDb.Enabled
+            };
+        }
+
         private static PrioritySection GetPrioritySection(PrioritySectionContract prioritySection)
         {
             if (prioritySection == null)

@@ -17,8 +17,12 @@ namespace AutoTrader.Models.Entities
         public ReleaseBase Release { get; set; }
         public Section Section { get; set; }
 
+        public DateTime PublishDateTime { get; set; }
+
         public Race(Section section, ReleaseBase release, List<Site> allSites)
         {
+            PublishDateTime = DateTime.Now;
+
             QualifiedSites = new ConcurrentBag<Site>();
             DisqualifiedSites = new ConcurrentBag<SiteDismiss>();
             Participants = new ConcurrentBag<Participant>();

@@ -23,5 +23,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("priorities")]
         public PriorityContract[] Priorities { get; set; }
+
+        [JsonProperty("preDbs")]
+        public PreDbContract[] PreDbs { get; set; }
     }
 }

@@ -472,5 +472,19 @@
         }
       ]
     }
+  ],
+  "preDbs": [
+    {
+      "id": "pdbfad5b-d9cb-469f-a165-708677289511",
+      "channel": "#scumm-pre",
+      "bot": "SIDB",
+      "enabled": true
+    },
+    {
+      "id": "pdbfad5b-d9cb-469f-a165-708677289512",
+      "channel": "#Panicpre",
+      "bot": "ARDB",
+      "enabled": true
+    }
   ]
 }
