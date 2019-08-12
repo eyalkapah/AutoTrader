@@ -31,7 +31,7 @@ namespace AutoTrader.Models.Extensions
             });
         }
 
-        private static void FilterInParallel<T>(Race race, Func<Site, bool> predicate, DisqualificationType disqualification)
+        private static void FilterInParallel(Race race, Func<Site, bool> predicate, DisqualificationType disqualification)
         {
             Parallel.ForEach(race.QualifiedSites, site =>
             {
