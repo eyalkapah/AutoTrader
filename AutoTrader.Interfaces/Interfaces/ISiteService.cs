@@ -6,6 +6,8 @@ namespace AutoTrader.Services.Services
 {
     public interface ISiteService
     {
+        Task<Site> GetSiteAsync(string publisher);
+
         Task<IEnumerable<Site>> GetSitesAsync(string sectionId);
 
         Task<List<Site>> GetSitesAsync();

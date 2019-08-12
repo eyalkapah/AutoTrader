@@ -19,6 +19,13 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
+        public async Task<Site> GetSiteAsync(string publisher)
+        {
+            var sites = await _cacheService.GetSitesAsync();
+
+            return sites.FirstOrDefault(s => s.Name.Equals(publisher, StringComparison.CurrentCultureIgnoreCase));
+        }
+
         public Task<List<Site>> GetSitesAsync()
         {
             return _cacheService.GetSitesAsync();

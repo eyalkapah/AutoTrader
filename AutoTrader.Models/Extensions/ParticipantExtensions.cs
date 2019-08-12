@@ -10,9 +10,9 @@ namespace AutoTrader.Models.Extensions
 {
     public static class ParticipantExtensions
     {
-        public static Participant GetTopRatedAffiliate(this IEnumerable<Participant> participants)
+        public static Participant GetTopRatedParticipant(this IEnumerable<Participant> participants, ParticipatorRole role)
         {
-            return participants.Where(p => p.Role == ParticipatorRole.Affiliate).OrderByDescending(p => p.Rank).FirstOrDefault();
+            return participants.Where(p => p.Role == role).OrderByDescending(p => p.Rank).FirstOrDefault();
         }
     }
 }

@@ -12,8 +12,8 @@ namespace AutoTrader.Services.Services
 {
     public class RaceService
     {
-        private readonly IReleaseService _releaseService;
         private readonly ICategoryService _categoryService;
+        private readonly IReleaseService _releaseService;
         private readonly ISectionService _sectionService;
         private readonly ISiteService _siteService;
 
@@ -37,12 +37,14 @@ namespace AutoTrader.Services.Services
             race.FilterNonSectionSites();
             race.FilterOffStatusSites();
             race.FilterAffiliateUploadOnly();
-            race.BuildParticipants();
+            race.BuildParticipantsQueue();
+
+            var site = _siteService.GetSiteAsync(publisher);
         }
 
         public async Task StartRaceAsync(Race race)
         {
-            var participant = race.PopSourceSite();
+            var participant = race.GetSourceSite();
         }
     }
 }

@@ -10,22 +10,31 @@ namespace AutoTrader.Models.Entities
 {
     public class Race
     {
-        public Section Section { get; set; }
+        public ConcurrentBag<SiteDismiss> DisqualifiedSites { get; }
+        public ConcurrentBag<Participant> Participants { get; }
+        public ConcurrentBag<Participant> ParticipantsQueue { get; }
+        public ConcurrentBag<Site> QualifiedSites { get; }
         public ReleaseBase Release { get; set; }
-        public ConcurrentBag<Site> QualifiedSites { get; private set; }
-        public ConcurrentBag<SiteDismiss> DisqualifiedSites { get; private set; }
-        public ConcurrentBag<Participant> Participants { get; set; }
-        public ConcurrentBag<Participant> Publishers { get; set; }
+        public Section Section { get; set; }
 
         public Race(Section section, ReleaseBase release, List<Site> allSites)
         {
             QualifiedSites = new ConcurrentBag<Site>();
             DisqualifiedSites = new ConcurrentBag<SiteDismiss>();
-            Publishers = new ConcurrentBag<Participant>();
+            Participants = new ConcurrentBag<Participant>();
+            ParticipantsQueue = new ConcurrentBag<Participant>();
 
             allSites.ForEach(site => QualifiedSites.Add(site));
             Section = section;
             Release = release;
+        }
+
+        public void AddParticipant(Participant participant)
+        {
+            Participants.Add(participant);
+
+            if (participant.Role == ParticipatorRole.Affiliate)
+                ParticipantsQueue.Add(participant);
         }
 
         public void DismissSite(Site site, DisqualificationType disqualificationType)

@@ -10,6 +10,16 @@ namespace AutoTrader.Models.Extensions
 {
     public static class RaceExtensions
     {
+        public static void BuildParticipantsQueue(this Race race)
+        {
+            IterateParallel(race, BuildParticipantsQueueAction);
+        }
+
+        public static void FilterAffiliateUploadOnly(this Race race)
+        {
+            IterateParallel(race, FilterAffiliateUploadOnlyAction);
+        }
+
         public static void FilterNonSectionSites(this Race race)
         {
             IterateParallel(race, FilterNonSectionSitesAction);
@@ -20,24 +30,55 @@ namespace AutoTrader.Models.Extensions
             IterateParallel(race, FilterOffStatusAction);
         }
 
-        public static void FilterAffiliateUploadOnly(this Race race)
+        public static Participant GetSourceSite(this Race race)
         {
-            IterateParallel(race, FilterAffiliateUploadOnlyAction);
-        }
-
-        public static void BuildParticipants(this Race race)
-        {
-            IterateParallel(race, BuildParticipantsAction);
-        }
-
-        public static Participant PopSourceSite(this Race race)
-        {
-            var affiliate = race.Participants.GetTopRatedAffiliate();
+            var affiliate = race.ParticipantsQueue.GetTopRatedParticipant(ParticipatorRole.Affiliate);
 
             if (affiliate != null)
                 return affiliate;
 
-            // TODO: Get next publisher
+            return race.ParticipantsQueue.GetTopRatedParticipant(ParticipatorRole.Regular);
+        }
+
+        private static void BuildParticipantsQueueAction(this Race race, Site site)
+        {
+            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+            var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
+
+            race.AddParticipant(new Participant
+            {
+                Site = site,
+                Enrollment = enrollment,
+                Logins = new Logins
+                {
+                    Total = site.Logins.Total,
+                    Download = site.Logins.Download,
+                    Upload = site.Logins.Upload
+                },
+                Rank = site.Rank,
+                Role = isAffiliate ? ParticipatorRole.Affiliate : ParticipatorRole.Regular
+            });
+        }
+
+        private static void FilterAffiliateUploadOnlyAction(Race race, Site site)
+        {
+            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+
+            // Affiliate upload only
+            if (enrollment.Affils.Contains(race.Release.Group))
+            {
+                // Site upload only
+                if (site.Status == SiteStatus.UploadOnly)
+                {
+                    race.DismissSite(site, DisqualificationType.SiteUploadOnlyAffiliate);
+                }
+
+                // Section upload only
+                if (site.Status == SiteStatus.Mixed && enrollment.Status == SiteStatus.UploadOnly)
+                {
+                    race.DismissSite(site, DisqualificationType.SectionUploadOnlyAffiliate);
+                }
+            }
         }
 
         private static void FilterNonSectionSitesAction(this Race race, Site site)
@@ -63,47 +104,6 @@ namespace AutoTrader.Models.Extensions
                     race.DismissSite(site, DisqualificationType.SectionStatusOff);
                 }
             }
-        }
-
-        private static void FilterAffiliateUploadOnlyAction(Race race, Site site)
-        {
-            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
-
-            // Affiliate upload only
-            if (enrollment.Affils.Contains(race.Release.Group))
-            {
-                // Site upload only
-                if (site.Status == SiteStatus.UploadOnly)
-                {
-                    race.DismissSite(site, DisqualificationType.SiteUploadOnlyAffiliate);
-                }
-
-                // Section upload only
-                if (site.Status == SiteStatus.Mixed && enrollment.Status == SiteStatus.UploadOnly)
-                {
-                    race.DismissSite(site, DisqualificationType.SectionUploadOnlyAffiliate);
-                }
-            }
-        }
-
-        private static void BuildParticipantsAction(this Race race, Site site)
-        {
-            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
-            var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
-
-            race.Participants.Add(new Participant
-            {
-                Site = site,
-                Enrollment = enrollment,
-                Logins = new Logins
-                {
-                    Total = site.Logins.Total,
-                    Download = site.Logins.Download,
-                    Upload = site.Logins.Upload
-                },
-                Rank = site.Rank,
-                Role = isAffiliate ? ParticipatorRole.Affiliate : ParticipatorRole.Regular
-            });
         }
 
         private static void IterateParallel(Race race, Action<Race, Site> parallelAction)
