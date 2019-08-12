@@ -20,5 +20,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("complexWords")]
         public ComplexWordContract[] ComplexWords { get; set; }
+
+        [JsonProperty("priorities")]
+        public PriorityContract[] Priorities { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace AutoTrader.Models.Entities
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public int Rank { get; set; }
         public SiteStatus Status { get; set; }
         public List<Enrollment> Enrollments { get; set; }
         public Logins Logins { get; set; }

@@ -12,6 +12,7 @@ namespace AutoTrader.Models.Entities
         public Site Site { get; set; }
         public Enrollment Enrollment { get; set; }
         public Logins Logins { get; set; }
+        public int Rank { get; internal set; }
         public ParticipatorRole Role { get; set; }
 
         public Participant()

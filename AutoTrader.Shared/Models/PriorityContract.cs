@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Shared.Models
 {
-    public class SiteContract
+    public class PriorityContract
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -18,13 +18,7 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("rank")]
         public int Rank { get; set; }
 
-        [JsonProperty("status")]
-        public int Status { get; set; }
-
-        [JsonProperty("enrollments")]
-        public EnrollmentContract[] Enrollments { get; set; }
-
-        [JsonProperty("logins")]
-        public LoginsContract Logins { get; set; }
+        [JsonProperty("sections")]
+        public PrioritySectionContract[] Sections { get; set; }
     }
 }

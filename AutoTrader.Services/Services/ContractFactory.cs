@@ -49,6 +49,7 @@ namespace AutoTrader.Services.Services
                 Id = site.Id,
                 Name = site.Name,
                 Status = (SiteStatus)site.Status,
+                Rank = site.Rank,
                 Enrollments = site.Enrollments.Select(e => GetEnrollment(e)).ToList(),
                 Logins = new Logins
                 {
@@ -71,6 +72,33 @@ namespace AutoTrader.Services.Services
                 SectionId = enrollment.SectionId,
                 Status = (SiteStatus)enrollment.Status,
                 Packages = enrollment.Packages.Select(p => GetPackage(p)).ToList()
+            };
+        }
+
+        internal static Priority GetPriority(PriorityContract priority)
+        {
+            if (priority == null)
+                return null;
+
+            return new Priority
+            {
+                Id = priority.Id,
+                Name = priority.Name,
+                Rank = priority.Rank,
+                Sections = priority.Sections.Select(s => GetPrioritySection(s)).ToList()
+            };
+        }
+
+        private static PrioritySection GetPrioritySection(PrioritySectionContract prioritySection)
+        {
+            if (prioritySection == null)
+                return null;
+
+            return new PrioritySection
+            {
+                Id = prioritySection.Id,
+                IsEnabled = prioritySection.Enabled,
+                SitesIds = prioritySection.Sites
             };
         }
 

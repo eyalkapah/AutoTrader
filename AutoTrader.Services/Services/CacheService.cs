@@ -16,6 +16,7 @@ namespace AutoTrader.Services.Services
         public List<Section> Sections { get; set; } = new List<Section>();
         public List<Word> Words { get; set; } = new List<Word>();
         public List<Site> Sites { get; set; } = new List<Site>();
+        public List<Priority> Priorities { get; set; } = new List<Priority>();
 
         public CacheService(DataProviderService dataProviderService)
         {
@@ -61,6 +62,8 @@ namespace AutoTrader.Services.Services
             Words = settingsContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
 
             Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s)).ToList();
+
+            Priorities = settingsContract.Priorities.Select(p => ContractFactory.GetPriority(p)).ToList();
         }
 
         private async Task LoadSettingsIfNeeded()

@@ -31,6 +31,7 @@
     {
       "id": "sitead5b-d9cb-469f-a165-708677289501",
       "name": "PF",
+      "rank": 10,
       "status": 1,
       "logins": {
         "total": 2,
@@ -46,6 +47,62 @@
             "POW",
             "ZZZZ",
             "BPM"
+          ],
+          "status": 1,
+          "packages": [
+            {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289501",
+              "name": "Ban Web Resources",
+              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
+              "applicability": 1
+            },
+            {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289502",
+              "name": "Ban Live Resources",
+              "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
+              "applicability": 1
+            },
+            {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289503",
+              "name": "Ban Internal Resources",
+              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
+              "applicability": 1
+            },
+            {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289504",
+              "name": "Allow English Only",
+              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
+              "applicability": 1
+            },
+            {
+              "id": "rf8fad5b-d9cb-469f-a165-708677289505",
+              "name": "Allow EN|NL Only",
+              "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
+              "applicability": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sitead5b-d9cb-469f-a165-708677289502",
+      "name": "BH",
+      "priority": 9,
+      "status": 1,
+      "logins": {
+        "total": 2,
+        "download": 2,
+        "upload": 2
+      },
+      "enrollments": [
+        {
+          "id": "ef8fad5b-d9cb-469f-a165-708677289502",
+          "sectionId": "sf8fad5b-d9cb-469f-a165-708677289502",
+          "affils": [
+            "AAA",
+            "BBB",
+            "CCC",
+            "DDD"
           ],
           "status": 1,
           "packages": [
@@ -397,6 +454,22 @@
         "0f8fad5b-d9cb-469f-a165-70867728951e",
         "0f8fad5b-d9cb-469f-a165-70867728951f",
         "0f8fad5b-d9cb-469f-a165-70867728951g"
+      ]
+    }
+  ],
+  "priorities": [
+    {
+      "id": "pf8fad5b-d9cb-469f-a165-708677289511",
+      "name": "Priority 1",
+      "rank": 1,
+      "sections": [
+        {
+          "id": "sf8fad5b-d9cb-469f-a165-708677289501",
+          "enabled": true,
+          "sites": [
+            "sitead5b-d9cb-469f-a165-708677289501"
+          ]
+        }
       ]
     }
   ]

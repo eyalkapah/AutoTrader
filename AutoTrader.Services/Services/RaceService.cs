@@ -39,5 +39,10 @@ namespace AutoTrader.Services.Services
             race.FilterAffiliateUploadOnly();
             race.BuildParticipants();
         }
+
+        public async Task StartRaceAsync(Race race)
+        {
+            var participant = race.PopSourceSite();
+        }
     }
 }

@@ -30,6 +30,16 @@ namespace AutoTrader.Models.Extensions
             IterateParallel(race, BuildParticipantsAction);
         }
 
+        public static Participant PopSourceSite(this Race race)
+        {
+            var affiliate = race.Participants.GetTopRatedAffiliate();
+
+            if (affiliate != null)
+                return affiliate;
+
+            // TODO: Get next publisher
+        }
+
         private static void FilterNonSectionSitesAction(this Race race, Site site)
         {
             if (!site.Enrollments.Any(e => e.SectionId.Equals(race.Section.Id)))
@@ -91,6 +101,7 @@ namespace AutoTrader.Models.Extensions
                     Download = site.Logins.Download,
                     Upload = site.Logins.Upload
                 },
+                Rank = site.Rank,
                 Role = isAffiliate ? ParticipatorRole.Affiliate : ParticipatorRole.Regular
             });
         }

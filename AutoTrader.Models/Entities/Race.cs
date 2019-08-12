@@ -15,11 +15,13 @@ namespace AutoTrader.Models.Entities
         public ConcurrentBag<Site> QualifiedSites { get; private set; }
         public ConcurrentBag<SiteDismiss> DisqualifiedSites { get; private set; }
         public ConcurrentBag<Participant> Participants { get; set; }
+        public ConcurrentBag<Participant> Publishers { get; set; }
 
         public Race(Section section, ReleaseBase release, List<Site> allSites)
         {
             QualifiedSites = new ConcurrentBag<Site>();
             DisqualifiedSites = new ConcurrentBag<SiteDismiss>();
+            Publishers = new ConcurrentBag<Participant>();
 
             allSites.ForEach(site => QualifiedSites.Add(site));
             Section = section;
@@ -30,10 +32,6 @@ namespace AutoTrader.Models.Entities
         {
             QualifiedSites.TryTake(out Site removedSite);
             DisqualifiedSites.Add(new SiteDismiss(site, disqualificationType));
-        }
-
-        public void RegisterAffils(Site site)
-        {
         }
     }
 }
