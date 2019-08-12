@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Entities
 {
-    public class Participator
+    public class Participant
     {
+        public Site Site { get; set; }
         public Enrollment Enrollment { get; set; }
-        public int TotalLogins { get; set; }
-        public int MaxUploadLogins { get; set; }
-        public int MaxDownloadLogins { get; set; }
+        public Logins Logins { get; set; }
         public ParticipatorRole Role { get; set; }
+
+        public Participant()
+        {
+            Role = ParticipatorRole.Regular;
+        }
     }
 }

@@ -6,8 +6,8 @@ namespace AutoTrader.Services.Services
 {
     public interface ISiteService
     {
-        Task<List<Enrollment>> GetParticipatingSites(string sectionId);
+        Task<IEnumerable<Site>> GetSitesAsync(string sectionId);
 
-        Task<List<Site>> GetSitesAsync(string sectionId);
+        Task<List<Site>> GetSitesAsync();
     }
 }

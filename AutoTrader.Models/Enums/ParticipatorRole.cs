@@ -9,6 +9,6 @@ namespace AutoTrader.Models.Enums
     public enum ParticipatorRole
     {
         Affiliate,
-        NonAffiliate
+        Regular,
     }
 }

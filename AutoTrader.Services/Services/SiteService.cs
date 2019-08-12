@@ -19,18 +19,16 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public async Task<List<Site>> GetSitesAsync(string sectionId)
+        public Task<List<Site>> GetSitesAsync()
         {
-            var sites = await _cacheService.GetSitesAsync();
-
-            return sites.Where(s => IsEnrolled(s.Enrollments, sectionId)).ToList();
+            return _cacheService.GetSitesAsync();
         }
 
-        public async Task<List<Enrollment>> GetParticipatingSites(string sectionId)
+        public async Task<IEnumerable<Site>> GetSitesAsync(string sectionId)
         {
             var sites = await _cacheService.GetSitesAsync();
 
-            return sites.GetParticipatingEnrolls(sectionId);
+            return sites.Where(s => IsEnrolled(s.Enrollments, sectionId));
         }
 
         private bool IsEnrolled(IEnumerable<Enrollment> enrollments, string sectionId)

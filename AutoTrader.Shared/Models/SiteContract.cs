@@ -20,5 +20,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("enrollments")]
         public EnrollmentContract[] Enrollments { get; set; }
+
+        [JsonProperty("logins")]
+        public LoginsContract Logins { get; set; }
     }
 }

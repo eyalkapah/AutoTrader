@@ -49,7 +49,13 @@ namespace AutoTrader.Services.Services
                 Id = site.Id,
                 Name = site.Name,
                 Status = (SiteStatus)site.Status,
-                Enrollments = site.Enrollments.Select(e => GetEnrollment(e)).ToList()
+                Enrollments = site.Enrollments.Select(e => GetEnrollment(e)).ToList(),
+                Logins = new Logins
+                {
+                    Total = site.Logins.Total,
+                    Upload = site.Logins.Upload,
+                    Download = site.Logins.Download
+                }
             };
         }
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
 {
-    public class ReleaseService
+    public class ReleaseService : IReleaseService
     {
         private readonly ICategoryService _categoryService;
         private readonly ISectionService _sectionService;
@@ -24,62 +24,59 @@ namespace AutoTrader.Services.Services
             _siteService = siteService;
         }
 
-        public async Task BuildReleaseAsync(string releaseName, string sectionName)
+        //public async Task BuildReleaseAsync(string releaseName, string sectionName)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(releaseName))
+        //            throw new ArgumentNullException("releaseName");
+
+        //        if (string.IsNullOrEmpty(sectionName))
+        //            throw new ArgumentNullException(sectionName);
+
+        //        await ProcessRelease(releaseName, sectionName);
+        //    }
+        //    catch (UnknownReleaseCategoryException ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public async Task<ReleaseBase> BuildReleaseAsync(string releaseName, CategoryType categoryType, char delimiter)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(releaseName))
-                    throw new ArgumentNullException("releaseName");
+            ReleaseBase release = null;
 
-                if (string.IsNullOrEmpty(sectionName))
-                    throw new ArgumentNullException(sectionName);
-
-                await ProcessRelease(releaseName, sectionName);
-            }
-            catch (UnknownReleaseCategoryException ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            catch (ArgumentNullException ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        public async Task ProcessRelease(string releaseName, string sectionName)
-        {
-            var category = await _categoryService.GetCategoryAsync(sectionName);
-            var section = await _sectionService.GetSection(sectionName);
-            var sites = await _siteService.GetParticipatingSites(section.Id);
-
-            switch (category.Type)
+            switch (categoryType)
             {
                 case CategoryType.Audio:
-                    var audioRelease = new AudioRelease(releaseName);
-                    audioRelease.ExtractGroup();
-                    audioRelease.ExtractArtistAndTitle(section.Delimiter);
+                    release = new AudioRelease(releaseName);
 
-                    var publishers = sites.
-                    }
-            Parallel.ForEach(section.RuleSet.Strings, rule =>
-            {
-                rule.ProcessStringRuleSet(releaseName);
-            });
+                    await Task.Run(() =>
+                    {
+                        release.ExtractGroup();
+                        ((AudioRelease)release).ExtractArtistAndTitle(delimiter);
+                    });
+                    break;
 
-            Parallel.ForEach(section.RuleSet.Ranges, rule =>
-            {
-                rule.ProcessRuleSet(releaseName);
-            });
+                case CategoryType.Video:
+                    break;
 
-            break;
+                case CategoryType.Data:
+                    break;
 
                 case CategoryType.Unknown:
-                    break;
+                    throw new NotImplementedException("Unknown category, failed to build release");
+            }
+
+            return release;
         }
     }
-}
 }

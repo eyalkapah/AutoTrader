@@ -20,7 +20,7 @@ namespace AutoTrader.Services.Services
             _packageService = packageService;
         }
 
-        public async Task<Section> GetSection(string name)
+        public async Task<Section> GetSectionAsync(string name)
         {
             var sections = await _cacheService.GetSectionsAsync();
 

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AutoTrader.Core.Enums;
+using AutoTrader.Models.Entities;
 
-namespace AutoTrader.Interfaces.Interfaces
+namespace AutoTrader.Services.Services
 {
     public interface IReleaseService
     {
+        Task<ReleaseBase> BuildReleaseAsync(string releaseName, CategoryType categoryType, char delimiter);
     }
 }

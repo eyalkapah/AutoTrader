@@ -8,36 +8,43 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Extensions
 {
-    public static class SiteExtensions
+    public static class RaceExtensions
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="allsites">All sites</param>
-        /// <param name="sectionId">section participated</param>
-        /// <returns></returns>
-        public static List<Enrollment> GetParticipatingEnrolls(this IEnumerable<Site> allsites, ReleaseBase release, string sectionId)
+        public static void FilterNonSectionSites(this Race race)
         {
-            var race = new Race();
+            FilterInParallel(race, site => !site.Enrollments.Any(e => e.SectionId.Equals(race.Section.Id)), DisqualificationType.SectionNotExist);
+        }
 
-            var sites = allsites.Where(s => s.Status != SiteStatus.Off);
+        public static void FilterOffStatusSites(this Race race)
+        {
+            FilterInParallel(race, site => site.Status == SiteStatus.Off, DisqualificationType.SiteStatusOff);
+        }
 
-            foreach (var site in sites)
+        public static void FilterOffStatusEnrollments(this Race race)
+        {
+            Parallel.ForEach(race.QualifiedSites.SelectMany(s => s.Enrollments.Where(e => e.SectionId.Equals(race.Section.Id))), (e, s) =>
             {
-                // No section
-                if (!site.Enrollments.Any(e => e.SectionId.Equals(sectionId)))
+                if (e.Status == SiteStatus.Off)
                 {
-                    race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SectionNotExist));
-                    continue;
+                    race.DismissSite(s, DisqualificationType.SectionStatusOff);
                 }
+            });
+        }
 
-                // Status off
-                if (site.Status == SiteStatus.Off)
+        private static void FilterInParallel<T>(Race race, Func<Site, bool> predicate, DisqualificationType disqualification)
+        {
+            Parallel.ForEach(race.QualifiedSites, site =>
+            {
+                if (predicate(site))
                 {
-                    race.DismissedSites.Add(new SiteDismiss(site, DisqualificationType.SiteStatusOff));
-                    continue;
+                    race.DismissSite(site, disqualification);
                 }
-            }
+            });
+        }
+
+        public static Race GetParticipatingEnrolls(this Race race, IEnumerable<Site> allsites)
+        {
+            var sites = allsites.Where(s => s.Status != SiteStatus.Off);
 
             sites = sites.Where(s => !race.DismissedSites.Any(d => d.Site.Id == s.Id));
 
