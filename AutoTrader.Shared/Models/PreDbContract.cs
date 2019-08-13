@@ -12,6 +12,9 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [JsonProperty("channel")]
         public string Channel { get; set; }
 

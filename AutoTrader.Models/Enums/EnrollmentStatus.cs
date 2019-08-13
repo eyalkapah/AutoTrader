@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum ParticipatorRole
+    public enum EnrollmentStatus
     {
-        Affiliate,
-        Regular,
+        On = 1,
+        UploadOnly,
+        DownloadOnly,
+        Off,
     }
 }

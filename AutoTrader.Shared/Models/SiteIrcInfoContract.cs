@@ -4,17 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Models.Entities
+namespace AutoTrader.Shared.Models
 {
-    public class PreDb
+    public class SiteIrcInfoContract
     {
-        public string Id { get; set; }
-
         public string Channel { get; set; }
-
         public string Bot { get; set; }
-
-        public bool IsEnabled { get; set; }
-        public string Name { get; set; }
     }
 }

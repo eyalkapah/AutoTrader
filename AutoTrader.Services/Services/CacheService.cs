@@ -17,7 +17,7 @@ namespace AutoTrader.Services.Services
         public List<Word> Words { get; set; } = new List<Word>();
         public List<ComplexWord> ComplexWords { get; private set; }
         public List<Site> Sites { get; set; } = new List<Site>();
-        public List<Priority> Priorities { get; set; } = new List<Priority>();
+        public List<Branch> Branches { get; set; } = new List<Branch>();
         public List<PreDb> PreDbs { get; set; } = new List<PreDb>();
 
         public CacheService(DataProviderService dataProviderService)
@@ -53,6 +53,13 @@ namespace AutoTrader.Services.Services
             return Sites;
         }
 
+        public async Task<List<Branch>> GetBranchesAsync()
+        {
+            await LoadSettingsIfNeeded();
+
+            return Branches;
+        }
+
         public async Task<List<PreDb>> GetPreDbsAsync()
         {
             await LoadSettingsIfNeeded();
@@ -74,7 +81,7 @@ namespace AutoTrader.Services.Services
 
             Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s)).ToList();
 
-            Priorities = settingsContract.Priorities.Select(p => ContractFactory.GetPriority(p)).ToList();
+            Branches = settingsContract.Branches.Select(p => ContractFactory.GetBranch(p)).ToList();
 
             PreDbs = settingsContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
         }

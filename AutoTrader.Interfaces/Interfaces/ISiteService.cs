@@ -11,5 +11,7 @@ namespace AutoTrader.Services.Services
         Task<IEnumerable<Site>> GetSitesAsync(string sectionId);
 
         Task<List<Site>> GetSitesAsync();
+
+        Task<Site> GetSiteAsync(string channel, string bot);
     }
 }

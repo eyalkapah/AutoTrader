@@ -38,6 +38,22 @@ namespace AutoTrader.Services.Services
             return sites.Where(s => IsEnrolled(s.Enrollments, sectionId));
         }
 
+        public async Task<Site> GetSiteAsync(string channel, string bot)
+        {
+            var sites = await _cacheService.GetSitesAsync();
+
+            foreach (var site in sites)
+            {
+                foreach (var ircInfo in site.IrcInfo)
+                {
+                    if (ircInfo.IsIrcInfoSame(channel, bot))
+                        return site;
+                }
+            }
+
+            return null;
+        }
+
         private bool IsEnrolled(IEnumerable<Enrollment> enrollments, string sectionId)
         {
             return enrollments.Any(e => e.SectionId.Equals(sectionId));

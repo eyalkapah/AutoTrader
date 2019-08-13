@@ -26,5 +26,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("logins")]
         public LoginsContract Logins { get; set; }
+
+        [JsonProperty("ircInfo")]
+        public SiteIrcInfoContract[] IrcInfo { get; set; }
     }
 }

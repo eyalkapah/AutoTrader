@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Entities
 {
-    public class PrioritySection
+    public class SiteIrcInfo
     {
-        public int Id { get; set; }
-
-        public bool IsEnabled { get; set; }
-
-        public string[] SitesIds { get; set; }
+        public string Channel { get; set; }
+        public string Bot { get; set; }
     }
 }

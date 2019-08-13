@@ -15,6 +15,7 @@ namespace AutoTrader.Models.Entities
         public SiteStatus Status { get; set; }
         public List<Enrollment> Enrollments { get; set; }
         public Logins Logins { get; set; }
+        public List<SiteIrcInfo> IrcInfo { get; set; }
 
         public Site()
         {
@@ -25,6 +26,7 @@ namespace AutoTrader.Models.Entities
                 Upload = 2,
                 Download = 2
             };
+            IrcInfo = new List<SiteIrcInfo>();
         }
     }
 }

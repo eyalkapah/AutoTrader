@@ -56,7 +56,20 @@ namespace AutoTrader.Services.Services
                     Total = site.Logins.Total,
                     Upload = site.Logins.Upload,
                     Download = site.Logins.Download
-                }
+                },
+                IrcInfo = site.IrcInfo.Select(i => GetIrcInfo(i)).ToList()
+            };
+        }
+
+        private static SiteIrcInfo GetIrcInfo(SiteIrcInfoContract ircInfo)
+        {
+            if (ircInfo == null)
+                return null;
+
+            return new SiteIrcInfo
+            {
+                Channel = ircInfo.Channel,
+                Bot = ircInfo.Bot
             };
         }
 
@@ -70,22 +83,24 @@ namespace AutoTrader.Services.Services
                 Id = enrollment.Id,
                 Affils = enrollment.Affils.ToList(),
                 SectionId = enrollment.SectionId,
-                Status = (SiteStatus)enrollment.Status,
+                Status = (EnrollmentStatus)enrollment.Status,
                 Packages = enrollment.Packages.Select(p => GetPackage(p)).ToList()
             };
         }
 
-        internal static Priority GetPriority(PriorityContract priority)
+        internal static Branch GetBranch(BranchContract priority)
         {
             if (priority == null)
                 return null;
 
-            return new Priority
+            return new Branch
             {
                 Id = priority.Id,
                 Name = priority.Name,
-                Rank = priority.Rank,
-                Sections = priority.Sections.Select(s => GetPrioritySection(s)).ToList()
+                SectionId = priority.Section,
+                BubbleLevel = priority.BubbleLevel,
+                RaceActivityInSeconds = priority.RaceActivityInSeconds,
+                IsEnabled = priority.Enabled
             };
         }
 
@@ -97,22 +112,10 @@ namespace AutoTrader.Services.Services
             return new PreDb
             {
                 Id = preDb.Id,
+                Name = preDb.Name,
                 Channel = preDb.Channel,
                 Bot = preDb.Bot,
                 IsEnabled = preDb.Enabled
-            };
-        }
-
-        private static PrioritySection GetPrioritySection(PrioritySectionContract prioritySection)
-        {
-            if (prioritySection == null)
-                return null;
-
-            return new PrioritySection
-            {
-                Id = prioritySection.Id,
-                IsEnabled = prioritySection.Enabled,
-                SitesIds = prioritySection.Sites
             };
         }
 

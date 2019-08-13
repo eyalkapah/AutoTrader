@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
+using AutoTrader.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,17 @@ namespace AutoTrader.Models.Extensions
 
         public static Participant GetSourceSite(this Race race)
         {
-            var affiliate = race.ParticipantsQueue.GetTopRatedParticipant(ParticipatorRole.Affiliate);
+            while (race.Participants.Any())
+            {
+                var affiliate = race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
 
-            if (affiliate != null)
-                return affiliate;
+                if (affiliate != null)
+                    return affiliate;
 
-            return race.ParticipantsQueue.GetTopRatedParticipant(ParticipatorRole.Regular);
+                return race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Regular, ParticipantRole.Uploader });
+            }
+
+            return null;
         }
 
         private static void BuildParticipantsQueueAction(this Race race, Site site)
@@ -56,8 +62,41 @@ namespace AutoTrader.Models.Extensions
                     Upload = site.Logins.Upload
                 },
                 Rank = site.Rank,
-                Role = isAffiliate ? ParticipatorRole.Affiliate : ParticipatorRole.Regular
+                Role = GetParticipantRole(site, enrollment, isAffiliate)
             });
+        }
+
+        private static ParticipantRole GetParticipantRole(Site site, Enrollment enrollment, bool isAffiliate)
+        {
+            if (isAffiliate)
+                return ParticipantRole.Affiliate;
+
+            switch (site.Status)
+            {
+                case SiteStatus.On:
+                    return ParticipantRole.Regular;
+
+                case SiteStatus.UploadOnly:
+                    return ParticipantRole.Uploader;
+
+                case SiteStatus.DownloadOnly:
+                    return ParticipantRole.Downloader;
+
+                case SiteStatus.Off:
+                    break;
+
+                case SiteStatus.Mixed:
+                    if (enrollment.Status == EnrollmentStatus.DownloadOnly)
+                        return ParticipantRole.Downloader;
+                    if (enrollment.Status == EnrollmentStatus.UploadOnly)
+                        return ParticipantRole.Uploader;
+                    if (enrollment.Status == EnrollmentStatus.On)
+                        return ParticipantRole.Regular;
+
+                    throw new BadParticipantRoleException(site.Name);
+            }
+
+            throw new UnknownSiteStatusException(site.Name);
         }
 
         private static void FilterAffiliateUploadOnlyAction(Race race, Site site)
@@ -74,7 +113,7 @@ namespace AutoTrader.Models.Extensions
                 }
 
                 // Section upload only
-                if (site.Status == SiteStatus.Mixed && enrollment.Status == SiteStatus.UploadOnly)
+                if (site.Status == SiteStatus.Mixed && enrollment.Status == EnrollmentStatus.UploadOnly)
                 {
                     race.DismissSite(site, DisqualificationType.SectionUploadOnlyAffiliate);
                 }
@@ -99,7 +138,7 @@ namespace AutoTrader.Models.Extensions
             {
                 var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
 
-                if (enrollment.Status == SiteStatus.Off)
+                if (enrollment.Status == EnrollmentStatus.Off)
                 {
                     race.DismissSite(site, DisqualificationType.SectionStatusOff);
                 }

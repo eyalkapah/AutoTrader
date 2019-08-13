@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Shared.Models
 {
-    public class PriorityContract
+    public class BranchContract
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -15,10 +15,16 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("rank")]
-        public int Rank { get; set; }
-
         [JsonProperty("sections")]
-        public PrioritySectionContract[] Sections { get; set; }
+        public int Section { get; set; }
+
+        [JsonProperty("bubbleLevel")]
+        public int BubbleLevel { get; set; }
+
+        [JsonProperty("raceActivityInSeconds")]
+        public int RaceActivityInSeconds { get; set; }
+
+        [JsonProperty("enabled")]
+        public bool Enabled { get; set; }
     }
 }

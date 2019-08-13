@@ -31,7 +31,6 @@
     {
       "id": "sitead5b-d9cb-469f-a165-708677289501",
       "name": "PF",
-      "rank": 10,
       "status": 1,
       "logins": {
         "total": 2,
@@ -82,12 +81,22 @@
             }
           ]
         }
+      ],
+      "rank": 6,
+      "ircInfo": [
+        {
+          "channel": "pf-spam",
+          "bot": "pf-bot"
+        },
+        {
+          "channel": "#puzzlefactory",
+          "bot": "PiEcE"
+        }
       ]
     },
     {
       "id": "sitead5b-d9cb-469f-a165-708677289502",
       "name": "BH",
-      "priority": 9,
       "status": 1,
       "logins": {
         "total": 2,
@@ -137,6 +146,17 @@
               "applicability": 1
             }
           ]
+        }
+      ],
+      "rank": 6,
+      "ircInfo": [
+        {
+          "channel": "bh-spam",
+          "bot": "bh-bot"
+        },
+        {
+          "channel": "#biohazzard",
+          "bot": "bh"
         }
       ]
     }
@@ -457,20 +477,14 @@
       ]
     }
   ],
-  "priorities": [
+  "branch": [
     {
       "id": "pf8fad5b-d9cb-469f-a165-708677289511",
-      "name": "Priority 1",
-      "rank": 1,
-      "sections": [
-        {
-          "id": "sf8fad5b-d9cb-469f-a165-708677289501",
-          "enabled": true,
-          "sites": [
-            "sitead5b-d9cb-469f-a165-708677289501"
-          ]
-        }
-      ]
+      "name": "Mp3 Branch",
+      "section": "sf8fad5b-d9cb-469f-a165-708677289501",
+      "bubbleLevel": 0,
+      "raceActivityInSeconds": 600,
+      "enabled": true
     }
   ],
   "preDbs": [

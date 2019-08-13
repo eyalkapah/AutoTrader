@@ -12,7 +12,7 @@ namespace AutoTrader.Models.Entities
         public string Id { get; set; }
         public string SectionId { get; set; }
         public List<string> Affils { get; set; }
-        public SiteStatus Status { get; set; }
+        public EnrollmentStatus Status { get; set; }
         public List<Package> Packages { get; set; }
 
         public Enrollment()
