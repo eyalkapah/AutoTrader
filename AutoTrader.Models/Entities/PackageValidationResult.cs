@@ -9,6 +9,6 @@ namespace AutoTrader.Models.Entities
     public class PackageValidationResult
     {
         public string PackageId { get; set; }
-        public bool IsValid { get; set; }
+        public bool? IsValid { get; set; }
     }
 }

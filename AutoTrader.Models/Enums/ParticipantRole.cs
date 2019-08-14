@@ -9,8 +9,9 @@ namespace AutoTrader.Models.Enums
     public enum ParticipantRole
     {
         Affiliate,
-        Regular,
+        UploaderAndDownloader,
         Uploader,
-        Downloader
+        Downloader,
+        Completed,
     }
 }

@@ -22,7 +22,7 @@ namespace AutoTrader.Models.Extensions
 
         public static IEnumerable<Participant> GetDestinationSites(this IEnumerable<Participant> participants)
         {
-            return participants.GetTopRatedSites(new[] { ParticipantRole.Regular, ParticipantRole.Downloader });
+            return participants.GetTopRatedSites(new[] { ParticipantRole.UploaderAndDownloader, ParticipantRole.Downloader });
         }
     }
 }

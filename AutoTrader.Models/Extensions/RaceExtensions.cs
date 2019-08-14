@@ -31,9 +31,10 @@ namespace AutoTrader.Models.Extensions
             IterateParallel(race, sites, FilterOffStatusAction);
         }
 
-        public static PackageValidationResult ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words)
+        public static void ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words)
         {
-            PackageValidationResult validationResult = null;
+            if (dSite.ValidationResult != null)
+                return;
 
             Parallel.ForEach(dSite.Enrollment.PackagesIds, pId =>
             {
@@ -41,7 +42,7 @@ namespace AutoTrader.Models.Extensions
 
                 if (!package.IsPackageValid(words, race.Release.Name))
                 {
-                    validationResult = new PackageValidationResult
+                    dSite.ValidationResult = new PackageValidationResult
                     {
                         IsValid = false,
                         PackageId = package.Id
@@ -49,24 +50,36 @@ namespace AutoTrader.Models.Extensions
                 }
             });
 
-            return validationResult;
+            if (dSite.ValidationResult != null && dSite.ValidationResult.IsValid != false)
+            {
+                dSite.ValidationResult = new PackageValidationResult
+                {
+                    IsValid = true
+                };
+            }
         }
 
+        // Gets either:
+        // 1.Affiliate
+        // 2.UploaderAndDownloader
+        // 3.Uploader
         public static Participant GetSourceSite(this Race race)
         {
             if (race.Participants.Any())
             {
-                var affiliate = race.ParticipantsQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
+                var affiliate = race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
 
                 if (affiliate != null)
                     return affiliate;
 
-                return race.ParticipantsQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Regular, ParticipantRole.Uploader });
+                return race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.UploaderAndDownloader, ParticipantRole.Uploader });
             }
 
             return null;
         }
 
+        // Gets
+        // 1. sSide != dSite && (UploaderAndDownloder || Downloader) && BubbleLevelOK
         public static Participant GetDestinationSite(this Race race, Participant sSite, int bubbleLevel)
         {
             if (race.Participants.Any())
@@ -74,7 +87,9 @@ namespace AutoTrader.Models.Extensions
                 var dSites = race.Participants.Values;
 
                 return dSites.FirstOrDefault(d => d.Site.Id != sSite.Site.Id
-                        && (d.Role == ParticipantRole.Affiliate || sSite.Rank <= d.Rank + bubbleLevel));
+                        && (d.Role == ParticipantRole.UploaderAndDownloader
+                        || d.Role == ParticipantRole.Downloader
+                        && sSite.Rank <= d.Rank + bubbleLevel));
             }
             return null;
         }
@@ -107,7 +122,7 @@ namespace AutoTrader.Models.Extensions
             switch (site.Status)
             {
                 case SiteStatus.On:
-                    return ParticipantRole.Regular;
+                    return ParticipantRole.UploaderAndDownloader;
 
                 case SiteStatus.UploadOnly:
                     return ParticipantRole.Uploader;
@@ -124,7 +139,7 @@ namespace AutoTrader.Models.Extensions
                     if (enrollment.Status == EnrollmentStatus.UploadOnly)
                         return ParticipantRole.Uploader;
                     if (enrollment.Status == EnrollmentStatus.On)
-                        return ParticipantRole.Regular;
+                        return ParticipantRole.UploaderAndDownloader;
 
                     throw new BadParticipantRoleException(site.Name);
             }

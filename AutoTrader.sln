@@ -11,11 +11,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Core", "AutoTrad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Shared", "AutoTrader.Shared\AutoTrader.Shared.csproj", "{9521A0D6-2972-4E15-8426-D59ED0265532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Models", "AutoTrader.Models\AutoTrader.Models.csproj", "{2CF63380-C859-4BB9-994E-0B4A2A8C30B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Models", "AutoTrader.Models\AutoTrader.Models.csproj", "{2CF63380-C859-4BB9-994E-0B4A2A8C30B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Services", "AutoTrader.Services\AutoTrader.Services.csproj", "{0F343BB7-DDE6-457E-A78D-5EB2530CD560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Services", "AutoTrader.Services\AutoTrader.Services.csproj", "{0F343BB7-DDE6-457E-A78D-5EB2530CD560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Interfaces", "AutoTrader.Interfaces\AutoTrader.Interfaces.csproj", "{1068E006-7730-4CCD-90EB-6092891635D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoTrader.Interfaces", "AutoTrader.Interfaces\AutoTrader.Interfaces.csproj", "{1068E006-7730-4CCD-90EB-6092891635D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FtpClients", "FtpClients", "{7364CBF7-3C14-44BA-A852-2EE6B2D0A4BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtpRushClient.API", "FtpRushClient.API\FtpRushClient.API.csproj", "{41A4B47E-876A-4E64-A491-22E8E7117322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{B80DEF88-0F86-4FCD-8908-D425AB888FF4}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Users\eykapah\Downloads\RuSharp.dll = ..\..\..\Users\eykapah\Downloads\RuSharp.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +166,26 @@ Global
 		{1068E006-7730-4CCD-90EB-6092891635D1}.Release|x64.Build.0 = Release|Any CPU
 		{1068E006-7730-4CCD-90EB-6092891635D1}.Release|x86.ActiveCfg = Release|Any CPU
 		{1068E006-7730-4CCD-90EB-6092891635D1}.Release|x86.Build.0 = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|ARM.Build.0 = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|x64.Build.0 = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Debug|x86.Build.0 = Debug|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|ARM.ActiveCfg = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|ARM.Build.0 = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|ARM64.Build.0 = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|x64.ActiveCfg = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|x64.Build.0 = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|x86.ActiveCfg = Release|Any CPU
+		{41A4B47E-876A-4E64-A491-22E8E7117322}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +196,7 @@ Global
 		{2CF63380-C859-4BB9-994E-0B4A2A8C30B9} = {8506C489-D792-4403-AC6D-B4E7C31E9B5E}
 		{0F343BB7-DDE6-457E-A78D-5EB2530CD560} = {8506C489-D792-4403-AC6D-B4E7C31E9B5E}
 		{1068E006-7730-4CCD-90EB-6092891635D1} = {8506C489-D792-4403-AC6D-B4E7C31E9B5E}
+		{41A4B47E-876A-4E64-A491-22E8E7117322} = {7364CBF7-3C14-44BA-A852-2EE6B2D0A4BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7382718C-5A7B-446B-B9B2-33C06A991230}
