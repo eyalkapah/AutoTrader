@@ -25,7 +25,7 @@ namespace AutoTrader.Services.Services
 
             foreach (var category in categories)
             {
-                if (category.Sections.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
+                if (category.SectionIds.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
                     return category;
             }
 
@@ -38,7 +38,7 @@ namespace AutoTrader.Services.Services
 
             foreach (var category in categories)
             {
-                if (category.Sections.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
+                if (category.SectionIds.Any(s => s.Name.Equals(sectionName, StringComparison.CurrentCultureIgnoreCase)))
                     return category.Type;
             }
 

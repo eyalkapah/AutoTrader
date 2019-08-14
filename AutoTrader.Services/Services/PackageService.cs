@@ -1,4 +1,5 @@
-﻿using AutoTrader.Interfaces.Interfaces;
+﻿using AutoTrader.Core.Services;
+using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Extensions;
@@ -12,15 +13,28 @@ namespace AutoTrader.Services.Services
 {
     public class PackageService : IPackageService
     {
+        private readonly ICacheService _cacheService;
         private readonly IWordService _wordService;
 
-        public PackageService(IWordService wordService)
+        public PackageService(ICacheService cacheService, IWordService wordService)
         {
+            _cacheService = cacheService;
             _wordService = wordService;
         }
 
-        public async Task<bool> IsPackageValidAsync(Package package, string text)
+        public Task<List<Package>> GetPackagesAsync()
         {
+            return _cacheService.GetPackagesAsync();
+        }
+
+        public async Task<bool> IsPackageValidAsync(string packageId, string text)
+        {
+            var packages = await GetPackagesAsync();
+
+            var package = packages.FirstOrDefault(p => p.Id == packageId);
+
+            return package.IsPackageValid(text);
+
             // Handle a WORD only
             var word = await _wordService.GetWordAsync(package.WordId);
 

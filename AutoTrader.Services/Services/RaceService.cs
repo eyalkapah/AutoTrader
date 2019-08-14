@@ -17,12 +17,14 @@ namespace AutoTrader.Services.Services
         private readonly IReleaseService _releaseService;
         private readonly ISectionService _sectionService;
         private readonly ISiteService _siteService;
+        private readonly IPackageService _packageService;
+        private readonly IWordService _wordService;
         private readonly IBranchService _branchService;
         private readonly IPreDbService _preDbService;
 
         public List<Race> Races { get; set; }
 
-        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IBranchService branchService, IPreDbService preDbService)
+        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService, IBranchService branchService, IPreDbService preDbService)
         {
             Races = new List<Race>();
 
@@ -30,6 +32,8 @@ namespace AutoTrader.Services.Services
             _categoryService = categoryService;
             _sectionService = sectionService;
             _siteService = siteService;
+            _packageService = packageService;
+            _wordService = wordService;
             _branchService = branchService;
             _preDbService = preDbService;
         }
@@ -80,17 +84,20 @@ namespace AutoTrader.Services.Services
 
         public async Task<Race> BuildRaceAsync(string releaseName, Section section, IrcPublisher ircPublisher)
         {
-            var category = await _categoryService.GetCategoryAsync(section.Name);
-            var sites = await _siteService.GetSitesAsync();
+            var categoriesTask = _categoryService.GetCategoryAsync(section.Name);
+            var sitesTask = _siteService.GetSitesAsync();
+            var packagesTask = _packageService.GetPackagesAsync();
+            var wordsTask = _wordService.GetWordsAsync();
+            var branchesTask = _branchService.GetBranchBySectionIdAsync(section.Id);
 
-            var release = await _releaseService.BuildReleaseAsync(releaseName, category.Type, section.Delimiter);
-            var branch = await _branchService.GetBranchBySectionIdAsync(section.Id);
+            await categoriesTask;
 
-            var race = new Race(section, release, sites, branch);
-            race.FilterNonSectionSites();
-            race.FilterOffStatusSites();
-            race.FilterAffiliateUploadOnly();
-            race.BuildParticipantsQueue();
+            var release = await _releaseService.BuildReleaseAsync(releaseName, categoriesTask.Result.Type, section.Delimiter);
+
+            Task.WaitAll(sitesTask, packagesTask, wordsTask, branchesTask);
+
+            var race = new Race(section, release, sitesTask.Result, branchesTask.Result, packagesTask.Result, wordsTask.Result);
+            await race.InitAsync();
 
             return race;
         }

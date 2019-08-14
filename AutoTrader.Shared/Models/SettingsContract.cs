@@ -12,6 +12,9 @@ namespace AutoTrader.Shared.Models
         [JsonProperty("categories")]
         public CategoryContract[] Categories { get; set; }
 
+        [JsonProperty("sections")]
+        public SectionContract[] Sections { get; set; }
+
         [JsonProperty("sites")]
         public SiteContract[] Sites { get; set; }
 
@@ -26,5 +29,8 @@ namespace AutoTrader.Shared.Models
 
         [JsonProperty("preDbs")]
         public PreDbContract[] PreDbs { get; set; }
+
+        [JsonProperty("packages")]
+        public PackageContract[] Packages { get; set; }
     }
 }

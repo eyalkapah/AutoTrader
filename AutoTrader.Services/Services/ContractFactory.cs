@@ -3,6 +3,7 @@ using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
 using AutoTrader.Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoTrader.Services.Services
@@ -20,7 +21,7 @@ namespace AutoTrader.Services.Services
                 Name = category.Name,
                 Description = category.Description,
                 Type = (CategoryType)category.Type,
-                Sections = category.Sections.Select(section => GetSection(section)).ToList()
+                SectionIds = category.Sections.ToList()
             };
         }
 
@@ -32,14 +33,15 @@ namespace AutoTrader.Services.Services
             return new Section
             {
                 Id = section.Id,
+                CategoryId = section.CategoryId,
                 Name = section.Name,
                 Description = section.Description,
                 Delimiter = section.Delimiter,
-                Package = GetPackage(section.Package)
+                PackageId = section.PackageId,
             };
         }
 
-        public static Site GetSite(SiteContract site)
+        public static Site GetSite(SiteContract site, List<Package> packages)
         {
             if (site == null)
                 return null;
@@ -50,7 +52,7 @@ namespace AutoTrader.Services.Services
                 Name = site.Name,
                 Status = (SiteStatus)site.Status,
                 Rank = site.Rank,
-                Enrollments = site.Enrollments.Select(e => GetEnrollment(e)).ToList(),
+                Enrollments = site.Enrollments.Select(e => GetEnrollment(e, packages)).ToList(),
                 Logins = new Logins
                 {
                     Total = site.Logins.Total,
@@ -73,7 +75,7 @@ namespace AutoTrader.Services.Services
             };
         }
 
-        public static Enrollment GetEnrollment(EnrollmentContract enrollment)
+        public static Enrollment GetEnrollment(EnrollmentContract enrollment, List<Package> packages)
         {
             if (enrollment == null)
                 return null;
@@ -84,7 +86,7 @@ namespace AutoTrader.Services.Services
                 Affils = enrollment.Affils.ToList(),
                 SectionId = enrollment.SectionId,
                 Status = (EnrollmentStatus)enrollment.Status,
-                Packages = enrollment.Packages.Select(p => GetPackage(p)).ToList()
+                PackagesIds = enrollment.PackageIds.ToList(),
             };
         }
 

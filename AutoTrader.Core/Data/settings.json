@@ -6,25 +6,27 @@
       "type": 1,
       "description": "Audio Category",
       "sections": [
-        {
-          "id": "sf8fad5b-d9cb-469f-a165-708677289501",
-          "name": "Mp3",
-          "package": {
-            "id": "pscfad5b-d9cb-469f-a165-70867728950a",
-            "wordId": "secfad5b-d9cb-469f-a165-70867728950a",
-            "name": "Mp3 patterns",
-            "applicability": 3
-          },
-          "description": "Mp3 Section",
-          "delimiter": "-"
-        },
-        {
-          "id": "sf8fad5b-d9cb-469f-a165-708677289502",
-          "name": "Flac",
-          "description": "Flac Section",
-          "delimiter": "-"
-        }
+        "sf8fad5b-d9cb-469f-a165-708677289501"
       ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "sf8fad5b-d9cb-469f-a165-708677289501",
+      "categoryId": "cf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Mp3",
+      "package": [
+        "pscfad5b-d9cb-469f-a165-70867728950a"
+      ],
+      "description": "Mp3 Section",
+      "delimiter": "-"
+    },
+    {
+      "id": "sf8fad5b-d9cb-469f-a165-708677289502",
+      "categoryId": "cf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Flac",
+      "description": "Flac Section",
+      "delimiter": "-"
     }
   ],
   "sites": [
@@ -49,36 +51,11 @@
           ],
           "status": 1,
           "packages": [
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289501",
-              "name": "Ban Web Resources",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289502",
-              "name": "Ban Live Resources",
-              "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289503",
-              "name": "Ban Internal Resources",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289504",
-              "name": "Allow English Only",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289505",
-              "name": "Allow EN|NL Only",
-              "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
-              "applicability": 1
-            }
+            "rf8fad5b-d9cb-469f-a165-708677289501",
+            "rf8fad5b-d9cb-469f-a165-708677289502",
+            "rf8fad5b-d9cb-469f-a165-708677289503",
+            "rf8fad5b-d9cb-469f-a165-708677289504",
+            "rf8fad5b-d9cb-469f-a165-708677289505"
           ]
         }
       ],
@@ -115,36 +92,11 @@
           ],
           "status": 1,
           "packages": [
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289501",
-              "name": "Ban Web Resources",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289502",
-              "name": "Ban Live Resources",
-              "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289503",
-              "name": "Ban Internal Resources",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289504",
-              "name": "Allow English Only",
-              "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
-              "applicability": 1
-            },
-            {
-              "id": "rf8fad5b-d9cb-469f-a165-708677289505",
-              "name": "Allow EN|NL Only",
-              "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
-              "applicability": 1
-            }
+            "rf8fad5b-d9cb-469f-a165-708677289501",
+            "rf8fad5b-d9cb-469f-a165-708677289502",
+            "rf8fad5b-d9cb-469f-a165-708677289503",
+            "rf8fad5b-d9cb-469f-a165-708677289504",
+            "rf8fad5b-d9cb-469f-a165-708677289505"
           ]
         }
       ],
@@ -499,6 +451,44 @@
       "channel": "#Panicpre",
       "bot": "ARDB",
       "enabled": true
+    }
+  ],
+  "packages": [
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Ban Web Resources",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289502",
+      "name": "Ban Live Resources",
+      "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289503",
+      "name": "Ban Internal Resources",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289504",
+      "name": "Allow English Only",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289505",
+      "name": "Allow EN|NL Only",
+      "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
+      "applicability": 1
+    },
+    {
+      "id": "pscfad5b-d9cb-469f-a165-70867728950a",
+      "wordId": "secfad5b-d9cb-469f-a165-70867728950a",
+      "name": "Mp3 patterns",
+      "applicability": 3
     }
   ]
 }

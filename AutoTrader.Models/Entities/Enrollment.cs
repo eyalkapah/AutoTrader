@@ -13,12 +13,12 @@ namespace AutoTrader.Models.Entities
         public string SectionId { get; set; }
         public List<string> Affils { get; set; }
         public EnrollmentStatus Status { get; set; }
-        public List<Package> Packages { get; set; }
+        public List<string> PackagesIds { get; set; }
 
         public Enrollment()
         {
             Affils = new List<string>();
-            Packages = new List<Package>();
+            PackagesIds = new List<string>();
         }
     }
 }

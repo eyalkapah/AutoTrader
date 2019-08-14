@@ -18,5 +18,7 @@ namespace AutoTrader.Core.Services
         Task<List<Branch>> GetBranchesAsync();
 
         Task<List<PreDb>> GetPreDbsAsync();
+
+        Task<List<Package>> GetPackagesAsync();
     }
 }

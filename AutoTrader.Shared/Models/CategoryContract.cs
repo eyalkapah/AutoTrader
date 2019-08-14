@@ -19,7 +19,7 @@ namespace AutoTrader.Shared.Models
         public string Name { get; set; }
 
         [JsonProperty("sections")]
-        public SectionContract[] Sections { get; set; }
+        public string[] Sections { get; set; }
 
         [JsonProperty("type")]
         public int Type { get; set; }

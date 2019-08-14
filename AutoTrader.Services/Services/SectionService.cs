@@ -26,7 +26,7 @@ namespace AutoTrader.Services.Services
 
             foreach (var s in sections)
             {
-                if (await _packageService.IsPackageValidAsync(s.Package, name))
+                if (await _packageService.IsPackageValidAsync(s.PackageId, name))
                     return s;
             }
 

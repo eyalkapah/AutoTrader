@@ -19,6 +19,11 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
+        public Task<List<Word>> GetWordsAsync()
+        {
+            return _cacheService.GetWordsAsync();
+        }
+
         public async Task<Word> GetWordAsync(string wordId)
         {
             var words = await _cacheService.GetWordsAsync();

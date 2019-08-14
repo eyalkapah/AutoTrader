@@ -22,6 +22,6 @@ namespace AutoTrader.Shared.Models
         public int Status { get; set; }
 
         [JsonProperty("packages")]
-        public PackageContract[] Packages { get; set; }
+        public string[] PackageIds { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace AutoTrader.Services.Services
         public List<Site> Sites { get; set; } = new List<Site>();
         public List<Branch> Branches { get; set; } = new List<Branch>();
         public List<PreDb> PreDbs { get; set; } = new List<PreDb>();
+        public List<Package> Packages { get; set; } = new List<Package>();
 
         public CacheService(DataProviderService dataProviderService)
         {
@@ -67,19 +68,28 @@ namespace AutoTrader.Services.Services
             return PreDbs;
         }
 
+        public async Task<List<Package>> GetPackagesAsync()
+        {
+            await LoadSettingsIfNeeded();
+
+            return Packages;
+        }
+
         private async Task LoadSettings()
         {
             var settingsContract = await _dataProviderService.GetSettingsAsync();
 
             Categories = settingsContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
 
-            Sections = Categories.SelectMany(c => c.Sections).ToList();
-
             Words = settingsContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
+
+            Packages = settingsContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
+
+            Sections = settingsContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
 
             ComplexWords = settingsContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
 
-            Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s)).ToList();
+            Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList();
 
             Branches = settingsContract.Branches.Select(p => ContractFactory.GetBranch(p)).ToList();
 

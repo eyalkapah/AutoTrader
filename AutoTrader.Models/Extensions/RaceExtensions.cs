@@ -11,36 +11,57 @@ namespace AutoTrader.Models.Extensions
 {
     public static class RaceExtensions
     {
-        public static void BuildParticipantsQueue(this Race race)
+        public static void BuildParticipantsQueue(this Race race, IEnumerable<Site> sites)
         {
-            IterateParallel(race, BuildParticipantsQueueAction);
+            IterateParallel(race, sites, BuildParticipantsQueueAction);
         }
 
-        public static void FilterAffiliateUploadOnly(this Race race)
+        public static void FilterAffiliateUploadOnly(this Race race, IEnumerable<Site> sites)
         {
-            IterateParallel(race, FilterAffiliateUploadOnlyAction);
+            IterateParallel(race, sites, FilterAffiliateUploadOnlyAction);
         }
 
-        public static void FilterNonSectionSites(this Race race)
+        public static void FilterNonSectionSites(this Race race, IEnumerable<Site> sites)
         {
-            IterateParallel(race, FilterNonSectionSitesAction);
+            IterateParallel(race, sites, FilterNonSectionSitesAction);
         }
 
-        public static void FilterOffStatusSites(this Race race)
+        public static void FilterOffStatusSites(this Race race, IEnumerable<Site> sites)
         {
-            IterateParallel(race, FilterOffStatusAction);
+            IterateParallel(race, sites, FilterOffStatusAction);
+        }
+
+        public static PackageValidationResult ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words)
+        {
+            PackageValidationResult validationResult = null;
+
+            Parallel.ForEach(dSite.Enrollment.PackagesIds, pId =>
+            {
+                var package = packages.Single(p => p.Id == pId);
+
+                if (!package.IsPackageValid(words, race.Release.Name))
+                {
+                    validationResult = new PackageValidationResult
+                    {
+                        IsValid = false,
+                        PackageId = package.Id
+                    };
+                }
+            });
+
+            return validationResult;
         }
 
         public static Participant GetSourceSite(this Race race)
         {
             if (race.Participants.Any())
             {
-                var affiliate = race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
+                var affiliate = race.ParticipantsQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
 
                 if (affiliate != null)
                     return affiliate;
 
-                return race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Regular, ParticipantRole.Uploader });
+                return race.ParticipantsQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Regular, ParticipantRole.Uploader });
             }
 
             return null;
@@ -50,7 +71,7 @@ namespace AutoTrader.Models.Extensions
         {
             if (race.Participants.Any())
             {
-                var dSites = race.Participants.GetDestinationSites();
+                var dSites = race.Participants.Values;
 
                 return dSites.FirstOrDefault(d => d.Site.Id != sSite.Site.Id
                         && (d.Role == ParticipantRole.Affiliate || sSite.Rank <= d.Rank + bubbleLevel));
@@ -157,9 +178,9 @@ namespace AutoTrader.Models.Extensions
             }
         }
 
-        private static void IterateParallel(Race race, Action<Race, Site> parallelAction)
+        private static void IterateParallel(Race race, IEnumerable<Site> sites, Action<Race, Site> parallelAction)
         {
-            Parallel.ForEach(race.QualifiedSites, site =>
+            Parallel.ForEach(sites, site =>
             {
                 parallelAction(race, site);
             });

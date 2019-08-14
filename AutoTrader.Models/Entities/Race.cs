@@ -12,34 +12,36 @@ namespace AutoTrader.Models.Entities
 {
     public class Race
     {
-        public ConcurrentBag<SiteDismiss> DisqualifiedSites { get; }
-        public ConcurrentBag<Participant> Participants { get; }
-        public ConcurrentBag<Participant> ParticipantsQueue { get; }
-        public ConcurrentBag<Site> QualifiedSites { get; }
+        public ConcurrentDictionary<string, SiteDismiss> DisqualifiedSites { get; }
+        public ConcurrentDictionary<string, Participant> Participants { get; }
+        public ConcurrentDictionary<string, Participant> ParticipantsQueue { get; }
         public ReleaseBase Release { get; set; }
         public Section Section { get; set; }
-
         public DateTime PublishDateTime { get; set; }
         public RaceStatus Status { get; set; }
 
         private CancellationTokenSource _cancellationTokenSource = null;
+        private readonly List<Site> _allSites;
         private readonly Branch _branch;
+        private readonly List<Package> _packages;
+        private readonly List<Word> _words;
 
-        public Race(Section section, ReleaseBase release, List<Site> allSites, Branch branch)
+        public Race(Section section, ReleaseBase release, List<Site> allSites, Branch branch, List<Package> packages, List<Word> words)
         {
             _cancellationTokenSource = new CancellationTokenSource();
 
             PublishDateTime = DateTime.Now;
 
-            QualifiedSites = new ConcurrentBag<Site>();
-            DisqualifiedSites = new ConcurrentBag<SiteDismiss>();
-            Participants = new ConcurrentBag<Participant>();
-            ParticipantsQueue = new ConcurrentBag<Participant>();
+            DisqualifiedSites = new ConcurrentDictionary<string, SiteDismiss>();
+            Participants = new ConcurrentDictionary<string, Participant>();
+            ParticipantsQueue = new ConcurrentDictionary<string, Participant>();
 
-            allSites.ForEach(site => QualifiedSites.Add(site));
             Section = section;
             Release = release;
+            _allSites = allSites;
             _branch = branch;
+            _packages = packages;
+            _words = words;
             Status = RaceStatus.Active;
 
             Task.Run(() =>
@@ -50,20 +52,32 @@ namespace AutoTrader.Models.Entities
             });
         }
 
+        public Task InitAsync()
+        {
+            return Task.Run(() =>
+            {
+                var sites = new List<Site>(_allSites);
+
+                this.FilterNonSectionSites(sites);
+                this.FilterOffStatusSites(sites);
+                this.FilterAffiliateUploadOnly(sites);
+                this.BuildParticipantsQueue(sites);
+            });
+        }
+
         public void AddParticipant(Participant participant)
         {
-            Participants.Add(participant);
+            Participants.TryAdd(participant.Site.Name, participant);
 
             if (participant.Role == ParticipantRole.Affiliate && Status == RaceStatus.Active)
             {
-                ParticipantsQueue.Add(participant);
+                ParticipantsQueue.TryAdd(participant.Site.Name, participant);
             }
         }
 
         public void DismissSite(Site site, DisqualificationType disqualificationType)
         {
-            QualifiedSites.TryTake(out Site removedSite);
-            DisqualifiedSites.Add(new SiteDismiss(site, disqualificationType));
+            DisqualifiedSites.TryAdd(site.Name, new SiteDismiss(site, disqualificationType));
         }
 
         public Task RaceAsync()
@@ -83,16 +97,23 @@ namespace AutoTrader.Models.Entities
 
                         if (dSite == null)
                         {
-                            RemoveSiteFromQueue(sSite);
+                            RemoveSiteFromQueue(sSite.Site.Name);
+                        }
+
+                        var result = this.ValidatePackages(dSite, _packages, _words);
+
+                        if (!result.IsValid)
+                        {
+                            RemoveSiteFromQueue(dSite.Site.Name);
                         }
                     }
                 }
             });
         }
 
-        private void RemoveSiteFromQueue(Participant sSite)
+        private void RemoveSiteFromQueue(string sitename)
         {
-            var result = ParticipantsQueue.TryTake(out sSite);
+            var result = ParticipantsQueue.TryRemove(sitename, out Participant participant);
 
             if (!result)
                 throw new InvalidOperationException("Failed to remove site from queue");

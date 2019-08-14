@@ -11,7 +11,7 @@ namespace AutoTrader.Models.Entities
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string WordId { get; set; }
         public PackageApplicability Applicability { get; set; }
+        public string WordId { get; set; }
     }
 }
