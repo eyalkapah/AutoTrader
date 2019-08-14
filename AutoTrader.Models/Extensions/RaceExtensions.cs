@@ -33,7 +33,7 @@ namespace AutoTrader.Models.Extensions
 
         public static Participant GetSourceSite(this Race race)
         {
-            while (race.Participants.Any())
+            if (race.Participants.Any())
             {
                 var affiliate = race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
 
@@ -43,6 +43,18 @@ namespace AutoTrader.Models.Extensions
                 return race.ParticipantsQueue.GetTopRatedSite(new[] { ParticipantRole.Regular, ParticipantRole.Uploader });
             }
 
+            return null;
+        }
+
+        public static Participant GetDestinationSite(this Race race, Participant sSite, int bubbleLevel)
+        {
+            if (race.Participants.Any())
+            {
+                var dSites = race.Participants.GetDestinationSites();
+
+                return dSites.FirstOrDefault(d => d.Site.Id != sSite.Site.Id
+                        && (d.Role == ParticipantRole.Affiliate || sSite.Rank <= d.Rank + bubbleLevel));
+            }
             return null;
         }
 

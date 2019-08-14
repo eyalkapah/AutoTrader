@@ -23,6 +23,7 @@ namespace AutoTrader.Models.Entities
         public RaceStatus Status { get; set; }
 
         private CancellationTokenSource _cancellationTokenSource = null;
+        private readonly Branch _branch;
 
         public Race(Section section, ReleaseBase release, List<Site> allSites, Branch branch)
         {
@@ -38,7 +39,7 @@ namespace AutoTrader.Models.Entities
             allSites.ForEach(site => QualifiedSites.Add(site));
             Section = section;
             Release = release;
-
+            _branch = branch;
             Status = RaceStatus.Active;
 
             Task.Run(() =>
@@ -75,8 +76,26 @@ namespace AutoTrader.Models.Entities
                         break;
 
                     var sSite = this.GetSourceSite();
+
+                    if (sSite != null)
+                    {
+                        var dSite = this.GetDestinationSite(sSite, _branch.BubbleLevel);
+
+                        if (dSite == null)
+                        {
+                            RemoveSiteFromQueue(sSite);
+                        }
+                    }
                 }
             });
+        }
+
+        private void RemoveSiteFromQueue(Participant sSite)
+        {
+            var result = ParticipantsQueue.TryTake(out sSite);
+
+            if (!result)
+                throw new InvalidOperationException("Failed to remove site from queue");
         }
 
         public void CloseRace()
