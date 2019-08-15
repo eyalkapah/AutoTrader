@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Services.Services
 {
-    public class RaceService
+    public class RaceService : IRaceService
     {
         private readonly ICategoryService _categoryService;
         private readonly IReleaseService _releaseService;
@@ -100,11 +100,6 @@ namespace AutoTrader.Services.Services
             await race.InitAsync();
 
             return race;
-        }
-
-        public async Task StartRaceAsync(Race race)
-        {
-            var participant = race.GetSourceSite();
         }
 
         private Race GetRace(string releaseName, string sectionId)

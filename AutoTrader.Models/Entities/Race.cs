@@ -98,39 +98,47 @@ namespace AutoTrader.Models.Entities
 
                         if (dSite == null)
                         {
-                            RemoveFromSourceQueue(sSite);
+                            RemoveFromQueueAndUpdateRole(sSite);
                         }
-
-                        this.ValidatePackages(dSite, _packages, _words);
-
-                        if (dSite.ValidationResult.IsValid == false)
+                        else
                         {
+                            this.ValidatePackages(dSite, _packages, _words);
+
+                            if (dSite.ValidationResult.IsValid == false)
+                            {
+                                dSite.Role = ParticipantRole.Aborted;
+                            }
+                            else
+                            {
+                                while (sSite.Logins.Download > 0 && dSite.Logins.Upload > 0)
+                                {
+                                    var tradeCalls = Math.Min(sSite.Logins.Download, dSite.Logins.Upload);
+
+                                    //Trade(sSite, dSite, tradeCalls, Section.Name);
+                                    Debug.WriteLine($"[{sSite.Site.Name}] -> [{dSite.Site.Name}]");
+
+                                    sSite.ReduceDownload(1);
+                                    dSite.ReduceUpload(1);
+                                }
+
+                                if (sSite.Role == ParticipantRole.Completed || sSite.Role == ParticipantRole.Downloader)
+                                    RemoveFromQueueAndUpdateRole(sSite);
+                            }
                         }
-
-                        while (sSite.Logins.Download > 0 && dSite.Logins.Upload > 0)
-                        {
-                            var tradeCalls = Math.Min(sSite.Logins.Download, dSite.Logins.Upload);
-
-                            //Trade(sSite, dSite, tradeCalls, Section.Name);
-                            Debug.WriteLine($"[{sSite.Site.Name}] -> [{dSite.Site.Name}]");
-
-                            sSite.ReduceDownload(1);
-                            dSite.ReduceUpload(1);
-                        }
-
-                        if (sSite.Role == ParticipantRole.Completed || sSite.Role == ParticipantRole.Downloader)
-                            RemoveFromSourceQueue(sSite.Site.Name);
                     }
                 }
             });
         }
 
-        private void RemoveFromSourceQueue(Participant site)
+        private void RemoveFromQueueAndUpdateRole(Participant participant)
         {
-            var result = ParticipantsSourceQueue.TryRemove(sitename, out Participant participant);
+            var result = ParticipantsSourceQueue.TryRemove(participant.Site.Name, out Participant remove);
 
             if (!result)
                 throw new InvalidOperationException("Failed to remove site from queue");
+
+            if (participant.Role == ParticipantRole.UploaderAndDownloader)
+                participant.Role = ParticipantRole.Downloader;
         }
 
         public void CloseRace()

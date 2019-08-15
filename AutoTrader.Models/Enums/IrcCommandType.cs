@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum ParticipantRole
+    public enum IrcCommandType
     {
-        Affiliate,
-        UploaderAndDownloader,
-        Uploader,
-        Downloader,
-        Completed,
-        Aborted,
+        PreDb,
+        Pre,
+        New
     }
 }
