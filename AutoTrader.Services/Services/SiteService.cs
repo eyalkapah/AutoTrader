@@ -19,25 +19,6 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Site> GetSiteAsync(string publisher)
-        {
-            var sites = await _cacheService.GetSitesAsync();
-
-            return sites.FirstOrDefault(s => s.Name.Equals(publisher, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        public Task<List<Site>> GetSitesAsync()
-        {
-            return _cacheService.GetSitesAsync();
-        }
-
-        public async Task<IEnumerable<Site>> GetSitesAsync(string sectionId)
-        {
-            var sites = await _cacheService.GetSitesAsync();
-
-            return sites.Where(s => IsEnrolled(s.Enrollments, sectionId));
-        }
-
         public async Task<Site> GetSiteAsync(string channel, string bot)
         {
             var sites = await _cacheService.GetSitesAsync();
@@ -54,9 +35,9 @@ namespace AutoTrader.Services.Services
             return null;
         }
 
-        private bool IsEnrolled(IEnumerable<Enrollment> enrollments, string sectionId)
+        public Task<List<Site>> GetSitesAsync()
         {
-            return enrollments.Any(e => e.SectionId.Equals(sectionId));
+            return _cacheService.GetSitesAsync();
         }
     }
 }
