@@ -1,9 +1,13 @@
 ﻿using AutoTrader.Core.Enums;
 using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Enums;
 using AutoTrader.Models.Exceptions;
 using AutoTrader.Models.Extensions;
+using AutoTrader.Models.Utils;
+using AutoTrader.Services.Managers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,21 +17,20 @@ namespace AutoTrader.Services.Services
 {
     public class RaceService : IRaceService
     {
+        private readonly IBranchService _branchService;
         private readonly ICategoryService _categoryService;
+        private readonly IPackageService _packageService;
+        private readonly IPreDbService _preDbService;
+
         private readonly IReleaseService _releaseService;
         private readonly ISectionService _sectionService;
         private readonly ISiteService _siteService;
-        private readonly IPackageService _packageService;
         private readonly IWordService _wordService;
-        private readonly IBranchService _branchService;
-        private readonly IPreDbService _preDbService;
-
-        public List<Race> Races { get; set; }
+        private RaceManager _raceManager;
 
         public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService, IBranchService branchService, IPreDbService preDbService)
         {
-            Races = new List<Race>();
-
+            _raceManager = new RaceManager();
             _releaseService = releaseService;
             _categoryService = categoryService;
             _sectionService = sectionService;
@@ -38,24 +41,31 @@ namespace AutoTrader.Services.Services
             _preDbService = preDbService;
         }
 
-        public async Task RaceAsync(string releaseName, string sectionName, IrcPublisher ircPublisher)
+        public async ValueTask RaceAsync(TradeCommand command)
         {
-            var section = await _sectionService.GetSectionAsync(sectionName);
+            var section = await _sectionService.GetSectionAsync(command.SectionName);
 
             if (section == null)
-                throw new UnknownSectionException(sectionName);
+                throw new UnknownSectionException(command.SectionName);
 
-            var race = GetRace(releaseName, section.Id);
+            var race = _raceManager.GetRace(command.ReleaseName);
 
-            var site = _siteService.GetSiteAsync(ircPublisher.Channel, ircPublisher.Bot);
+            if (race.Status == RaceStatus.Completed)
+                return;
+
+            var site = await _siteService.GetSiteAsync(command.Channel, command.Bot);
 
             if (site != null)
             {
                 if (race == null)
                 {
                     // Build new race
-                    race = await BuildRaceAsync(releaseName, section, ircPublisher);
-                    Races.Add(race);
+                    race = await BuildRaceAsync(command, section);
+
+                    if (race == null)
+                        throw new RaceBuildException(command);
+
+                    _raceManager.AddRace(race);
                 }
                 else
                 {
@@ -64,10 +74,10 @@ namespace AutoTrader.Services.Services
             }
             else
             {
-                var preDb = await _preDbService.GetPreDbAsync(ircPublisher.Channel, ircPublisher.Bot);
+                var preDb = await _preDbService.GetPreDbAsync(command.Channel, command.Bot);
 
                 if (preDb == null)
-                    throw new UnknownPublisherException(ircPublisher.Channel, ircPublisher.Bot);
+                    throw new UnknownPublisherException(command.Channel, command.Bot);
 
                 if (!preDb.IsEnabled)
                     return;
@@ -75,16 +85,20 @@ namespace AutoTrader.Services.Services
                 if (race != null)
                     return;
 
-                race = await BuildRaceAsync(releaseName, section, ircPublisher);
-                Races.Add(race);
+                race = await BuildRaceAsync(command, section);
+
+                if (race == null)
+                    throw new RaceBuildException(command);
+
+                _raceManager.AddRace(race);
             }
 
-            race.RaceAsync();
+            race.StartRace(site);
         }
 
-        public async Task<Race> BuildRaceAsync(string releaseName, Section section, IrcPublisher ircPublisher)
+        private async Task<Race> BuildRaceAsync(TradeCommand command, Section section)
         {
-            var categoriesTask = _categoryService.GetCategoryAsync(section.Name);
+            var categoriesTask = _categoryService.GetCategoryBySectionIdAsync(section.Id);
             var sitesTask = _siteService.GetSitesAsync();
             var packagesTask = _packageService.GetPackagesAsync();
             var wordsTask = _wordService.GetWordsAsync();
@@ -92,7 +106,7 @@ namespace AutoTrader.Services.Services
 
             await categoriesTask;
 
-            var release = await _releaseService.BuildReleaseAsync(releaseName, categoriesTask.Result.Type, section.Delimiter);
+            var release = await _releaseService.BuildReleaseAsync(command.ReleaseName, categoriesTask.Result.Type, section.Delimiter);
 
             Task.WaitAll(sitesTask, packagesTask, wordsTask, branchesTask);
 
@@ -100,11 +114,6 @@ namespace AutoTrader.Services.Services
             await race.InitAsync();
 
             return race;
-        }
-
-        private Race GetRace(string releaseName, string sectionId)
-        {
-            return Races.FirstOrDefault(r => r.Release.Name.Equals(releaseName) && r.Section.Id.Equals(sectionId));
         }
     }
 }

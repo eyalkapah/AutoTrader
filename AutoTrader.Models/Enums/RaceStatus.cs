@@ -8,7 +8,8 @@ namespace AutoTrader.Models.Enums
 {
     public enum RaceStatus
     {
-        Active = 1,
+        NotStarted = 1,
+        Active,
         Completed
     }
 }

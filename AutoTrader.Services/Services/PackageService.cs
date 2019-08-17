@@ -33,24 +33,9 @@ namespace AutoTrader.Services.Services
 
             var package = packages.FirstOrDefault(p => p.Id == packageId);
 
-            return package.IsPackageValid(text);
+            var words = await _wordService.GetWordsAsync();
 
-            // Handle a WORD only
-            var word = await _wordService.GetWordAsync(package.WordId);
-
-            var result = word.GetMatch(text);
-
-            switch (package.Applicability)
-            {
-                case PackageApplicability.Must:
-                    return result.Pattern.Success && !result.IgnorePattern.Success;
-
-                case PackageApplicability.Banned:
-                    return !result.Pattern.Success || result.Pattern.Success && result.IgnorePattern.Success;
-
-                default:
-                    throw new NotImplementedException("Unknown applicability");
-            }
+            return package.IsPackageValid(words, text);
         }
     }
 }

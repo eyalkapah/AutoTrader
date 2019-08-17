@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Enums
 {
-    public enum IrcCommandType
+    public enum TradeCommandType
     {
         PreDb,
         Pre,

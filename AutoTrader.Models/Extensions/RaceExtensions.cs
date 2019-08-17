@@ -11,6 +11,26 @@ namespace AutoTrader.Models.Extensions
 {
     public static class RaceExtensions
     {
+        public static Participant BuildParticipant(this Race race, Site site)
+        {
+            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
+            var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
+
+            return new Participant
+            {
+                Site = site,
+                Enrollment = enrollment,
+                Logins = new Logins
+                {
+                    Total = site.Logins.Total,
+                    Download = site.Logins.Download,
+                    Upload = site.Logins.Upload
+                },
+                Rank = site.Rank,
+                Role = GetParticipantRole(site, enrollment, isAffiliate)
+            };
+        }
+
         public static void BuildParticipantsQueue(this Race race, IEnumerable<Site> sites)
         {
             IterateParallel(race, sites, BuildParticipantsQueueAction);
@@ -29,6 +49,41 @@ namespace AutoTrader.Models.Extensions
         public static void FilterOffStatusSites(this Race race, IEnumerable<Site> sites)
         {
             IterateParallel(race, sites, FilterOffStatusAction);
+        }
+
+        // Gets
+        // 1. sSide != dSite && (UploaderAndDownloder || Downloader) && BubbleLevelOK
+        public static Participant GetDestinationSite(this Race race, Participant sSite, int bubbleLevel)
+        {
+            if (race.Participants.Any())
+            {
+                var dSites = race.Participants.Values;
+
+                return dSites.FirstOrDefault(d => d.Site.Id != sSite.Site.Id
+                        && (d.Role == ParticipantRole.UploaderAndDownloader
+                        || d.Role == ParticipantRole.Downloader
+                        && sSite.Rank <= d.Rank + bubbleLevel));
+            }
+            return null;
+        }
+
+        // Gets either:
+        // 1.Affiliate
+        // 2.UploaderAndDownloader
+        // 3.Uploader
+        public static Participant GetSourceSite(this Race race)
+        {
+            if (race.Participants.Any())
+            {
+                var affiliate = race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
+
+                if (affiliate != null)
+                    return affiliate;
+
+                return race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.UploaderAndDownloader, ParticipantRole.Uploader });
+            }
+
+            return null;
         }
 
         public static void ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words)
@@ -59,92 +114,9 @@ namespace AutoTrader.Models.Extensions
             }
         }
 
-        // Gets either:
-        // 1.Affiliate
-        // 2.UploaderAndDownloader
-        // 3.Uploader
-        public static Participant GetSourceSite(this Race race)
-        {
-            if (race.Participants.Any())
-            {
-                var affiliate = race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.Affiliate });
-
-                if (affiliate != null)
-                    return affiliate;
-
-                return race.ParticipantsSourceQueue.Values.GetTopRatedSite(new[] { ParticipantRole.UploaderAndDownloader, ParticipantRole.Uploader });
-            }
-
-            return null;
-        }
-
-        // Gets
-        // 1. sSide != dSite && (UploaderAndDownloder || Downloader) && BubbleLevelOK
-        public static Participant GetDestinationSite(this Race race, Participant sSite, int bubbleLevel)
-        {
-            if (race.Participants.Any())
-            {
-                var dSites = race.Participants.Values;
-
-                return dSites.FirstOrDefault(d => d.Site.Id != sSite.Site.Id
-                        && (d.Role == ParticipantRole.UploaderAndDownloader
-                        || d.Role == ParticipantRole.Downloader
-                        && sSite.Rank <= d.Rank + bubbleLevel));
-            }
-            return null;
-        }
-
         private static void BuildParticipantsQueueAction(this Race race, Site site)
         {
-            var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
-            var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
-
-            race.AddParticipant(new Participant
-            {
-                Site = site,
-                Enrollment = enrollment,
-                Logins = new Logins
-                {
-                    Total = site.Logins.Total,
-                    Download = site.Logins.Download,
-                    Upload = site.Logins.Upload
-                },
-                Rank = site.Rank,
-                Role = GetParticipantRole(site, enrollment, isAffiliate)
-            });
-        }
-
-        private static ParticipantRole GetParticipantRole(Site site, Enrollment enrollment, bool isAffiliate)
-        {
-            if (isAffiliate)
-                return ParticipantRole.Affiliate;
-
-            switch (site.Status)
-            {
-                case SiteStatus.On:
-                    return ParticipantRole.UploaderAndDownloader;
-
-                case SiteStatus.UploadOnly:
-                    return ParticipantRole.Uploader;
-
-                case SiteStatus.DownloadOnly:
-                    return ParticipantRole.Downloader;
-
-                case SiteStatus.Off:
-                    break;
-
-                case SiteStatus.Mixed:
-                    if (enrollment.Status == EnrollmentStatus.DownloadOnly)
-                        return ParticipantRole.Downloader;
-                    if (enrollment.Status == EnrollmentStatus.UploadOnly)
-                        return ParticipantRole.Uploader;
-                    if (enrollment.Status == EnrollmentStatus.On)
-                        return ParticipantRole.UploaderAndDownloader;
-
-                    throw new BadParticipantRoleException(site.Name);
-            }
-
-            throw new UnknownSiteStatusException(site.Name);
+            race.AddParticipant(BuildParticipant(race, site));
         }
 
         private static void FilterAffiliateUploadOnlyAction(Race race, Site site)
@@ -191,6 +163,39 @@ namespace AutoTrader.Models.Extensions
                     race.DismissSite(site, DisqualificationType.SectionStatusOff);
                 }
             }
+        }
+
+        private static ParticipantRole GetParticipantRole(Site site, Enrollment enrollment, bool isAffiliate)
+        {
+            if (isAffiliate)
+                return ParticipantRole.Affiliate;
+
+            switch (site.Status)
+            {
+                case SiteStatus.On:
+                    return ParticipantRole.UploaderAndDownloader;
+
+                case SiteStatus.UploadOnly:
+                    return ParticipantRole.Uploader;
+
+                case SiteStatus.DownloadOnly:
+                    return ParticipantRole.Downloader;
+
+                case SiteStatus.Off:
+                    break;
+
+                case SiteStatus.Mixed:
+                    if (enrollment.Status == EnrollmentStatus.DownloadOnly)
+                        return ParticipantRole.Downloader;
+                    if (enrollment.Status == EnrollmentStatus.UploadOnly)
+                        return ParticipantRole.Uploader;
+                    if (enrollment.Status == EnrollmentStatus.On)
+                        return ParticipantRole.UploaderAndDownloader;
+
+                    throw new BadParticipantRoleException(site.Name);
+            }
+
+            throw new UnknownSiteStatusException(site.Name);
         }
 
         private static void IterateParallel(Race race, IEnumerable<Site> sites, Action<Race, Site> parallelAction)

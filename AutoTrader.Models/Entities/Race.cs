@@ -13,19 +13,21 @@ namespace AutoTrader.Models.Entities
 {
     public class Race
     {
-        public ConcurrentDictionary<string, SiteDismiss> DisqualifiedSites { get; }
-        public ConcurrentDictionary<string, Participant> Participants { get; }
-        public ConcurrentDictionary<string, Participant> ParticipantsSourceQueue { get; }
-        public ReleaseBase Release { get; set; }
-        public Section Section { get; set; }
-        public DateTime PublishDateTime { get; set; }
-        public RaceStatus Status { get; set; }
-
-        private CancellationTokenSource _cancellationTokenSource = null;
         private readonly List<Site> _allSites;
         private readonly Branch _branch;
         private readonly List<Package> _packages;
         private readonly List<Word> _words;
+        private CancellationTokenSource _cancellationTokenSource = null;
+
+        public event EventHandler<string> RaceClosed = delegate { };
+
+        public ConcurrentDictionary<string, Participant> Participants { get; }
+        public ConcurrentDictionary<string, Participant> ParticipantsSourceQueue { get; }
+        public DateTime PublishDateTime { get; set; }
+        public ReleaseBase Release { get; set; }
+        public Section Section { get; set; }
+        public RaceStatus Status { get; set; }
+        private ConcurrentDictionary<string, SiteDismiss> _disqualifiedSites { get; }
 
         public Race(Section section, ReleaseBase release, List<Site> allSites, Branch branch, List<Package> packages, List<Word> words)
         {
@@ -33,7 +35,7 @@ namespace AutoTrader.Models.Entities
 
             PublishDateTime = DateTime.Now;
 
-            DisqualifiedSites = new ConcurrentDictionary<string, SiteDismiss>();
+            _disqualifiedSites = new ConcurrentDictionary<string, SiteDismiss>();
             Participants = new ConcurrentDictionary<string, Participant>();
             ParticipantsSourceQueue = new ConcurrentDictionary<string, Participant>();
 
@@ -53,6 +55,30 @@ namespace AutoTrader.Models.Entities
             });
         }
 
+        public void AddParticipant(Participant participant)
+        {
+            Participants.TryAdd(participant.Site.Name, participant);
+
+            if (participant.Role == ParticipantRole.Affiliate && Status == RaceStatus.Active)
+            {
+                ParticipantsSourceQueue.TryAdd(participant.Site.Name, participant);
+            }
+        }
+
+        public void CloseRace()
+        {
+            Status = RaceStatus.Completed;
+
+            _cancellationTokenSource.Cancel();
+
+            RaceClosed(this, Release.Name);
+        }
+
+        public void DismissSite(Site site, DisqualificationType disqualificationType)
+        {
+            _disqualifiedSites.TryAdd(site.Name, new SiteDismiss(site, disqualificationType));
+        }
+
         public Task InitAsync()
         {
             return Task.Run(() =>
@@ -66,68 +92,57 @@ namespace AutoTrader.Models.Entities
             });
         }
 
-        public void AddParticipant(Participant participant)
+        public void StartRace(Site site)
         {
-            Participants.TryAdd(participant.Site.Name, participant);
-
-            if (participant.Role == ParticipantRole.Affiliate && Status == RaceStatus.Active)
+            if (site != null)
             {
-                ParticipantsSourceQueue.TryAdd(participant.Site.Name, participant);
+                AddParticipant(this.BuildParticipant(site));
             }
-        }
 
-        public void DismissSite(Site site, DisqualificationType disqualificationType)
-        {
-            DisqualifiedSites.TryAdd(site.Name, new SiteDismiss(site, disqualificationType));
-        }
-
-        public Task RaceAsync()
-        {
-            return Task.Run(() =>
+            if (Status != RaceStatus.NotStarted)
+                return;
+            while (true)
             {
-                while (true)
+                if (_cancellationTokenSource.Token.IsCancellationRequested)
+                    break;
+
+                var sSite = this.GetSourceSite();
+
+                if (sSite != null)
                 {
-                    if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        break;
+                    var dSite = this.GetDestinationSite(sSite, _branch.BubbleLevel);
 
-                    var sSite = this.GetSourceSite();
-
-                    if (sSite != null)
+                    if (dSite == null)
                     {
-                        var dSite = this.GetDestinationSite(sSite, _branch.BubbleLevel);
+                        RemoveFromQueueAndUpdateRole(sSite);
+                    }
+                    else
+                    {
+                        this.ValidatePackages(dSite, _packages, _words);
 
-                        if (dSite == null)
+                        if (dSite.ValidationResult.IsValid == false)
                         {
-                            RemoveFromQueueAndUpdateRole(sSite);
+                            dSite.Role = ParticipantRole.Aborted;
                         }
                         else
                         {
-                            this.ValidatePackages(dSite, _packages, _words);
-
-                            if (dSite.ValidationResult.IsValid == false)
+                            while (sSite.Logins.Download > 0 && dSite.Logins.Upload > 0)
                             {
-                                dSite.Role = ParticipantRole.Aborted;
+                                var tradeCalls = Math.Min(sSite.Logins.Download, dSite.Logins.Upload);
+
+                                //Trade(sSite, dSite, tradeCalls, Section.Name);
+                                Debug.WriteLine($"[{sSite.Site.Name}] -> [{dSite.Site.Name}]");
+
+                                sSite.ReduceDownload(1);
+                                dSite.ReduceUpload(1);
                             }
-                            else
-                            {
-                                while (sSite.Logins.Download > 0 && dSite.Logins.Upload > 0)
-                                {
-                                    var tradeCalls = Math.Min(sSite.Logins.Download, dSite.Logins.Upload);
 
-                                    //Trade(sSite, dSite, tradeCalls, Section.Name);
-                                    Debug.WriteLine($"[{sSite.Site.Name}] -> [{dSite.Site.Name}]");
-
-                                    sSite.ReduceDownload(1);
-                                    dSite.ReduceUpload(1);
-                                }
-
-                                if (sSite.Role == ParticipantRole.Completed || sSite.Role == ParticipantRole.Downloader)
-                                    RemoveFromQueueAndUpdateRole(sSite);
-                            }
+                            if (sSite.Role == ParticipantRole.Completed || sSite.Role == ParticipantRole.Downloader)
+                                RemoveFromQueueAndUpdateRole(sSite);
                         }
                     }
                 }
-            });
+            }
         }
 
         private void RemoveFromQueueAndUpdateRole(Participant participant)
@@ -139,13 +154,6 @@ namespace AutoTrader.Models.Entities
 
             if (participant.Role == ParticipantRole.UploaderAndDownloader)
                 participant.Role = ParticipantRole.Downloader;
-        }
-
-        public void CloseRace()
-        {
-            Status = RaceStatus.Completed;
-
-            _cancellationTokenSource.Cancel();
         }
     }
 }

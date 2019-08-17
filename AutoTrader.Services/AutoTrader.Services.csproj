@@ -5,9 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
     <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
     <ProjectReference Include="..\AutoTrader.Shared\AutoTrader.Shared.csproj" />
+    <ProjectReference Include="..\Utils\NamedPipeWrapper\NamedPipeWrapper.csproj" />
   </ItemGroup>
-
 </Project>

@@ -8,9 +8,9 @@ namespace AutoTrader.Models.Entities
 {
     public class Logins
     {
+        public int Download { get; set; }
         public int Total { get; set; }
         public int Upload { get; set; }
-        public int Download { get; set; }
 
         public void ReduceDownload(int count)
         {
@@ -21,7 +21,7 @@ namespace AutoTrader.Models.Entities
         internal void ReduceUpload(int count)
         {
             Upload -= count;
-            Total -= cout;
+            Total -= count;
         }
     }
 }

@@ -2,7 +2,10 @@
 using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
 using AutoTrader.Models.Exceptions;
+using AutoTrader.Services.Helpers;
+using NamedPipeWrapper;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,47 +16,84 @@ namespace AutoTrader.Services.Services
 {
     public class IrcService : IIrcService
     {
-        public IrcCommand ProcessIncommingMessage(string text)
+        private readonly ISet<string> _clients = new HashSet<string>();
+
+        private readonly IRaceService _raceService;
+        private readonly NamedPipeServer<string> _server = new NamedPipeServer<string>("mircpipe");
+        private ConcurrentBag<string> _messages;
+
+        public IrcService(IRaceService raceService)
+        {
+            _messages = new ConcurrentBag<string>();
+            _raceService = raceService;
+        }
+
+        public void Connect()
         {
             try
             {
-                var args = text.Split();
+                _server.ClientConnected += OnClientConnected;
+                _server.ClientDisconnected += OnClientDisconnected;
+                _server.ClientMessage += OnMessageRecieved;
+                _server.Start();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                if (args.Length < 2)
-                    throw new ArgumentException($"Not enough arguments for irc command {text}");
+        public void Disconnect()
+        {
+            try
+            {
+                _server.Stop();
+                _server.ClientConnected -= OnClientConnected;
+                _server.ClientDisconnected -= OnClientDisconnected;
+                _server.ClientMessage -= OnMessageRecieved;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                var result = Enum.TryParse(args[0], out IrcCommandType commandType);
+        private void OnClientConnected(NamedPipeConnection<string, string> connection)
+        {
+            _clients.Add(connection.Name);
+            //AddLine("<b>" + connection.Name + "</b> connected!");
+            //UpdateClientList();
+            connection.PushMessage("Welcome!  You are now connected to the server.");
+        }
 
-                if (!result)
-                    throw new UnknownIrcCommandException(args[0]);
+        private void OnClientDisconnected(NamedPipeConnection<string, string> connection)
+        {
+            _clients.Remove(connection.Name);
+            //AddLine("<b>" + connection.Name + "</b> disconnected!");
+            //UpdateClientList();
+        }
 
-                switch (commandType)
-                {
-                    // PreDb channel bot release_name section_name
-                    case IrcCommandType.PreDb:
-                    case IrcCommandType.Pre:
-                    case IrcCommandType.New:
-                        if (args.Length != 5)
-                            throw new ArgumentException($"Invalid arguments number for PreDb command: {text}");
+        private void OnMessageRecieved(NamedPipeConnection<string, string> connection, string message)
+        {
+            Task.Run(async () =>
+            {
+                _messages.Add(message);
 
-                        return new IrcCommand
-                        {
-                            CommandType = commandType,
-                            Channel = args[1],
-                            Bot = args[2],
-                            ReleaseName = args[3],
-                            SectionName = args[4]
-                        };
+                await ProcessIncommingMessageAsync(message);
+            });
+        }
 
-                    default:
-                        throw new NotImplementedException($"irc command not implemented: {commandType}");
-                }
+        private async Task ProcessIncommingMessageAsync(string text)
+        {
+            try
+            {
+                var command = CommandBuilder.Build(text);
+
+                await _raceService.RaceAsync(command);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-
-                return null;
             }
         }
     }

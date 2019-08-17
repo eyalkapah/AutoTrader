@@ -1,9 +1,12 @@
 ﻿using AutoTrader.Models.Entities;
+using System.Threading.Tasks;
 
 namespace AutoTrader.Interfaces.Interfaces
 {
     public interface IIrcService
     {
-        IrcCommand ProcessIncommingMessage(string text);
+        void Connect();
+
+        void Disconnect();
     }
 }
