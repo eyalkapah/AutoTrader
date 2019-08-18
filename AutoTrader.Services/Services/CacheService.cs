@@ -16,7 +16,6 @@ namespace AutoTrader.Services.Services
     {
         private AppFile _appFile;
 
-        public List<Branch> Branches { get; set; }
         public List<Category> Categories { get; set; }
         public List<ComplexWord> ComplexWords { get; private set; }
         public List<Package> Packages { get; set; }
@@ -24,13 +23,6 @@ namespace AutoTrader.Services.Services
         public List<Section> Sections { get; set; }
         public List<Site> Sites { get; set; }
         public List<Word> Words { get; set; }
-
-        public async Task<List<Branch>> GetBranchesAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return Branches;
-        }
 
         public async Task<List<Category>> GetCategoriesAsync()
         {
@@ -110,8 +102,6 @@ namespace AutoTrader.Services.Services
                 ComplexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
 
                 Sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList();
-
-                Branches = dataContract.Branches.Select(p => ContractFactory.GetBranch(p)).ToList();
 
                 PreDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
             }

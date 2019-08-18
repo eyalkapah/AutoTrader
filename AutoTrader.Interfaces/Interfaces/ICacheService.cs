@@ -8,8 +8,6 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ICacheService
     {
-        Task<List<Branch>> GetBranchesAsync();
-
         Task<List<Category>> GetCategoriesAsync();
 
         Task<List<Package>> GetPackagesAsync();

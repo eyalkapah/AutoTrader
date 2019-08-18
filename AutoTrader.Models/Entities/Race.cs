@@ -14,7 +14,6 @@ namespace AutoTrader.Models.Entities
     public class Race
     {
         private readonly List<Site> _allSites;
-        private readonly Branch _branch;
         private readonly List<Package> _packages;
         private readonly List<Word> _words;
         private CancellationTokenSource _cancellationTokenSource = null;
@@ -29,7 +28,7 @@ namespace AutoTrader.Models.Entities
         public RaceStatus Status { get; set; }
         private ConcurrentDictionary<string, SiteDismiss> _disqualifiedSites { get; }
 
-        public Race(Section section, ReleaseBase release, List<Site> allSites, Branch branch, List<Package> packages, List<Word> words)
+        public Race(Section section, ReleaseBase release, List<Site> allSites, List<Package> packages, List<Word> words)
         {
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -42,14 +41,13 @@ namespace AutoTrader.Models.Entities
             Section = section;
             Release = release;
             _allSites = allSites;
-            _branch = branch;
             _packages = packages;
             _words = words;
             Status = RaceStatus.Active;
 
             Task.Run(() =>
             {
-                Task.Delay(branch.RaceActivityInSeconds);
+                Task.Delay(section.RaceActivityInSeconds);
 
                 CloseRace();
             });
@@ -110,7 +108,7 @@ namespace AutoTrader.Models.Entities
 
                 if (sSite != null)
                 {
-                    var dSite = this.GetDestinationSite(sSite, _branch.BubbleLevel);
+                    var dSite = this.GetDestinationSite(sSite, Section.BubbleLevel);
 
                     if (dSite == null)
                     {

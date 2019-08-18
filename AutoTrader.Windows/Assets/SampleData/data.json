@@ -19,7 +19,10 @@
         "pscfad5b-d9cb-469f-a165-70867728950a"
       ],
       "description": "Mp3 Section",
-      "delimiter": "-"
+      "delimiter": "-",
+      "bubbleLevel": 0,
+      "raceActivityInSeconds": 600,
+      "enabled": true
     },
     {
       "id": "sf8fad5b-d9cb-469f-a165-708677289502",

@@ -14,7 +14,7 @@ namespace Services.Tests
         [TestMethod]
         public async Task ShouldLoadSettings()
         {
-            var sut = new CacheService(new DataProviderService());
+            var sut = new CacheService();
 
             var categories = await sut.GetCategoriesAsync();
 

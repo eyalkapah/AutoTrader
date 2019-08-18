@@ -9,9 +9,6 @@ namespace AutoTrader.Shared.Models
 {
     public class DataContract
     {
-        [JsonProperty("branches")]
-        public BranchContract[] Branches { get; set; }
-
         [JsonProperty("categories")]
         public CategoryContract[] Categories { get; set; }
 

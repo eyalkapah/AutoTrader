@@ -25,6 +25,50 @@ namespace AutoTrader.Services.Services
             };
         }
 
+        public static ComplexWord GetComplexWord(ComplexWordContract complexWord)
+        {
+            if (complexWord == null)
+                return null;
+
+            return new ComplexWord
+            {
+                Id = complexWord.Id,
+                Name = complexWord.Name,
+                Description = complexWord.Description,
+                Classification = complexWord.Classification,
+                WordIds = complexWord.Words.ToList()
+            };
+        }
+
+        public static Enrollment GetEnrollment(EnrollmentContract enrollment, List<Package> packages)
+        {
+            if (enrollment == null)
+                return null;
+
+            return new Enrollment
+            {
+                Id = enrollment.Id,
+                Affils = enrollment.Affils.ToList(),
+                SectionId = enrollment.SectionId,
+                Status = (EnrollmentStatus)enrollment.Status,
+                PackagesIds = enrollment.PackageIds.ToList(),
+            };
+        }
+
+        public static Package GetPackage(PackageContract package)
+        {
+            if (package == null)
+                return null;
+
+            return new Package
+            {
+                Id = package.Id,
+                Name = package.Name,
+                Applicability = (PackageApplicability)package.Applicability,
+                WordId = package.WordId
+            };
+        }
+
         public static Section GetSection(SectionContract section)
         {
             if (section == null)
@@ -38,6 +82,9 @@ namespace AutoTrader.Services.Services
                 Description = section.Description,
                 Delimiter = section.Delimiter,
                 PackageId = section.PackageId,
+                BubbleLevel = section.BubbleLevel,
+                RaceActivityInSeconds = section.RaceActivityInSeconds,
+                IsEnabled = section.Enabled
             };
         }
 
@@ -63,46 +110,20 @@ namespace AutoTrader.Services.Services
             };
         }
 
-        private static SiteIrcInfo GetIrcInfo(SiteIrcInfoContract ircInfo)
+        public static Word GetWord(WordContract word)
         {
-            if (ircInfo == null)
+            if (word == null)
                 return null;
 
-            return new SiteIrcInfo
+            return new Word
             {
-                Channel = ircInfo.Channel,
-                Bot = ircInfo.Bot
-            };
-        }
-
-        public static Enrollment GetEnrollment(EnrollmentContract enrollment, List<Package> packages)
-        {
-            if (enrollment == null)
-                return null;
-
-            return new Enrollment
-            {
-                Id = enrollment.Id,
-                Affils = enrollment.Affils.ToList(),
-                SectionId = enrollment.SectionId,
-                Status = (EnrollmentStatus)enrollment.Status,
-                PackagesIds = enrollment.PackageIds.ToList(),
-            };
-        }
-
-        internal static Branch GetBranch(BranchContract priority)
-        {
-            if (priority == null)
-                return null;
-
-            return new Branch
-            {
-                Id = priority.Id,
-                Name = priority.Name,
-                SectionId = priority.Section,
-                BubbleLevel = priority.BubbleLevel,
-                RaceActivityInSeconds = priority.RaceActivityInSeconds,
-                IsEnabled = priority.Enabled
+                Id = word.Id,
+                Name = word.Name,
+                Description = word.Description,
+                Classification = word.Classification,
+                Pattern = word.Pattern,
+                IgnorePattern = word.Ignore,
+                ForbiddenPattern = word.Forbidden
             };
         }
 
@@ -121,49 +142,15 @@ namespace AutoTrader.Services.Services
             };
         }
 
-        public static Package GetPackage(PackageContract package)
+        private static SiteIrcInfo GetIrcInfo(SiteIrcInfoContract ircInfo)
         {
-            if (package == null)
+            if (ircInfo == null)
                 return null;
 
-            return new Package
+            return new SiteIrcInfo
             {
-                Id = package.Id,
-                Name = package.Name,
-                Applicability = (PackageApplicability)package.Applicability,
-                WordId = package.WordId
-            };
-        }
-
-        public static Word GetWord(WordContract word)
-        {
-            if (word == null)
-                return null;
-
-            return new Word
-            {
-                Id = word.Id,
-                Name = word.Name,
-                Description = word.Description,
-                Classification = word.Classification,
-                Pattern = word.Pattern,
-                IgnorePattern = word.Ignore,
-                ForbiddenPattern = word.Forbidden
-            };
-        }
-
-        public static ComplexWord GetComplexWord(ComplexWordContract complexWord)
-        {
-            if (complexWord == null)
-                return null;
-
-            return new ComplexWord
-            {
-                Id = complexWord.Id,
-                Name = complexWord.Name,
-                Description = complexWord.Description,
-                Classification = complexWord.Classification,
-                WordIds = complexWord.Words.ToList()
+                Channel = ircInfo.Channel,
+                Bot = ircInfo.Bot
             };
         }
     }

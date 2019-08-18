@@ -17,7 +17,6 @@ namespace AutoTrader.Services.Services
 {
     public class RaceService : IRaceService
     {
-        private readonly IBranchService _branchService;
         private readonly ICategoryService _categoryService;
         private readonly IPackageService _packageService;
         private readonly IPreDbService _preDbService;
@@ -28,7 +27,7 @@ namespace AutoTrader.Services.Services
         private readonly IWordService _wordService;
         private RaceManager _raceManager;
 
-        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService, IBranchService branchService, IPreDbService preDbService)
+        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService, IPreDbService preDbService)
         {
             _raceManager = new RaceManager();
             _releaseService = releaseService;
@@ -37,7 +36,6 @@ namespace AutoTrader.Services.Services
             _siteService = siteService;
             _packageService = packageService;
             _wordService = wordService;
-            _branchService = branchService;
             _preDbService = preDbService;
         }
 
@@ -102,15 +100,14 @@ namespace AutoTrader.Services.Services
             var sitesTask = _siteService.GetSitesAsync();
             var packagesTask = _packageService.GetPackagesAsync();
             var wordsTask = _wordService.GetWordsAsync();
-            var branchesTask = _branchService.GetBranchBySectionIdAsync(section.Id);
 
             await categoriesTask;
 
             var release = await _releaseService.BuildReleaseAsync(command.ReleaseName, categoriesTask.Result.Type, section.Delimiter);
 
-            Task.WaitAll(sitesTask, packagesTask, wordsTask, branchesTask);
+            Task.WaitAll(sitesTask, packagesTask, wordsTask);
 
-            var race = new Race(section, release, sitesTask.Result, branchesTask.Result, packagesTask.Result, wordsTask.Result);
+            var race = new Race(section, release, sitesTask.Result, packagesTask.Result, wordsTask.Result);
             await race.InitAsync();
 
             return race;
