@@ -76,7 +76,7 @@ namespace AutoTrader.Services.Services
 
                 if (File.Exists(appFile.FullPath))
                 {
-                    dataContract = await JsonHelper.DeserializeAsync<DataContract>(appFile.FullPath);
+                    dataContract = await Task.Run(() => JsonHelper.DeserializeJson<DataContract>(appFile.FullPath));
                 }
                 else
                 {
@@ -85,9 +85,9 @@ namespace AutoTrader.Services.Services
                         if (!File.Exists(appFile.InstallationFullPath))
                             throw new FileNotFoundException($"Couldn't find default file: {appFile.InstallationFullPath}");
 
-                        dataContract = await JsonHelper.DeserializeAsync<DataContract>(appFile.InstallationDefaultFolder);
+                        dataContract = await Task.Run(() => JsonHelper.DeserializeJson<DataContract>(appFile.InstallationDefaultFolder));
 
-                        JsonHelper.SerializeAsync(dataContract, appFile.FullPath).FireAndForget();
+                        Task.Run(() => JsonHelper.SerializeJson(dataContract, appFile.FullPath)).FireAndForget();
                     }
                 }
 

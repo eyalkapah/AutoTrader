@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.12.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
@@ -16,5 +17,11 @@
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
     <ProjectReference Include="..\AutoTrader.Services\AutoTrader.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestFiles\sample.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using AutoTrader.Shared.Models;
+﻿using AutoTrader.Models.Utils;
+using AutoTrader.Shared.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,35 @@ namespace AutoTrader.Services.Services
 {
     public static class JsonHelper
     {
-        public async static Task<T> DeserializeAsync<T>(string path)
+        //public static void DeserializeJson(string path)
+        //{
+        //    try
+        //    {
+        //        using (var sr = File.OpenText(path))
+        //        {
+        //            var json = await sr.ReadToEndAsync();
+
+        //            return JsonConvert.DeserializeObject<T>(json);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        public static T DeserializeJson<T>(string path)
         {
             try
             {
-                using (var sr = File.OpenText(path))
+                using (FileStream fs = new FileStream(path, FileMode.Open))
                 {
-                    var json = await sr.ReadToEndAsync();
+                    using (BinaryReader r = new BinaryReader(fs))
+                    {
+                        var json = r.ReadString();
 
-                    return JsonConvert.DeserializeObject<T>(json);
+                        return JsonConvert.DeserializeObject<T>(json);
+                    }
                 }
             }
             catch (Exception ex)
@@ -29,20 +50,18 @@ namespace AutoTrader.Services.Services
             }
         }
 
-        public async static Task SerializeAsync(object obj, string path)
+        public static void SerializeJson(object obj, string path)
         {
             try
             {
                 var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
-                if (!File.Exists(path))
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    File.Create(path);
-                }
-
-                using (var writer = File.CreateText(path))
-                {
-                    await writer.WriteAsync(json);
+                    using (BinaryWriter w = new BinaryWriter(fs))
+                    {
+                        w.Write(json);
+                    }
                 }
             }
             catch (Exception ex)
