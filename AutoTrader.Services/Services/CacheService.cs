@@ -1,5 +1,5 @@
 ﻿using AutoTrader.Core.Enums;
-using AutoTrader.Core.Services;
+using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,14 +12,14 @@ namespace AutoTrader.Services.Services
     {
         private readonly DataProviderService _dataProviderService;
 
-        public List<Category> Categories { get; set; } = new List<Category>();
-        public List<Section> Sections { get; set; } = new List<Section>();
-        public List<Word> Words { get; set; } = new List<Word>();
+        public List<Category> Categories { get; set; }
+        public List<Section> Sections { get; set; }
+        public List<Word> Words { get; set; }
         public List<ComplexWord> ComplexWords { get; private set; }
-        public List<Site> Sites { get; set; } = new List<Site>();
-        public List<Branch> Branches { get; set; } = new List<Branch>();
-        public List<PreDb> PreDbs { get; set; } = new List<PreDb>();
-        public List<Package> Packages { get; set; } = new List<Package>();
+        public List<Site> Sites { get; set; }
+        public List<Branch> Branches { get; set; }
+        public List<PreDb> PreDbs { get; set; }
+        public List<Package> Packages { get; set; }
 
         public CacheService(DataProviderService dataProviderService)
         {

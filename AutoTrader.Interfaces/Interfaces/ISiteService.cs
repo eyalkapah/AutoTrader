@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AutoTrader.Models.Entities;
 
-namespace AutoTrader.Services.Services
+namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ISiteService
     {

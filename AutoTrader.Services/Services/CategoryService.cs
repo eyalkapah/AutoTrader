@@ -1,5 +1,4 @@
 ﻿using AutoTrader.Core.Enums;
-using AutoTrader.Core.Services;
 using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using AutoTrader.Models.Exceptions;

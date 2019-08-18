@@ -3,7 +3,7 @@ using AutoTrader.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AutoTrader.Core.Services
+namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ICacheService
     {

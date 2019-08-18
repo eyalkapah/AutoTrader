@@ -1,5 +1,4 @@
-﻿using AutoTrader.Core.Services;
-using AutoTrader.Interfaces.Interfaces;
+﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using AutoTrader.Shared.Models;
 using System;
