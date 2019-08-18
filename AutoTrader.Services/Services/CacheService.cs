@@ -1,8 +1,12 @@
 ﻿using AutoTrader.Core.Enums;
 using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Entities.Storage;
+using AutoTrader.Models.Utils;
+using AutoTrader.Shared.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,20 +14,22 @@ namespace AutoTrader.Services.Services
 {
     public class CacheService : ICacheService
     {
-        private readonly DataProviderService _dataProviderService;
+        private AppFile _appFile;
 
-        public List<Category> Categories { get; set; }
-        public List<Section> Sections { get; set; }
-        public List<Word> Words { get; set; }
-        public List<ComplexWord> ComplexWords { get; private set; }
-        public List<Site> Sites { get; set; }
         public List<Branch> Branches { get; set; }
-        public List<PreDb> PreDbs { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<ComplexWord> ComplexWords { get; private set; }
         public List<Package> Packages { get; set; }
+        public List<PreDb> PreDbs { get; set; }
+        public List<Section> Sections { get; set; }
+        public List<Site> Sites { get; set; }
+        public List<Word> Words { get; set; }
 
-        public CacheService(DataProviderService dataProviderService)
+        public async Task<List<Branch>> GetBranchesAsync()
         {
-            _dataProviderService = dataProviderService;
+            await LoadSettingsIfNeeded();
+
+            return Branches;
         }
 
         public async Task<List<Category>> GetCategoriesAsync()
@@ -33,32 +39,11 @@ namespace AutoTrader.Services.Services
             return Categories;
         }
 
-        public async Task<List<Section>> GetSectionsAsync()
+        public async Task<List<Package>> GetPackagesAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Sections;
-        }
-
-        public async Task<List<Word>> GetWordsAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return Words;
-        }
-
-        public async Task<List<Site>> GetSitesAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return Sites;
-        }
-
-        public async Task<List<Branch>> GetBranchesAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return Branches;
+            return Packages;
         }
 
         public async Task<List<PreDb>> GetPreDbsAsync()
@@ -68,38 +53,78 @@ namespace AutoTrader.Services.Services
             return PreDbs;
         }
 
-        public async Task<List<Package>> GetPackagesAsync()
+        public async Task<List<Section>> GetSectionsAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Packages;
+            return Sections;
         }
 
-        private async Task LoadSettings()
+        public async Task<List<Site>> GetSitesAsync()
         {
-            var settingsContract = await _dataProviderService.GetSettingsAsync();
+            await LoadSettingsIfNeeded();
 
-            Categories = settingsContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
+            return Sites;
+        }
 
-            Words = settingsContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
+        public async Task<List<Word>> GetWordsAsync()
+        {
+            await LoadSettingsIfNeeded();
 
-            Packages = settingsContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
+            return Words;
+        }
 
-            Sections = settingsContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
+        public async Task LoadCacheAsync(AppFile appFile)
+        {
+            try
+            {
+                _appFile = appFile;
 
-            ComplexWords = settingsContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
+                DataContract dataContract = null;
 
-            Sites = settingsContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList();
+                if (File.Exists(appFile.FullPath))
+                {
+                    dataContract = await JsonHelper.DeserializeAsync<DataContract>(appFile.FullPath);
+                }
+                else
+                {
+                    if (!File.Exists(appFile.FullPath))
+                    {
+                        if (!File.Exists(appFile.InstallationFullPath))
+                            throw new FileNotFoundException($"Couldn't find default file: {appFile.InstallationFullPath}");
 
-            Branches = settingsContract.Branches.Select(p => ContractFactory.GetBranch(p)).ToList();
+                        dataContract = await JsonHelper.DeserializeAsync<DataContract>(appFile.InstallationDefaultFolder);
 
-            PreDbs = settingsContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
+                        JsonHelper.SerializeAsync(dataContract, appFile.FullPath).FireAndForget();
+                    }
+                }
+
+                Categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
+
+                Words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
+
+                Packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
+
+                Sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
+
+                ComplexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
+
+                Sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList();
+
+                Branches = dataContract.Branches.Select(p => ContractFactory.GetBranch(p)).ToList();
+
+                PreDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private async Task LoadSettingsIfNeeded()
         {
             if (Categories == null || Sections == null || Words == null)
-                await LoadSettings();
+                await LoadCacheAsync(_appFile);
         }
     }
 }

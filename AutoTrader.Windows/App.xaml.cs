@@ -1,4 +1,6 @@
 ﻿using AutoTrader.Core;
+using AutoTrader.Interfaces.Interfaces;
+using MvvmCross;
 using MvvmCross.Platforms.Uap.Core;
 using MvvmCross.Platforms.Uap.Views;
 using System;
@@ -33,6 +35,26 @@ namespace AutoTrader.Windows
         protected override void OnLaunched(LaunchActivatedEventArgs activationArgs)
         {
             base.OnLaunched(activationArgs);
+
+            InitApp();
+        }
+
+        private void InitApp()
+        {
+            try
+            {
+                TryInitContentFromCache();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        private void TryInitContentFromCache()
+        {
+            var appLifeCycleService = Mvx.IoCProvider.Resolve<IAppLifeCycleService>();
+            appLifeCycleService.InitFromCache();
         }
     }
 

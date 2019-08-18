@@ -34,11 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{8E5AE98A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NamedPipeWrapper", "Utils\NamedPipeWrapper\NamedPipeWrapper.csproj", "{7E9BE80E-70B4-43DA-BAC9-EB029E37BBB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{DC3DB9E2-BED6-4AE9-A8F8-8BE78C0F93CA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{38FCD372-4342-4619-992C-24ECBF252202}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{D9AE4E05-C7E1-42B2-BBB2-A6C4A2303517}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Tests", "Services.Tests\Services.Tests.csproj", "{D9AE4E05-C7E1-42B2-BBB2-A6C4A2303517}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
