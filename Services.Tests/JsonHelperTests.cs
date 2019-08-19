@@ -20,12 +20,10 @@ namespace Services.Tests
         public async Task JsonFileReadTest()
         {
             // Arrange
-            var assembly = Assembly.GetExecutingAssembly();
-            var folder = Path.GetDirectoryName(assembly.Location);
-            var path = Path.Combine(folder, @"TestFiles\data.json");
+            var inputFileName = @"TestFiles\sample.json";
 
             // Action
-            var sample = await Task.Run(() => JsonHelper.DeserializeJson<Sample>(path));
+            var sample = await Task.Run(() => JsonHelper.DeserializeJson<Sample>(inputFileName));
 
             // Assert
             Assert.IsNotNull(sample);
@@ -52,26 +50,6 @@ namespace Services.Tests
             // Assert
             var isExists = File.Exists(outputFileName);
             Assert.IsTrue(isExists);
-        }
-
-        //[TestMethod]
-        //public async Task ShouldHaveJson()
-        //{
-        //    var assembly = Assembly.GetExecutingAssembly();
-
-        //    var folder = Path.GetDirectoryName(assembly.Location);
-
-        //    var json = File.ReadAllText(@"TestFiles\data.json");
-        //    var path = Path.Combine(folder, @"TestFiles\data.json");
-
-        //    var sut = await JsonHelper.DeserializeAsync<DataContract>(path);
-
-        //    //Assert.IsTrue(File.Exists(myfile), "Deployment failed: {0} did not get deployed.", myfile);
-        //}
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
         }
     }
 }

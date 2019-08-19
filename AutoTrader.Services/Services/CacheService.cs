@@ -16,54 +16,54 @@ namespace AutoTrader.Services.Services
     {
         private AppFile _appFile;
 
-        public List<Category> Categories { get; set; }
-        public List<ComplexWord> ComplexWords { get; private set; }
-        public List<Package> Packages { get; set; }
-        public List<PreDb> PreDbs { get; set; }
-        public List<Section> Sections { get; set; }
-        public List<Site> Sites { get; set; }
-        public List<Word> Words { get; set; }
+        private List<Category> _categories;
+        private List<ComplexWord> _complexWords;
+        private List<Package> _packages;
+        private List<PreDb> _preDbs;
+        private List<Section> _sections;
+        private List<Site> _sites;
+        private List<Word> _words;
 
         public async Task<List<Category>> GetCategoriesAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Categories;
+            return _categories;
         }
 
         public async Task<List<Package>> GetPackagesAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Packages;
+            return _packages;
         }
 
         public async Task<List<PreDb>> GetPreDbsAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return PreDbs;
+            return _preDbs;
         }
 
         public async Task<List<Section>> GetSectionsAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Sections;
+            return _sections;
         }
 
         public async Task<List<Site>> GetSitesAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Sites;
+            return _sites;
         }
 
         public async Task<List<Word>> GetWordsAsync()
         {
             await LoadSettingsIfNeeded();
 
-            return Words;
+            return _words;
         }
 
         public async Task LoadCacheAsync(AppFile appFile)
@@ -91,19 +91,19 @@ namespace AutoTrader.Services.Services
                     }
                 }
 
-                Categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
+                _categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
 
-                Words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
+                _words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
 
-                Packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
+                _packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
 
-                Sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
+                _sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
 
-                ComplexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
+                _complexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
 
-                Sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList();
+                _sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, _packages)).ToList();
 
-                PreDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
+                _preDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace AutoTrader.Services.Services
 
         private async Task LoadSettingsIfNeeded()
         {
-            if (Categories == null || Sections == null || Words == null)
+            if (_categories == null || _sections == null || _words == null)
                 await LoadCacheAsync(_appFile);
         }
     }

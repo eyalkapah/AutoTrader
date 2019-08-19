@@ -36,9 +36,9 @@ namespace AutoTrader.Services.Services
             {
                 using (FileStream fs = new FileStream(path, FileMode.Open))
                 {
-                    using (BinaryReader r = new BinaryReader(fs))
+                    using (var r = new StreamReader(fs))
                     {
-                        var json = r.ReadString();
+                        var json = r.ReadToEnd();
 
                         return JsonConvert.DeserializeObject<T>(json);
                     }
@@ -58,7 +58,7 @@ namespace AutoTrader.Services.Services
 
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    using (BinaryWriter w = new BinaryWriter(fs))
+                    using (var w = new StreamWriter(fs))
                     {
                         w.Write(json);
                     }

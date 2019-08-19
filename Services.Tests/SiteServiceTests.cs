@@ -15,6 +15,46 @@ namespace Services.Tests
         private Mock<ICacheService> _cacheMock;
         private Mock<ICacheService> _emptyCache;
 
+        [TestMethod]
+        public async Task ShouldGetFirstMatchChannelAndBotSite()
+        {
+            var sut = new SiteService(_cacheMock.Object);
+
+            var site = await sut.GetSiteAsync("test_channel", "test_bot");
+
+            Assert.AreEqual(site.Id, "A");
+        }
+
+        [TestMethod]
+        public async Task ShouldGetSite()
+        {
+            var sut = new SiteService(_cacheMock.Object);
+
+            var sites = await sut.GetSitesAsync();
+
+            Assert.IsNotNull(sites);
+        }
+
+        [TestMethod]
+        public async Task ShouldNoMatchChannelAndBotSite()
+        {
+            var sut = new SiteService(_cacheMock.Object);
+
+            var site = await sut.GetSiteAsync("test_channel", "eyalk");
+
+            Assert.IsNull(site);
+        }
+
+        [TestMethod]
+        public async Task ShouldNotGetSites()
+        {
+            var sut = new SiteService(_emptyCache.Object);
+
+            var sites = await sut.GetSitesAsync();
+
+            Assert.IsNull(sites);
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -61,46 +101,6 @@ namespace Services.Tests
                         }
                     }
                 }));
-        }
-
-        [TestMethod]
-        public async Task ShouldGetSite()
-        {
-            var sut = new SiteService(_cacheMock.Object);
-
-            var sites = await sut.GetSitesAsync();
-
-            Assert.IsNotNull(sites);
-        }
-
-        [TestMethod]
-        public async Task ShouldNotGetSites()
-        {
-            var sut = new SiteService(_emptyCache.Object);
-
-            var sites = await sut.GetSitesAsync();
-
-            Assert.IsNull(sites);
-        }
-
-        [TestMethod]
-        public async Task ShouldGetFirstMatchChannelAndBotSite()
-        {
-            var sut = new SiteService(_cacheMock.Object);
-
-            var site = await sut.GetSiteAsync("test_channel", "test_bot");
-
-            Assert.AreEqual(site.Id, "A");
-        }
-
-        [TestMethod]
-        public async Task ShouldNoMatchChannelAndBotSite()
-        {
-            var sut = new SiteService(_cacheMock.Object);
-
-            var site = await sut.GetSiteAsync("test_channel", "eyalk");
-
-            Assert.IsNull(site);
         }
     }
 }
