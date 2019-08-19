@@ -16,54 +16,22 @@ namespace AutoTrader.Services.Services
     {
         private AppFile _appFile;
 
-        private List<Category> _categories;
-        private List<ComplexWord> _complexWords;
-        private List<Package> _packages;
-        private List<PreDb> _preDbs;
-        private List<Section> _sections;
-        private List<Site> _sites;
-        private List<Word> _words;
+        private Data _data;
 
-        public async Task<List<Category>> GetCategoriesAsync()
+        public List<Category> Categories => _data.Categories;
+        public List<ComplexWord> ComplexWords => _data.ComplexWords;
+        public List<Package> Packages => _data.Packages;
+        public List<PreDb> PreDbs => _data.PreDbs;
+
+        public List<Section> Sections => _data.Sections;
+
+        public List<Site> Sites => _data.Sites;
+
+        public List<Word> Words => _data.Words;
+
+        public CacheService()
         {
-            await LoadSettingsIfNeeded();
-
-            return _categories;
-        }
-
-        public async Task<List<Package>> GetPackagesAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return _packages;
-        }
-
-        public async Task<List<PreDb>> GetPreDbsAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return _preDbs;
-        }
-
-        public async Task<List<Section>> GetSectionsAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return _sections;
-        }
-
-        public async Task<List<Site>> GetSitesAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return _sites;
-        }
-
-        public async Task<List<Word>> GetWordsAsync()
-        {
-            await LoadSettingsIfNeeded();
-
-            return _words;
+            _data = new Data();
         }
 
         public async Task LoadCacheAsync(AppFile appFile)
@@ -91,19 +59,16 @@ namespace AutoTrader.Services.Services
                     }
                 }
 
-                _categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList();
-
-                _words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList();
-
-                _packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList();
-
-                _sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList();
-
-                _complexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList();
-
-                _sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, _packages)).ToList();
-
-                _preDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList();
+                _data = new Data
+                {
+                    Categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList() ?? new List<Category>(),
+                    Words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList() ?? new List<Word>(),
+                    Packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList() ?? new List<Package>(),
+                    Sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList() ?? new List<Section>(),
+                    ComplexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList() ?? new List<ComplexWord>(),
+                    Sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList() ?? new List<Site>(),
+                    PreDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList() ?? new List<PreDb>()
+                };
             }
             catch (Exception ex)
             {
@@ -111,10 +76,8 @@ namespace AutoTrader.Services.Services
             }
         }
 
-        private async Task LoadSettingsIfNeeded()
+        public async Task SaveData()
         {
-            if (_categories == null || _sections == null || _words == null)
-                await LoadCacheAsync(_appFile);
         }
     }
 }

@@ -6,6 +6,6 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ICategoryService
     {
-        Task<Category> GetCategoryBySectionIdAsync(string sectionId);
+        Category GetCategoryBySectionId(string sectionId);
     }
 }

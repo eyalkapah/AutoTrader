@@ -6,8 +6,8 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface IPreDbService
     {
-        Task<PreDb> GetPreDbAsync(string channel, string bot);
+        PreDb GetPreDb(string channel, string bot);
 
-        Task<List<PreDb>> GetPreDbsAsync();
+        List<PreDb> GetPreDbs();
     }
 }

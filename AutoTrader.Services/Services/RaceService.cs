@@ -41,7 +41,7 @@ namespace AutoTrader.Services.Services
 
         public async ValueTask RaceAsync(TradeCommand command)
         {
-            var section = await _sectionService.GetSectionAsync(command.SectionName);
+            var section = _sectionService.GetSection(command.SectionName);
 
             if (section == null)
                 throw new UnknownSectionException(command.SectionName);
@@ -51,7 +51,7 @@ namespace AutoTrader.Services.Services
             if (race.Status == RaceStatus.Completed)
                 return;
 
-            var site = await _siteService.GetSiteAsync(command.Channel, command.Bot);
+            var site = _siteService.GetSite(command.Channel, command.Bot);
 
             if (site != null)
             {
@@ -72,7 +72,7 @@ namespace AutoTrader.Services.Services
             }
             else
             {
-                var preDb = await _preDbService.GetPreDbAsync(command.Channel, command.Bot);
+                var preDb = _preDbService.GetPreDb(command.Channel, command.Bot);
 
                 if (preDb == null)
                     throw new UnknownPublisherException(command.Channel, command.Bot);
@@ -96,18 +96,11 @@ namespace AutoTrader.Services.Services
 
         private async Task<Race> BuildRaceAsync(TradeCommand command, Section section)
         {
-            var categoriesTask = _categoryService.GetCategoryBySectionIdAsync(section.Id);
-            var sitesTask = _siteService.GetSitesAsync();
-            var packagesTask = _packageService.GetPackagesAsync();
-            var wordsTask = _wordService.GetWordsAsync();
+            var category = _categoryService.GetCategoryBySectionId(section.Id);
 
-            await categoriesTask;
+            var release = await _releaseService.BuildReleaseAsync(command.ReleaseName, category.Type, section.Delimiter);
 
-            var release = await _releaseService.BuildReleaseAsync(command.ReleaseName, categoriesTask.Result.Type, section.Delimiter);
-
-            Task.WaitAll(sitesTask, packagesTask, wordsTask);
-
-            var race = new Race(section, release, sitesTask.Result, packagesTask.Result, wordsTask.Result);
+            var race = new Race(section, release, _siteService.GetSites(), _packageService.GetPackages(), _wordService.GetWords());
             await race.InitAsync();
 
             return race;

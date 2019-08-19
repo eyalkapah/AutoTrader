@@ -18,23 +18,23 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public Task<List<Word>> GetWordsAsync()
+        public WordMatchResult GetMatch(string wordId, string text)
         {
-            return _cacheService.GetWordsAsync();
+            var word = GetWord(wordId);
+
+            return word.GetMatch(text);
         }
 
-        public async Task<Word> GetWordAsync(string wordId)
+        public Word GetWord(string wordId)
         {
-            var words = await _cacheService.GetWordsAsync();
+            var words = _cacheService.Words;
 
             return words.FirstOrDefault(w => w.Id.Equals(wordId));
         }
 
-        public async Task<WordMatchResult> GetMatch(string wordId, string text)
+        public List<Word> GetWords()
         {
-            var word = await GetWordAsync(wordId);
-
-            return word.GetMatch(text);
+            return _cacheService.Words;
         }
     }
 }

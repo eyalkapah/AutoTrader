@@ -6,10 +6,10 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface IWordService
     {
-        Task<List<Word>> GetWordsAsync();
+        WordMatchResult GetMatch(string wordId, string text);
 
-        Task<WordMatchResult> GetMatch(string wordId, string text);
+        Word GetWord(string wordId);
 
-        Task<Word> GetWordAsync(string wordId);
+        List<Word> GetWords();
     }
 }

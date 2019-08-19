@@ -16,41 +16,41 @@ namespace Services.Tests
         private Mock<ICacheService> _emptyCache;
 
         [TestMethod]
-        public async Task ShouldGetFirstMatchChannelAndBotSite()
+        public void ShouldGetFirstMatchChannelAndBotSite()
         {
             var sut = new SiteService(_cacheMock.Object);
 
-            var site = await sut.GetSiteAsync("test_channel", "test_bot");
+            var site = sut.GetSite("test_channel", "test_bot");
 
             Assert.AreEqual(site.Id, "A");
         }
 
         [TestMethod]
-        public async Task ShouldGetSite()
+        public void ShouldGetSite()
         {
             var sut = new SiteService(_cacheMock.Object);
 
-            var sites = await sut.GetSitesAsync();
+            var sites = sut.GetSites();
 
             Assert.IsNotNull(sites);
         }
 
         [TestMethod]
-        public async Task ShouldNoMatchChannelAndBotSite()
+        public void ShouldNoMatchChannelAndBotSite()
         {
             var sut = new SiteService(_cacheMock.Object);
 
-            var site = await sut.GetSiteAsync("test_channel", "eyalk");
+            var site = sut.GetSite("test_channel", "eyalk");
 
             Assert.IsNull(site);
         }
 
         [TestMethod]
-        public async Task ShouldNotGetSites()
+        public void ShouldNotGetSites()
         {
             var sut = new SiteService(_emptyCache.Object);
 
-            var sites = await sut.GetSitesAsync();
+            var sites = sut.GetSites();
 
             Assert.IsNull(sites);
         }
@@ -61,8 +61,8 @@ namespace Services.Tests
             _cacheMock = new Mock<ICacheService>();
             _emptyCache = new Mock<ICacheService>();
 
-            _cacheMock.Setup(c => c.GetSitesAsync()).Returns(
-                Task.FromResult(new List<Site>
+            _cacheMock.Setup(c => c.Sites).Returns(
+                new List<Site>
                 {
                     new Site
                     {
@@ -100,7 +100,7 @@ namespace Services.Tests
                             }
                         }
                     }
-                }));
+                });
         }
     }
 }

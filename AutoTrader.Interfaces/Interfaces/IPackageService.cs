@@ -6,8 +6,8 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface IPackageService
     {
-        Task<List<Package>> GetPackagesAsync();
+        List<Package> GetPackages();
 
-        Task<bool> IsPackageValidAsync(string packageId, string text);
+        bool IsPackageValid(string packageId, string text);
     }
 }

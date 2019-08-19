@@ -5,6 +5,6 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ISectionService
     {
-        Task<Section> GetSectionAsync(string name);
+        Section GetSection(string name);
     }
 }

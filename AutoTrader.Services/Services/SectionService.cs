@@ -19,13 +19,13 @@ namespace AutoTrader.Services.Services
             _packageService = packageService;
         }
 
-        public async Task<Section> GetSectionAsync(string name)
+        public Section GetSection(string name)
         {
-            var sections = await _cacheService.GetSectionsAsync();
+            var sections = _cacheService.Sections;
 
             foreach (var s in sections)
             {
-                if (await _packageService.IsPackageValidAsync(s.PackageId, name))
+                if (_packageService.IsPackageValid(s.PackageId, name))
                     return s;
             }
 

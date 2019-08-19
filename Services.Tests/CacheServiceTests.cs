@@ -14,10 +14,13 @@ namespace Services.Tests
         [TestMethod]
         public async Task ShouldLoadSettings()
         {
+            // Arrange
             var sut = new CacheService();
+            await sut.LoadCacheAsync(null);
 
-            var categories = await sut.GetCategoriesAsync();
+            var categories = sut.Categories;
 
+            // Assert
             Assert.IsNotNull(categories);
         }
     }

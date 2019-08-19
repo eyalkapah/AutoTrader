@@ -19,9 +19,9 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Site> GetSiteAsync(string channel, string bot)
+        public Site GetSite(string channel, string bot)
         {
-            var sites = await _cacheService.GetSitesAsync();
+            var sites = _cacheService.Sites;
 
             foreach (var site in sites)
             {
@@ -35,9 +35,9 @@ namespace AutoTrader.Services.Services
             return null;
         }
 
-        public Task<List<Site>> GetSitesAsync()
+        public List<Site> GetSites()
         {
-            return _cacheService.GetSitesAsync();
+            return _cacheService.Sites;
         }
     }
 }

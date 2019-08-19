@@ -8,17 +8,18 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ICacheService
     {
-        Task<List<Category>> GetCategoriesAsync();
+        List<Category> Categories { get; }
 
-        Task<List<Package>> GetPackagesAsync();
+        List<ComplexWord> ComplexWords { get; }
+        List<Package> Packages { get; }
 
-        Task<List<PreDb>> GetPreDbsAsync();
+        List<PreDb> PreDbs { get; }
 
-        Task<List<Section>> GetSectionsAsync();
+        List<Section> Sections { get; }
 
-        Task<List<Site>> GetSitesAsync();
+        List<Site> Sites { get; }
 
-        Task<List<Word>> GetWordsAsync();
+        List<Word> Words { get; }
 
         Task LoadCacheAsync(AppFile appFile);
     }

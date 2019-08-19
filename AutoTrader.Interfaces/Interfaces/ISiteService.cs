@@ -6,8 +6,8 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface ISiteService
     {
-        Task<Site> GetSiteAsync(string channel, string bot);
+        Site GetSite(string channel, string bot);
 
-        Task<List<Site>> GetSitesAsync();
+        List<Site> GetSites();
     }
 }

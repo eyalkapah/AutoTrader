@@ -21,18 +21,18 @@ namespace AutoTrader.Services.Services
             _wordService = wordService;
         }
 
-        public Task<List<Package>> GetPackagesAsync()
+        public List<Package> GetPackages()
         {
-            return _cacheService.GetPackagesAsync();
+            return _cacheService.Packages;
         }
 
-        public async Task<bool> IsPackageValidAsync(string packageId, string text)
+        public bool IsPackageValid(string packageId, string text)
         {
-            var packages = await GetPackagesAsync();
+            var packages = GetPackages();
 
             var package = packages.FirstOrDefault(p => p.Id == packageId);
 
-            var words = await _wordService.GetWordsAsync();
+            var words = _wordService.GetWords();
 
             return package.IsPackageValid(words, text);
         }

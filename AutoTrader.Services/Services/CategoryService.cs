@@ -18,16 +18,16 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Category> GetCategoryBySectionIdAsync(string sectionId)
+        public List<Category> GetCategories()
         {
-            var categories = await GetCateogoriesAsync();
-
-            return categories.FirstOrDefault(c => c.SectionIds.Contains(sectionId));
+            return _cacheService.Categories;
         }
 
-        public Task<List<Category>> GetCateogoriesAsync()
+        public Category GetCategoryBySectionId(string sectionId)
         {
-            return _cacheService.GetCategoriesAsync();
+            var categories = GetCategories();
+
+            return categories.FirstOrDefault(c => c.SectionIds.Contains(sectionId));
         }
     }
 }

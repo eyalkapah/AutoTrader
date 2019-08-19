@@ -17,16 +17,16 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public Task<List<PreDb>> GetPreDbsAsync()
+        public PreDb GetPreDb(string channel, string bot)
         {
-            return _cacheService.GetPreDbsAsync();
-        }
-
-        public async Task<PreDb> GetPreDbAsync(string channel, string bot)
-        {
-            var preDbs = await GetPreDbsAsync();
+            var preDbs = GetPreDbs();
 
             return preDbs.FirstOrDefault(p => p.Channel.ToLower().TrimStart('#').Equals(channel.ToLower().TrimStart('#')) && p.Bot.Equals(bot));
+        }
+
+        public List<PreDb> GetPreDbs()
+        {
+            return _cacheService.PreDbs;
         }
     }
 }
