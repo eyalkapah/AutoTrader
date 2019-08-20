@@ -12,134 +12,190 @@ namespace AutoTrader.Services.Services
     {
         public static Category GetCategory(CategoryContract category)
         {
-            if (category == null)
-                return null;
-
-            return new Category
+            try
             {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description,
-                Type = (CategoryType)category.Type,
-                SectionIds = category.Sections.ToList()
-            };
+                if (category == null)
+                    return null;
+
+                return new Category
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    Description = category.Description,
+                    Type = (CategoryType)category.Type,
+                    SectionIds = category.Sections?.ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Category", ex);
+            }
         }
 
         public static ComplexWord GetComplexWord(ComplexWordContract complexWord)
         {
-            if (complexWord == null)
-                return null;
-
-            return new ComplexWord
+            try
             {
-                Id = complexWord.Id,
-                Name = complexWord.Name,
-                Description = complexWord.Description,
-                Classification = complexWord.Classification,
-                WordIds = complexWord.Words.ToList()
-            };
+                if (complexWord == null)
+                    return null;
+
+                return new ComplexWord
+                {
+                    Id = complexWord.Id,
+                    Name = complexWord.Name,
+                    Description = complexWord.Description,
+                    Classification = complexWord.Classification,
+                    WordIds = complexWord.Words?.ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Complex Word", ex);
+            }
         }
 
         public static Enrollment GetEnrollment(EnrollmentContract enrollment, List<Package> packages)
         {
-            if (enrollment == null)
-                return null;
-
-            return new Enrollment
+            try
             {
-                Id = enrollment.Id,
-                Affils = enrollment.Affils.ToList(),
-                SectionId = enrollment.SectionId,
-                Status = (EnrollmentStatus)enrollment.Status,
-                PackagesIds = enrollment.PackageIds.ToList(),
-            };
+                if (enrollment == null)
+                    return null;
+
+                return new Enrollment
+                {
+                    Id = enrollment.Id,
+                    Affils = enrollment.Affils?.ToList(),
+                    SectionId = enrollment.SectionId,
+                    Status = (EnrollmentStatus)enrollment.Status,
+                    PackagesIds = enrollment.PackageIds?.ToList(),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Enrollment", ex);
+            }
         }
 
         public static Package GetPackage(PackageContract package)
         {
-            if (package == null)
-                return null;
-
-            return new Package
+            try
             {
-                Id = package.Id,
-                Name = package.Name,
-                Applicability = (PackageApplicability)package.Applicability,
-                WordId = package.WordId
-            };
+                if (package == null)
+                    return null;
+
+                return new Package
+                {
+                    Id = package.Id,
+                    Name = package.Name,
+                    Applicability = (PackageApplicability)package.Applicability,
+                    WordId = package.WordId
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Package", ex);
+            }
         }
 
         public static Section GetSection(SectionContract section)
         {
-            if (section == null)
-                return null;
-
-            return new Section
+            try
             {
-                Id = section.Id,
-                CategoryId = section.CategoryId,
-                Name = section.Name,
-                Description = section.Description,
-                Delimiter = section.Delimiter,
-                PackageId = section.PackageId,
-                BubbleLevel = section.BubbleLevel,
-                RaceActivityInSeconds = section.RaceActivityInSeconds,
-                IsEnabled = section.Enabled
-            };
+                if (section == null)
+                    return null;
+
+                return new Section
+                {
+                    Id = section.Id,
+                    CategoryId = section.CategoryId,
+                    Name = section.Name,
+                    Description = section.Description,
+                    Delimiter = section.Delimiter,
+                    PackageId = section.PackageId,
+                    BubbleLevel = section.BubbleLevel,
+                    RaceActivityInSeconds = section.RaceActivityInSeconds,
+                    IsEnabled = section.Enabled
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Section", ex);
+            }
         }
 
         public static Site GetSite(SiteContract site, List<Package> packages)
         {
-            if (site == null)
-                return null;
-
-            return new Site
+            try
             {
-                Id = site.Id,
-                Name = site.Name,
-                Status = (SiteStatus)site.Status,
-                Rank = site.Rank,
-                Enrollments = site.Enrollments.Select(e => GetEnrollment(e, packages)).ToList(),
-                Logins = new Logins
+                if (site == null)
+                    return null;
+
+                return new Site
                 {
-                    Total = site.Logins.Total,
-                    Upload = site.Logins.Upload,
-                    Download = site.Logins.Download
-                },
-                IrcInfo = site.IrcInfo.Select(i => GetIrcInfo(i)).ToList()
-            };
+                    Id = site.Id,
+                    Name = site.Name,
+                    Status = (SiteStatus)site.Status,
+                    Rank = site.Rank,
+                    Enrollments = site.Enrollments.Select(e => GetEnrollment(e, packages))?.ToList(),
+                    Logins = new Logins
+                    {
+                        Total = site.Logins.Total,
+                        Upload = site.Logins.Upload,
+                        Download = site.Logins.Download
+                    },
+                    IrcInfo = site.IrcInfo.Select(i => GetIrcInfo(i)).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Site", ex);
+            }
         }
 
         public static Word GetWord(WordContract word)
         {
-            if (word == null)
-                return null;
-
-            return new Word
+            try
             {
-                Id = word.Id,
-                Name = word.Name,
-                Description = word.Description,
-                Classification = word.Classification,
-                Pattern = word.Pattern,
-                IgnorePattern = word.Ignore,
-                ForbiddenPattern = word.Forbidden
-            };
+                if (word == null)
+                    return null;
+
+                return new Word
+                {
+                    Id = word.Id,
+                    Name = word.Name,
+                    Description = word.Description,
+                    Classification = word.Classification,
+                    Pattern = word.Pattern,
+                    IgnorePattern = word.Ignore,
+                    ForbiddenPattern = word.Forbidden
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast Word", ex);
+            }
         }
 
         internal static PreDb GetPreDb(PreDbContract preDb)
         {
-            if (preDb == null)
-                return null;
-
-            return new PreDb
+            try
             {
-                Id = preDb.Id,
-                Name = preDb.Name,
-                Channel = preDb.Channel,
-                Bot = preDb.Bot,
-                IsEnabled = preDb.Enabled
-            };
+                if (preDb == null)
+                    return null;
+
+                return new PreDb
+                {
+                    Id = preDb.Id,
+                    Name = preDb.Name,
+                    Channel = preDb.Channel,
+                    Bot = preDb.Bot,
+                    IsEnabled = preDb.Enabled
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fail to cast PreDb", ex);
+            }
         }
 
         private static SiteIrcInfo GetIrcInfo(SiteIrcInfoContract ircInfo)

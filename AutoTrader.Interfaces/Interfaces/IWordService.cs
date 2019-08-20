@@ -6,7 +6,6 @@ namespace AutoTrader.Interfaces.Interfaces
 {
     public interface IWordService
     {
-        WordMatchResult GetMatch(string wordId, string text);
 
         Word GetWord(string wordId);
 

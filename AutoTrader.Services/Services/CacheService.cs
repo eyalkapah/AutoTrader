@@ -44,31 +44,36 @@ namespace AutoTrader.Services.Services
 
                 if (File.Exists(appFile.FullPath))
                 {
-                    dataContract = await Task.Run(() => JsonHelper.DeserializeJson<DataContract>(appFile.FullPath));
+                    _data = await Task.Run(() => JsonHelper.DeserializeJson<Data>(appFile.FullPath));
                 }
                 else
                 {
-                    if (!File.Exists(appFile.FullPath))
+                    if (!File.Exists(appFile.InstallationFullPath))
+                        throw new FileNotFoundException($"Couldn't find default file: {appFile.InstallationFullPath}");
+
+                    dataContract = await Task.Run(() => JsonHelper.DeserializeJson<DataContract>(appFile.InstallationFullPath));
+
+                    await Task.Run(() => JsonHelper.SerializeJson(dataContract, appFile.FullPath));
+
+                    var categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList() ?? new List<Category>();
+                    var words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList() ?? new List<Word>();
+                    var packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList() ?? new List<Package>();
+                    var sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList() ?? new List<Section>();
+                    var complexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList() ?? new List<ComplexWord>();
+                    var sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, packages)).ToList() ?? new List<Site>();
+                    var preDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList() ?? new List<PreDb>();
+
+                    _data = new Data
                     {
-                        if (!File.Exists(appFile.InstallationFullPath))
-                            throw new FileNotFoundException($"Couldn't find default file: {appFile.InstallationFullPath}");
-
-                        dataContract = await Task.Run(() => JsonHelper.DeserializeJson<DataContract>(appFile.InstallationDefaultFolder));
-
-                        Task.Run(() => JsonHelper.SerializeJson(dataContract, appFile.FullPath)).FireAndForget();
-                    }
+                        Categories = categories,
+                        Words = words,
+                        Packages = packages,
+                        Sections = sections,
+                        ComplexWords = complexWords,
+                        Sites = sites,
+                        PreDbs = preDbs
+                    };
                 }
-
-                _data = new Data
-                {
-                    Categories = dataContract.Categories.Select(c => ContractFactory.GetCategory(c)).ToList() ?? new List<Category>(),
-                    Words = dataContract.Words.Select(w => ContractFactory.GetWord(w)).ToList() ?? new List<Word>(),
-                    Packages = dataContract.Packages.Select(p => ContractFactory.GetPackage(p)).ToList() ?? new List<Package>(),
-                    Sections = dataContract.Sections.Select(s => ContractFactory.GetSection(s)).ToList() ?? new List<Section>(),
-                    ComplexWords = dataContract.ComplexWords.Select(c => ContractFactory.GetComplexWord(c)).ToList() ?? new List<ComplexWord>(),
-                    Sites = dataContract.Sites.Select(s => ContractFactory.GetSite(s, Packages)).ToList() ?? new List<Site>(),
-                    PreDbs = dataContract.PreDbs.Select(p => ContractFactory.GetPreDb(p)).ToList() ?? new List<PreDb>()
-                };
             }
             catch (Exception ex)
             {
@@ -76,8 +81,21 @@ namespace AutoTrader.Services.Services
             }
         }
 
-        public async Task SaveData()
+        public async Task SaveDataAsync()
         {
+            try
+            {
+                if (File.Exists(_appFile.FullPath))
+                {
+                    File.Move(_appFile.FullPath, $"{_appFile.FullPath}-{DateTime.Now.Ticks}.bak");
+                }
+
+                await Task.Run(() => JsonHelper.SerializeJson(_data, _appFile.FullPath));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -22,5 +22,7 @@ namespace AutoTrader.Interfaces.Interfaces
         List<Word> Words { get; }
 
         Task LoadCacheAsync(AppFile appFile);
+
+        Task SaveDataAsync();
     }
 }

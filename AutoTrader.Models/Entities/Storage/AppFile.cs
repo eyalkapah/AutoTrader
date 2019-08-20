@@ -14,7 +14,8 @@ namespace AutoTrader.Models.Entities.Storage
 
         public string FullPath => Path.Combine(Folder, FileName);
 
+        public string InstallationDefaultFileName { get; set; }
         public string InstallationDefaultFolder { get; set; }
-        public string InstallationFullPath => Path.Combine(InstallationDefaultFolder, FileName);
+        public string InstallationFullPath => Path.Combine(InstallationDefaultFolder, InstallationDefaultFileName);
     }
 }

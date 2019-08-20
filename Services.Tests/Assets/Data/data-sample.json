@@ -1,0 +1,495 @@
+{
+  "categories": [
+    {
+      "id": "ce8fad5b-d9cb-469f-a165-708677289501",
+      "name": "audio",
+      "type": 1,
+      "description": "Audio Category",
+      "sections": [
+        "sf8fad5b-d9cb-469f-a165-708677289501"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "sf8fad5b-d9cb-469f-a165-708677289501",
+      "categoryId": "cf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Mp3",
+      "package": "pscfad5b-d9cb-469f-a165-70867728950a",
+      "description": "Mp3 Section",
+      "delimiter": "-",
+      "bubbleLevel": 0,
+      "raceActivityInSeconds": 600,
+      "enabled": true
+    },
+    {
+      "id": "sf8fad5b-d9cb-469f-a165-708677289502",
+      "categoryId": "cf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Flac",
+      "description": "Flac Section",
+      "delimiter": "-"
+    }
+  ],
+  "sites": [
+    {
+      "id": "sitead5b-d9cb-469f-a165-708677289501",
+      "name": "PF",
+      "status": 1,
+      "logins": {
+        "total": 2,
+        "download": 2,
+        "upload": 2
+      },
+      "enrollments": [
+        {
+          "id": "ef8fad5b-d9cb-469f-a165-708677289501",
+          "sectionId": "sf8fad5b-d9cb-469f-a165-708677289501",
+          "affils": [
+            "TSP",
+            "POW",
+            "ZZZZ",
+            "BPM"
+          ],
+          "status": 1,
+          "packages": [
+            "rf8fad5b-d9cb-469f-a165-708677289501",
+            "rf8fad5b-d9cb-469f-a165-708677289502",
+            "rf8fad5b-d9cb-469f-a165-708677289503",
+            "rf8fad5b-d9cb-469f-a165-708677289504",
+            "rf8fad5b-d9cb-469f-a165-708677289505"
+          ]
+        }
+      ],
+      "rank": 6,
+      "ircInfo": [
+        {
+          "channel": "pf-spam",
+          "bot": "pf-bot"
+        },
+        {
+          "channel": "#puzzlefactory",
+          "bot": "PiEcE"
+        }
+      ]
+    },
+    {
+      "id": "sitead5b-d9cb-469f-a165-708677289502",
+      "name": "BH",
+      "status": 1,
+      "logins": {
+        "total": 2,
+        "download": 2,
+        "upload": 2
+      },
+      "enrollments": [
+        {
+          "id": "ef8fad5b-d9cb-469f-a165-708677289502",
+          "sectionId": "sf8fad5b-d9cb-469f-a165-708677289502",
+          "affils": [
+            "AAA",
+            "BBB",
+            "CCC",
+            "DDD"
+          ],
+          "status": 1,
+          "packages": [
+            "rf8fad5b-d9cb-469f-a165-708677289501",
+            "rf8fad5b-d9cb-469f-a165-708677289502",
+            "rf8fad5b-d9cb-469f-a165-708677289503",
+            "rf8fad5b-d9cb-469f-a165-708677289504",
+            "rf8fad5b-d9cb-469f-a165-708677289505"
+          ]
+        }
+      ],
+      "rank": 6,
+      "ircInfo": [
+        {
+          "channel": "bh-spam",
+          "bot": "bh-bot"
+        },
+        {
+          "channel": "#biohazzard",
+          "bot": "bh"
+        }
+      ]
+    }
+  ],
+  "words": [
+    {
+      "id": "secfad5b-d9cb-469f-a165-70867728950a",
+      "name": "MP3",
+      "classification": "SECTION",
+      "description": "Mp3 section",
+      "pattern": "(mp3)",
+      "ignore": "",
+      "forbidden": "(flac)"
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
+      "name": "EN_ONLY",
+      "classification": "LANGUAGES",
+      "description": "English language only",
+      "pattern": "[%delimiter%](aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|io|is|it|iu|ja|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)[%delimiter%]",
+      "ignore": "",
+      "forbidden": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-7086772895nl",
+      "name": "EN_AND_DUTCH",
+      "classification": "LANGUAGES",
+      "description": "English and Dutch language only",
+      "pattern": "[%delimiter%](aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|io|is|it|iu|ja|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)[%delimiter%]",
+      "ignore": "[%delimiter%](nl)[%delimiter%]",
+      "forbidden": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950a",
+      "name": "HE banned",
+      "classification": "LANGUAGES",
+      "description": "Allow all languages except for Hebrew",
+      "pattern": "[%delimiter%](aa|ab|ae|af|ak|am|an|ar|as|av|ay|az|ba|be|bg|bh|bi|bm|bn|bo|br|bs|ca|ce|ch|co|cr|cs|cu|cv|cy|da|de|dv|dz|ee|el|en|eo|es|et|eu|fa|ff|fi|fj|fo|fr|fy|ga|gd|gl|gn|gu|gv|ha|he|hi|ho|hr|ht|hu|hy|hz|ia|id|ie|ig|ii|ik|io|is|it|iu|ja|jv|ka|kg|ki|kj|kk|kl|km|kn|ko|kr|ks|ku|kv|kw|ky|la|lb|lg|li|ln|lo|lt|lu|lv|mg|mh|mi|mk|ml|mn|mr|ms|mt|my|na|nb|nd|ne|ng|nl|nn|no|nr|nv|ny|oc|oj|om|or|os|pa|pi|pl|ps|pt|qu|rm|rn|ro|ru|rw|sa|sc|sd|se|sg|si|sk|sl|sm|sn|so|sq|sr|ss|st|su|sv|sw|ta|te|tg|th|ti|tk|tl|tn|to|tr|ts|tt|tw|ty|ug|uk|ur|uz|ve|vi|vo|wa|wo|xh|yi|yo|za|zh|zu)[%delimiter%]",
+      "ignore": "",
+      "forbidden": "[%delimiter%](HE)[%delimiter%]"
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950b",
+      "name": "Current year only",
+      "classification": "YEAR",
+      "description": "Allow current year only",
+      "pattern": "[%delimiter%](%current_year%)[%delimiter%]",
+      "ignore": "",
+      "forbidden": "[%delimiter%](((19[0-9][0-9]))|(|20[0|1][0-8]))[%delimiter%]"
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950c",
+      "name": "Internal",
+      "classification": "INTERNAL",
+      "description": "Describes if released for internal purpose",
+      "pattern": "([-_]+INT)$|([-_\\(.]+INTERNAL[-_\\).]+)",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950d",
+      "name": "3 Max CDs",
+      "classification": "MAX CDS",
+      "description": "less or equal to 3 CDs",
+      "pattern": "[-\\(](([4-9])|([1-9][0-9])+)CDS?[-\\)]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+      "name": "Mp3 safe groups",
+      "classification": "SAFE_GROUPS",
+      "description": "contains mp3 safe groups",
+      "pattern": "[-](TSP|SIQ|GNVR|ROD|AGD|B2R|ALPMP3|WLM|CR|AGW|MUJI|ENTiTLED)",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950f",
+      "name": "CD",
+      "classification": "SOURCES",
+      "description": "CD regex",
+      "pattern": "[%delimiter%](cd|retail|cdm)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950g",
+      "name": "BOOTLEG",
+      "classification": "SOURCES",
+      "description": "Bootleg regex",
+      "pattern": "[%delimiter%](bootleg)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950h",
+      "name": "DVD",
+      "classification": "SOURCES",
+      "description": "DVD regex",
+      "pattern": "[%delimiter%](dvd)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950i",
+      "name": "HOMEMADE",
+      "classification": "SOURCES",
+      "description": "Homemade regex",
+      "pattern": "[%delimiter%](Homemade)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950j",
+      "name": "MAG",
+      "classification": "SOURCES",
+      "description": "Magazing regex",
+      "pattern": "[%delimiter%](mag|magazine)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950k",
+      "name": "SAMPLER",
+      "classification": "SOURCES",
+      "description": "Sampler regex",
+      "pattern": "[%delimiter%](Sampler)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950l",
+      "name": "TV",
+      "classification": "SOURCES",
+      "description": "TV regex",
+      "pattern": "[%delimiter%](tv)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950m",
+      "name": "VINYL",
+      "classification": "SOURCES",
+      "description": "Vinyl regex",
+      "pattern": "[%delimiter%](vinyl|vls|ep|lp)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950n",
+      "name": "WEB",
+      "classification": "SOURCES",
+      "description": "Web regex",
+      "pattern": "[%delimiter%](web|freeweb)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950o",
+      "name": "DEMO",
+      "classification": "SOURCES",
+      "description": "Demo regex",
+      "pattern": "[%delimiter%](demo)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950p",
+      "name": "PROMO",
+      "classification": "SOURCES",
+      "description": "Promo regex",
+      "pattern": "[%delimiter%](promo)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950p",
+      "name": "xPOP",
+      "classification": "XPOP",
+      "description": "Foreign pop regex",
+      "pattern": "[%delimiter%]((K|X|J)POP)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950q",
+      "name": "DIGIPAK",
+      "classification": "SOURCES",
+      "description": "Digipak regex",
+      "pattern": "[%delimiter%](digipak)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950r",
+      "name": "TAPE",
+      "classification": "SOURCES",
+      "description": "Tape regex",
+      "pattern": "[%delimiter%](tape|mixtape)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950s",
+      "name": "ABOOK",
+      "classification": "SOURCES",
+      "description": "Audio book regex",
+      "pattern": "[%delimiter%](abook|audiobook)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950t",
+      "name": "CDM",
+      "classification": "SOURCES",
+      "description": "Cdm regex",
+      "pattern": "[%delimiter%](cdm)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950u",
+      "name": "CDS",
+      "classification": "SOURCES",
+      "description": "Cds regex",
+      "pattern": "[%delimiter%](cds)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950v",
+      "name": "LIVE_IN",
+      "classification": "SOURCES",
+      "description": "Live in regex",
+      "pattern": "[%delimiter%](live_in)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950w",
+      "name": "LIVE_AT",
+      "classification": "SOURCES",
+      "description": "Live at regex",
+      "pattern": "[%delimiter%](live_at)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950x",
+      "name": "CABLE",
+      "classification": "SOURCES",
+      "description": "Cable regex",
+      "pattern": "[%delimiter%](cable)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950y",
+      "name": "DVB",
+      "classification": "SOURCES",
+      "description": "Dvb regex",
+      "pattern": "[%delimiter%](dvb(s)?)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950z",
+      "name": "DAT",
+      "classification": "SOURCES",
+      "description": "Dat regex",
+      "pattern": "[%delimiter%](dat)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951a",
+      "name": "SBD",
+      "classification": "SOURCES",
+      "description": "Sbd regex",
+      "pattern": "[%delimiter%](sbd)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951b",
+      "name": "DAB",
+      "classification": "SOURCES",
+      "description": "dab regex",
+      "pattern": "[%delimiter%](dab)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951c",
+      "name": "RADIO",
+      "classification": "SOURCES",
+      "description": "Radio regex",
+      "pattern": "[%delimiter%](radio)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951d",
+      "name": "LINE",
+      "classification": "SOURCES",
+      "description": "Line regex",
+      "pattern": "[%delimiter%](line)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951e",
+      "name": "FRESHFM",
+      "classification": "SOURCES",
+      "description": "FreshFM regex",
+      "pattern": "[%delimiter%](freshfm)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951f",
+      "name": "FM",
+      "classification": "SOURCES",
+      "description": "FM regex",
+      "pattern": "[%delimiter%](FM)[%delimiter%]",
+      "ignore": ""
+    },
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728951g",
+      "name": "SAT",
+      "classification": "SOURCES",
+      "description": "SAT regex",
+      "pattern": "[%delimiter%](SAT)[%delimiter%]",
+      "ignore": ""
+    }
+  ],
+  "complexWords": [
+    {
+      "id": "cf8fad5b-d9cb-469f-a165-708677289510",
+      "name": "Live",
+      "classification": "SOURCES",
+      "description": "Live regex",
+      "words": [
+        "0f8fad5b-d9cb-469f-a165-70867728951e",
+        "0f8fad5b-d9cb-469f-a165-70867728951f",
+        "0f8fad5b-d9cb-469f-a165-70867728951g"
+      ]
+    }
+  ],
+  "branch": [
+    {
+      "id": "pf8fad5b-d9cb-469f-a165-708677289511",
+      "name": "Mp3 Branch",
+      "section": "sf8fad5b-d9cb-469f-a165-708677289501",
+      "bubbleLevel": 0,
+      "raceActivityInSeconds": 600,
+      "enabled": true
+    }
+  ],
+  "preDbs": [
+    {
+      "id": "pdbfad5b-d9cb-469f-a165-708677289511",
+      "channel": "#scumm-pre",
+      "bot": "SIDB",
+      "enabled": true
+    },
+    {
+      "id": "pdbfad5b-d9cb-469f-a165-708677289512",
+      "channel": "#Panicpre",
+      "bot": "ARDB",
+      "enabled": true
+    }
+  ],
+  "packages": [
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289501",
+      "name": "Ban Web Resources",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950n",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289502",
+      "name": "Ban Live Resources",
+      "wordId": "cf8fad5b-d9cb-469f-a165-708677289510",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289503",
+      "name": "Ban Internal Resources",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950c",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289504",
+      "name": "Allow English Only",
+      "wordId": "0f8fad5b-d9cb-469f-a165-70867728950a",
+      "applicability": 1
+    },
+    {
+      "id": "rf8fad5b-d9cb-469f-a165-708677289505",
+      "name": "Allow EN|NL Only",
+      "wordId": "0f8fad5b-d9cb-469f-a165-7086772895nl",
+      "applicability": 1
+    },
+    {
+      "id": "pscfad5b-d9cb-469f-a165-70867728950a",
+      "wordId": "secfad5b-d9cb-469f-a165-70867728950a",
+      "name": "Mp3 patterns",
+      "applicability": 3
+    }
+  ]
+}

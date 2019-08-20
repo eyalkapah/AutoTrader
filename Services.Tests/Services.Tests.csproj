@@ -16,15 +16,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoTrader.Interfaces\AutoTrader.Interfaces.csproj" />
+    <ProjectReference Include="..\AutoTrader.Models\AutoTrader.Models.csproj" />
     <ProjectReference Include="..\AutoTrader.Services\AutoTrader.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestFiles\data.json">
+    <None Update="Assets\Data\data-sample.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\SampleData\data-default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestFiles\sample.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Data\" />
+    <Folder Include="Assets\SampleData\" />
   </ItemGroup>
 </Project>

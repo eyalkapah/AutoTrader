@@ -175,14 +175,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\SampleData\data.json" />
+    <None Include="Assets\Data\data.json" />
+    <None Include="Assets\SampleData\data-default.json" />
+    <None Include="Assets\SampleData\data-sample.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)Assets\SampleData\data.json" "$(SolutionDir)\Services.Tests\TestFiles" /Y /d</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)Assets\SampleData\data-sample.json" "$(SolutionDir)\Services.Tests\Assets\Data" /Y /d
+xcopy "$(ProjectDir)Assets\SampleData\data-default.json" "$(SolutionDir)\Services.Tests\Assets\SampleData" /Y /d</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -18,13 +18,6 @@ namespace AutoTrader.Services.Services
             _cacheService = cacheService;
         }
 
-        public WordMatchResult GetMatch(string wordId, string text)
-        {
-            var word = GetWord(wordId);
-
-            return word.GetMatch(text);
-        }
-
         public Word GetWord(string wordId)
         {
             var words = _cacheService.Words;
