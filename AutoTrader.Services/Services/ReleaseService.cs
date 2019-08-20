@@ -5,6 +5,7 @@ using AutoTrader.Models.Enums;
 using AutoTrader.Models.Exceptions;
 using AutoTrader.Models.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,42 +14,12 @@ namespace AutoTrader.Services.Services
 {
     public class ReleaseService : IReleaseService
     {
-        private readonly ICategoryService _categoryService;
-        private readonly ISectionService _sectionService;
-        private readonly ISiteService _siteService;
+        private readonly ICacheService _cacheService;
 
-        public ReleaseService(ICategoryService categoryService, ISectionService sectionService, ISiteService siteService)
+        public ReleaseService(ICacheService cacheService)
         {
-            _categoryService = categoryService;
-            _sectionService = sectionService;
-            _siteService = siteService;
+            _cacheService = cacheService;
         }
-
-        //public async Task BuildReleaseAsync(string releaseName, string sectionName)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(releaseName))
-        //            throw new ArgumentNullException("releaseName");
-
-        //        if (string.IsNullOrEmpty(sectionName))
-        //            throw new ArgumentNullException(sectionName);
-
-        //        await ProcessRelease(releaseName, sectionName);
-        //    }
-        //    catch (UnknownReleaseCategoryException ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-        //    catch (ArgumentNullException ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
 
         public async Task<ReleaseBase> BuildReleaseAsync(string releaseName, CategoryType categoryType, char delimiter)
         {
@@ -77,6 +48,11 @@ namespace AutoTrader.Services.Services
             }
 
             return release;
+        }
+
+        public List<ReleaseBase> GetReleases()
+        {
+            return _cacheService.Categories
         }
     }
 }

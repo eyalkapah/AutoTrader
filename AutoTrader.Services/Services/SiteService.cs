@@ -25,11 +25,8 @@ namespace AutoTrader.Services.Services
 
             foreach (var site in sites)
             {
-                foreach (var ircInfo in site.IrcInfo)
-                {
-                    if (ircInfo.IsIrcInfoSame(channel, bot))
-                        return site;
-                }
+                if (site.IsIrcInfo(channel, bot))
+                    return site;
             }
 
             return null;
