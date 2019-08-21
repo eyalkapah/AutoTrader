@@ -1,4 +1,6 @@
 ﻿using AutoTrader.Models.Entities;
+using AutoTrader.Models.Enums;
+using AutoTrader.Models.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,23 @@ namespace AutoTrader.Models.Extensions
             }
 
             return false;
+        }
+
+        public static Participant ConvertToParticipant(this Site site, Enrollment enrollment, bool isAffiliate)
+        {
+            return new Participant
+            {
+                Site = site,
+                Enrollment = enrollment,
+                Logins = new Logins
+                {
+                    Total = site.Logins.Total,
+                    Download = site.Logins.Download,
+                    Upload = site.Logins.Upload
+                },
+                Rank = site.Rank,
+                Role = HelperMethods.GetParticipantRole(site, enrollment, isAffiliate)
+            };
         }
     }
 }

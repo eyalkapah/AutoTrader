@@ -45,6 +45,59 @@ namespace Models.Tests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void ShouldConvertToParticipant()
+        {
+            // Arrange
+            var enrollment = _site.Enrollments.Single(e => e.SectionId.Equals("sf8fad5b-d9cb-469f-a165-708677289501"));
+            var isAffiliate = enrollment.Affils.Contains("TSP");
+
+            // Action
+            var participant = _site.ConvertToParticipant(enrollment, isAffiliate);
+
+            // Assert
+            Assert.IsNotNull(participant);
+        }
+
+        [TestMethod]
+        public void ShouldParticipantParametersEqualToSite()
+        {
+            // Arrange
+            var enrollment = _site.Enrollments.Single(e => e.SectionId.Equals("sf8fad5b-d9cb-469f-a165-708677289501"));
+            var isAffiliate = enrollment.Affils.Contains("TSP");
+
+            // Action
+            var participant = _site.ConvertToParticipant(enrollment, isAffiliate);
+
+            // Assert
+            Assert.AreEqual(_site, participant.Site);
+            Assert.AreEqual(enrollment, participant.Enrollment);
+            Assert.AreEqual(_site.Logins.Total, participant.Logins.Total);
+            Assert.AreEqual(_site.Logins.Download, participant.Logins.Download);
+            Assert.AreEqual(_site.Logins.Upload, participant.Logins.Upload);
+            Assert.AreEqual(_site.Rank, participant.Rank);
+        }
+
+        [TestMethod]
+        public void ShouldParticipantRoleBeAffiliate()
+        {
+        }
+
+        [TestMethod]
+        public void ShouldParticipantRoleBeDownloader()
+        {
+        }
+
+        [TestMethod]
+        public void ShouldParticipantRoleBeUploader()
+        {
+        }
+
+        [TestMethod]
+        public void ShouldParticipantRoleBeDownloadAndUploader()
+        {
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -65,6 +118,36 @@ namespace Models.Tests
                     {
                         Channel = "#puzzlefactory",
                         Bot = "PiEcE"
+                    }
+                },
+                Logins = new Logins
+                {
+                    Total = 5,
+                    Download = 2,
+                    Upload = 3
+                },
+                Enrollments = new List<Enrollment>
+                {
+                    new Enrollment
+                    {
+                        Id = "ef8fad5b-d9cb-469f-a165-708677289501",
+                        SectionId = "sf8fad5b-d9cb-469f-a165-708677289501",
+                        Affils = new List<string>
+                        {
+                            "TSP",
+                            "POW",
+                            "ZZZZ",
+                            "BPM"
+                        },
+                        Status = EnrollmentStatus.On,
+                        PackagesIds = new List<string>
+                        {
+                            "rf8fad5b-d9cb-469f-a165-708677289501",
+                            "rf8fad5b-d9cb-469f-a165-708677289502",
+                            "rf8fad5b-d9cb-469f-a165-708677289503",
+                            "rf8fad5b-d9cb-469f-a165-708677289504",
+                            "rf8fad5b-d9cb-469f-a165-708677289505"
+                        }
                     }
                 }
             };

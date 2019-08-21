@@ -16,19 +16,7 @@ namespace AutoTrader.Models.Extensions
             var enrollment = site.Enrollments.Single(e => e.SectionId.Equals(race.Section.Id));
             var isAffiliate = enrollment.Affils.Contains(race.Release.Group);
 
-            return new Participant
-            {
-                Site = site,
-                Enrollment = enrollment,
-                Logins = new Logins
-                {
-                    Total = site.Logins.Total,
-                    Download = site.Logins.Download,
-                    Upload = site.Logins.Upload
-                },
-                Rank = site.Rank,
-                Role = GetParticipantRole(site, enrollment, isAffiliate)
-            };
+            return site.ConvertToParticipant(enrollment, isAffiliate);
         }
 
         public static void BuildParticipantsQueue(this Race race, IEnumerable<Site> sites)
@@ -163,39 +151,6 @@ namespace AutoTrader.Models.Extensions
                     race.DismissSite(site, DisqualificationType.SectionStatusOff);
                 }
             }
-        }
-
-        private static ParticipantRole GetParticipantRole(Site site, Enrollment enrollment, bool isAffiliate)
-        {
-            if (isAffiliate)
-                return ParticipantRole.Affiliate;
-
-            switch (site.Status)
-            {
-                case SiteStatus.On:
-                    return ParticipantRole.UploaderAndDownloader;
-
-                case SiteStatus.UploadOnly:
-                    return ParticipantRole.Uploader;
-
-                case SiteStatus.DownloadOnly:
-                    return ParticipantRole.Downloader;
-
-                case SiteStatus.Off:
-                    break;
-
-                case SiteStatus.Mixed:
-                    if (enrollment.Status == EnrollmentStatus.DownloadOnly)
-                        return ParticipantRole.Downloader;
-                    if (enrollment.Status == EnrollmentStatus.UploadOnly)
-                        return ParticipantRole.Uploader;
-                    if (enrollment.Status == EnrollmentStatus.On)
-                        return ParticipantRole.UploaderAndDownloader;
-
-                    throw new BadParticipantRoleException(site.Name);
-            }
-
-            throw new UnknownSiteStatusException(site.Name);
         }
 
         private static void IterateParallel(Race race, IEnumerable<Site> sites, Action<Race, Site> parallelAction)
