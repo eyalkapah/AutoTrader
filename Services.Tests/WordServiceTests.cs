@@ -58,7 +58,6 @@ namespace Services.Tests
                     Description = "Vinyl regex",
                     Pattern = "[%delimiter%](vinyl|vls|ep|lp)[%delimiter%]",
                     IgnorePattern = "",
-                    //ForbiddenPattern = ""
                 }
             });
         }

@@ -1,6 +1,7 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
+using AutoTrader.Models.Exceptions;
 using AutoTrader.Models.Extensions;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,25 @@ namespace AutoTrader.Services.Services
 
         public List<Package> GetPackages()
         {
-            return _cacheService.Packages;
+            var packages = _cacheService.Packages;
+
+            if (packages == null)
+                throw new UndefinedPackagesException();
+
+            return packages;
         }
 
         public bool IsPackageValid(string packageId, string text, Dictionary<string, string> contants)
         {
             var packages = GetPackages();
 
+            if (packages == null)
+                throw new UndefinedPackagesException();
+
             var package = packages.FirstOrDefault(p => p.Id == packageId);
+
+            if (package == null)
+                throw new InvalidPackageException(packageId);
 
             var words = _wordService.GetWords();
 
