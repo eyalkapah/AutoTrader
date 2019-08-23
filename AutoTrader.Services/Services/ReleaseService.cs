@@ -49,10 +49,5 @@ namespace AutoTrader.Services.Services
 
             return release;
         }
-
-        public List<ReleaseBase> GetReleases()
-        {
-            return _cacheService.Categories
-        }
     }
 }

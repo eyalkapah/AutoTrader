@@ -167,7 +167,6 @@ namespace AutoTrader.Services.Services
                     Classification = word.Classification,
                     Pattern = word.Pattern,
                     IgnorePattern = word.Ignore,
-                    ForbiddenPattern = word.Forbidden
                 };
             }
             catch (Exception ex)

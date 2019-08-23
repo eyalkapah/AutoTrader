@@ -75,7 +75,7 @@
       "name": "Internal",
       "classification": "INTERNAL",
       "description": "Describes if released for internal purpose",
-      "pattern": "([-_]+INT)$|([-_\\(.]+INTERNAL[-_\\).]+)",
+      "pattern": "([%delimiter%](INT|INTERNAL)[%delimiter%])",
       "ignore": ""
     },
     {

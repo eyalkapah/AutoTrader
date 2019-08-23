@@ -10,17 +10,12 @@ namespace AutoTrader.Models.Extensions
 {
     public static class ParticipantExtensions
     {
-        public static IEnumerable<Participant> GetDestinationSites(this IEnumerable<Participant> participants)
-        {
-            return participants.GetTopRatedSites(new[] { ParticipantRole.UploaderAndDownloader, ParticipantRole.Downloader });
-        }
-
         public static Participant GetTopRatedSite(this IEnumerable<Participant> participants, IEnumerable<ParticipantRole> roles)
         {
             return GetTopRatedSites(participants, roles).FirstOrDefault();
         }
 
-        public static IEnumerable<Participant> GetTopRatedSites(this IEnumerable<Participant> participants, IEnumerable<ParticipantRole> roles)
+        private static IEnumerable<Participant> GetTopRatedSites(this IEnumerable<Participant> participants, IEnumerable<ParticipantRole> roles)
         {
             return participants.Where(p => roles.Contains(p.Role)).OrderByDescending(p => p.Rank);
         }

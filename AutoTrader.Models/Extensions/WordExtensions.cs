@@ -26,6 +26,9 @@ namespace AutoTrader.Models.Extensions
 
         private static Match DoMatch(string text, Dictionary<string, string> constants, string pattern)
         {
+            if (string.IsNullOrEmpty(pattern))
+                return Match.Empty;
+
             if (constants != null)
             {
                 foreach (var key in constants.Keys)

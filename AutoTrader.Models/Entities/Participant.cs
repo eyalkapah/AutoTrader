@@ -9,12 +9,12 @@ namespace AutoTrader.Models.Entities
 {
     public class Participant
     {
-        public Site Site { get; set; }
         public Enrollment Enrollment { get; set; }
         public Logins Logins { get; set; }
-        public int Rank { get; internal set; }
+        public int Rank { get; set; }
         public ParticipantRole Role { get; set; }
-        public PackageValidationResult ValidationResult { get; internal set; }
+        public Site Site { get; set; }
+        public PackageValidationResult ValidationResult { get; set; }
 
         public Participant()
         {
