@@ -8,6 +8,6 @@ namespace AutoTrader.Interfaces.Interfaces
     {
         List<Package> GetPackages();
 
-        bool IsPackageValid(string packageId, string text);
+        bool IsPackageValid(string packageId, string text, Dictionary<string, string> constants);
     }
 }

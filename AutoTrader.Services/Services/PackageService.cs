@@ -26,7 +26,7 @@ namespace AutoTrader.Services.Services
             return _cacheService.Packages;
         }
 
-        public bool IsPackageValid(string packageId, string text)
+        public bool IsPackageValid(string packageId, string text, Dictionary<string, string> contants)
         {
             var packages = GetPackages();
 
@@ -34,7 +34,7 @@ namespace AutoTrader.Services.Services
 
             var words = _wordService.GetWords();
 
-            return package.IsPackageValid(words, text);
+            return package.IsPackageValid(words, text, contants);
         }
     }
 }

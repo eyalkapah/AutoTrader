@@ -11,7 +11,7 @@ namespace AutoTrader.Models.Extensions
 {
     public static class PackageExtensions
     {
-        public static bool IsPackageValid(this Package package, List<Word> words, string text)
+        public static bool IsPackageValid(this Package package, List<Word> words, string text, Dictionary<string, string> contatns)
         {
             // Handle a WORD only
             var word = words?.FirstOrDefault(w => w.Id.Equals(package.WordId));
@@ -19,7 +19,7 @@ namespace AutoTrader.Models.Extensions
             if (word == null)
                 throw new InvalidWordException(package.Id, package.WordId);
 
-            var result = word.GetMatch(text);
+            var result = word.GetMatch(text, contatns);
 
             switch (package.Applicability)
             {

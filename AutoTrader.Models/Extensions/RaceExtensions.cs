@@ -83,7 +83,7 @@ namespace AutoTrader.Models.Extensions
             {
                 var package = packages.Single(p => p.Id == pId);
 
-                if (!package.IsPackageValid(words, race.Release.Name))
+                if (!package.IsPackageValid(words, race.Release.Name, null))
                 {
                     dSite.ValidationResult = new PackageValidationResult
                     {

@@ -25,7 +25,7 @@ namespace AutoTrader.Services.Services
 
             foreach (var s in sections)
             {
-                if (_packageService.IsPackageValid(s.PackageId, name))
+                if (_packageService.IsPackageValid(s.PackageId, name, null))
                     return s;
             }
 

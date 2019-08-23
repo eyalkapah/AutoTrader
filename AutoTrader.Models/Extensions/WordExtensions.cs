@@ -19,11 +19,6 @@ namespace AutoTrader.Models.Extensions
             };
         }
 
-        public static WordMatchResult GetMatch(this Word word, string text)
-        {
-            return GetMatch(word, text, null);
-        }
-
         private static Match DoMatch(string text, Dictionary<string, string> constants, string pattern)
         {
             if (string.IsNullOrEmpty(pattern))

@@ -21,7 +21,7 @@ namespace Services.Tests
             _word.IgnorePattern = "[-](vls|ep|lp)[-]";
 
             // Action
-            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM");
+            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM", null);
 
             // Assert
             Assert.IsTrue(!match.IgnorePattern.Success);
@@ -34,7 +34,7 @@ namespace Services.Tests
             _word.IgnorePattern = "[-](vinyl|vls|ep|lp)[-]";
 
             // Action
-            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM");
+            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM", null);
 
             // Assert
             Assert.IsTrue(match.IgnorePattern.Success);
@@ -47,7 +47,7 @@ namespace Services.Tests
             _word.Pattern = "[-](vinyl|vls|ep|lp)[-]";
 
             // Action
-            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vainyl-2012-6DM");
+            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vainyl-2012-6DM", null);
 
             // Assert
             Assert.IsTrue(!match.Pattern.Success);
@@ -60,7 +60,7 @@ namespace Services.Tests
             _word.Pattern = "[-](vinyl|vls|ep|lp)[-]";
 
             // Action
-            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM");
+            var match = _word.GetMatch("Sean_Taylor-Love_Against_Death-Vinyl-2012-6DM", null);
 
             // Assert
             Assert.IsTrue(match.Pattern.Success);
