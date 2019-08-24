@@ -27,7 +27,7 @@ namespace AutoTrader.Services.Services
             var packages = _cacheService.Packages;
 
             if (packages == null)
-                throw new UndefinedPackagesException();
+                throw new UndefinedException(typeof(Package));
 
             return packages;
         }
@@ -35,9 +35,6 @@ namespace AutoTrader.Services.Services
         public bool IsPackageValid(string packageId, string text, Dictionary<string, string> contants)
         {
             var packages = GetPackages();
-
-            if (packages == null)
-                throw new UndefinedPackagesException();
 
             var package = packages.FirstOrDefault(p => p.Id == packageId);
 

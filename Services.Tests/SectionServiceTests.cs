@@ -1,6 +1,7 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
 using AutoTrader.Models.Enums;
+using AutoTrader.Models.Exceptions;
 using AutoTrader.Services.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -31,6 +32,30 @@ namespace Services.Tests
 
             // Assert
             Assert.IsNotNull(section);
+        }
+
+        [TestMethod]
+        public void ShouldGetSections()
+        {
+            // Arrange
+            var sectionService = new SectionService(_cacheMock.Object, null);
+
+            // Actions
+            var sections = sectionService.GetSections();
+
+            // Assert
+            Assert.IsNotNull(sections);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UndefinedException))]
+        public void ShouldThrowIfSectionsNotFound()
+        {
+            // Arrange
+            var sectionService = new SectionService(new CacheService(), null);
+
+            // Action
+            var result = sectionService.GetSections();
         }
 
         [TestInitialize]

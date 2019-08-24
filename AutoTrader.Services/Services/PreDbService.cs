@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,14 @@ namespace AutoTrader.Services.Services
             return preDbs.FirstOrDefault(p => p.Channel.ToLower().TrimStart('#').Equals(channel.ToLower().TrimStart('#')) && p.Bot.Equals(bot));
         }
 
-        public List<PreDb> GetPreDbs()
+        public IEnumerable<PreDb> GetPreDbs()
         {
-            return _cacheService.PreDbs;
+            var preDbs = _cacheService.PreDbs;
+
+            if (preDbs == null)
+                throw new UndefinedException(typeof(PreDb));
+
+            return preDbs;
         }
     }
 }

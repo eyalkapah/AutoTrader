@@ -8,6 +8,6 @@ namespace AutoTrader.Interfaces.Interfaces
     {
         PreDb GetPreDb(string channel, string bot);
 
-        List<PreDb> GetPreDbs();
+        IEnumerable<PreDb> GetPreDbs();
     }
 }

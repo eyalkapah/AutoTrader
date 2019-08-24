@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace AutoTrader.Services.Services
 
         public Section GetSection(string name)
         {
-            var sections = _cacheService.Sections;
+            var sections = GetSections();
 
             foreach (var s in sections)
             {
@@ -30,6 +31,16 @@ namespace AutoTrader.Services.Services
             }
 
             return null;
+        }
+
+        public IEnumerable<Section> GetSections()
+        {
+            var sections = _cacheService.Sections;
+
+            if (sections == null)
+                throw new UndefinedException(typeof(Section));
+
+            return sections;
         }
     }
 }

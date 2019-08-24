@@ -33,18 +33,20 @@ namespace Services.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidPackageException))]
-        public void ShouldThrowIfPackageNotFound()
+        public void ShouldGetPackages()
         {
             // Arrange
-            var packageService = new PackageService(_cacheMock.Object, _wordService);
+            var packageService = new PackageService(_cacheMock.Object, null);
 
             // Action
-            var result = packageService.IsPackageValid("P2", "Treisor_Luke-WEB-2016-KLIN", null);
+            var packages = packageService.GetPackages();
+
+            // Assert
+            Assert.IsNotNull(packages);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(UndefinedPackagesException))]
+        [ExpectedException(typeof(UndefinedException))]
         public void ShouldThrowIfNoPackagesFound()
         {
             // Arrange
@@ -56,16 +58,14 @@ namespace Services.Tests
         }
 
         [TestMethod]
-        public void ShouldGetPackages()
+        [ExpectedException(typeof(InvalidPackageException))]
+        public void ShouldThrowIfPackageNotFound()
         {
             // Arrange
-            var packageService = new PackageService(_cacheMock.Object, null);
+            var packageService = new PackageService(_cacheMock.Object, _wordService);
 
             // Action
-            var packages = packageService.GetPackages();
-
-            // Assert
-            Assert.IsNotNull(packages);
+            var result = packageService.IsPackageValid("P2", "Treisor_Luke-WEB-2016-KLIN", null);
         }
 
         [TestInitialize]

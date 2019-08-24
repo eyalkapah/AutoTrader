@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Exceptions
 {
-    public class UndefinedPackagesException : Exception
+    public class UndefinedException : Exception
     {
-        public UndefinedPackagesException() : base("Couldn't fetch packages from cache")
+        public UndefinedException(Type type) : base($"Couldn't fetch {type.Name}s from cache")
         {
         }
     }
