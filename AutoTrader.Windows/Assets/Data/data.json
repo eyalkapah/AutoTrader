@@ -430,16 +430,6 @@
       ]
     }
   ],
-  "branch": [
-    {
-      "id": "pf8fad5b-d9cb-469f-a165-708677289511",
-      "name": "Mp3 Branch",
-      "section": "sf8fad5b-d9cb-469f-a165-708677289501",
-      "bubbleLevel": 0,
-      "raceActivityInSeconds": 600,
-      "enabled": true
-    }
-  ],
   "preDbs": [
     {
       "id": "pdbfad5b-d9cb-469f-a165-708677289511",

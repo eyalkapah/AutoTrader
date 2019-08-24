@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Exceptions;
 using AutoTrader.Services.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -41,6 +42,17 @@ namespace Services.Tests
 
             // Assert
             Assert.IsNotNull(words);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UndefinedException))]
+        public void ShouldThrowIfWordsNotFound()
+        {
+            // Arrange
+            var wordService = new WordService(new CacheService());
+
+            // Action
+            var result = wordService.GetWords();
         }
 
         [TestInitialize]

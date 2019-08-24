@@ -1,5 +1,6 @@
 ﻿using AutoTrader.Interfaces.Interfaces;
 using AutoTrader.Models.Entities;
+using AutoTrader.Models.Exceptions;
 using AutoTrader.Models.Extensions;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,12 @@ namespace AutoTrader.Services.Services
 
         public List<Word> GetWords()
         {
-            return _cacheService.Words;
+            var words = _cacheService.Words;
+
+            if (words == null)
+                throw new UndefinedException(typeof(Package));
+
+            return words;
         }
     }
 }
