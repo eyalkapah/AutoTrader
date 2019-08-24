@@ -11,7 +11,26 @@ namespace AutoTrader.Models.Extensions
 {
     public static class PackageExtensions
     {
-        public static bool IsPackageValid(this Package package, List<Word> words, string text, Dictionary<string, string> contatns)
+        public static bool IsPackageValid(this Package package, List<Word> words, IEnumerable<ComplexWord> complexWords, string text, Dictionary<string, string> contatns)
+        {
+            // maybe it's a complex word
+            var complexWord = complexWords.FirstOrDefault(w => w.Id.Equals(package.WordId));
+
+            if (complexWord != null)
+            {
+                foreach (var wordId in complexWord.WordIds)
+                {
+                    if (!IsValidWord(package, words, text, contatns))
+                        return false;
+                }
+
+                return true;
+            }
+
+            return IsValidWord(package, words, text, contatns);
+        }
+
+        private static bool IsValidWord(Package package, List<Word> words, string text, Dictionary<string, string> contatns)
         {
             // Handle a WORD only
             var word = words?.FirstOrDefault(w => w.Id.Equals(package.WordId));

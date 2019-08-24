@@ -16,6 +16,7 @@ namespace AutoTrader.Models.Entities
         private readonly List<Site> _allSites;
         private readonly List<Package> _packages;
         private readonly List<Word> _words;
+        private readonly IEnumerable<ComplexWord> _complexWords;
         private CancellationTokenSource _cancellationTokenSource = null;
 
         public event EventHandler<string> RaceClosed = delegate { };
@@ -28,7 +29,7 @@ namespace AutoTrader.Models.Entities
         public RaceStatus Status { get; set; }
         private ConcurrentDictionary<string, SiteDismiss> _disqualifiedSites { get; }
 
-        public Race(Section section, ReleaseBase release, List<Site> allSites, List<Package> packages, List<Word> words)
+        public Race(Section section, ReleaseBase release, List<Site> allSites, List<Package> packages, List<Word> words, IEnumerable<ComplexWord> complexWords)
         {
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -43,6 +44,7 @@ namespace AutoTrader.Models.Entities
             _allSites = allSites;
             _packages = packages;
             _words = words;
+            _complexWords = complexWords;
             Status = RaceStatus.Active;
 
             Task.Run(() =>
@@ -116,7 +118,7 @@ namespace AutoTrader.Models.Entities
                     }
                     else
                     {
-                        this.ValidatePackages(dSite, _packages, _words);
+                        this.ValidatePackages(dSite, _packages, _words, _complexWords);
 
                         if (dSite.ValidationResult.IsValid == false)
                         {

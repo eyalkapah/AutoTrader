@@ -74,7 +74,7 @@ namespace AutoTrader.Models.Extensions
             return null;
         }
 
-        public static void ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words)
+        public static void ValidatePackages(this Race race, Participant dSite, List<Package> packages, List<Word> words, IEnumerable<ComplexWord> complexWords)
         {
             if (dSite.ValidationResult != null)
                 return;
@@ -83,7 +83,7 @@ namespace AutoTrader.Models.Extensions
             {
                 var package = packages.Single(p => p.Id == pId);
 
-                if (!package.IsPackageValid(words, race.Release.Name, null))
+                if (!package.IsPackageValid(words, complexWords, race.Release.Name, null))
                 {
                     dSite.ValidationResult = new PackageValidationResult
                     {

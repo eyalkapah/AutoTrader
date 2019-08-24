@@ -16,6 +16,7 @@ namespace Services.Tests
     [TestClass]
     public class PackageServiceTests
     {
+        private Mock<IComplexWordService> _complexWordService;
         private Mock<ICacheService> _cacheMock;
         private WordService _wordService;
 
@@ -23,7 +24,7 @@ namespace Services.Tests
         public void PackageShouldBeValid()
         {
             // Arrange
-            var packageService = new PackageService(_cacheMock.Object, _wordService);
+            var packageService = new PackageService(_cacheMock.Object, _wordService, _complexWordService.Object);
 
             // Action
             var result = packageService.IsPackageValid("P1", "Treisor_Luke-WEB-2016-KLIN", null);
@@ -36,7 +37,7 @@ namespace Services.Tests
         public void ShouldGetPackages()
         {
             // Arrange
-            var packageService = new PackageService(_cacheMock.Object, null);
+            var packageService = new PackageService(_cacheMock.Object, null, _complexWordService.Object);
 
             // Action
             var packages = packageService.GetPackages();
@@ -51,7 +52,7 @@ namespace Services.Tests
         {
             // Arrange
             var cacheEmpty = new Mock<ICacheService>();
-            var packageService = new PackageService(cacheEmpty.Object, _wordService);
+            var packageService = new PackageService(cacheEmpty.Object, _wordService, _complexWordService.Object);
 
             // Action
             var result = packageService.GetPackages();
@@ -62,7 +63,7 @@ namespace Services.Tests
         public void ShouldThrowIfPackageNotFound()
         {
             // Arrange
-            var packageService = new PackageService(_cacheMock.Object, _wordService);
+            var packageService = new PackageService(_cacheMock.Object, _wordService, _complexWordService.Object);
 
             // Action
             var result = packageService.IsPackageValid("P2", "Treisor_Luke-WEB-2016-KLIN", null);
@@ -71,6 +72,7 @@ namespace Services.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            _complexWordService = new Mock<IComplexWordService>();
             _cacheMock = new Mock<ICacheService>();
 
             _cacheMock.Setup(p => p.Packages).Returns(

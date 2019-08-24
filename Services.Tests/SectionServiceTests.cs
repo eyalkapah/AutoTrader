@@ -18,13 +18,14 @@ namespace Services.Tests
     {
         private Mock<ICacheService> _cacheMock;
         private Mock<IPackageService> _packagesServiceMock;
+        private Mock<IComplexWordService> _complexWordServiceMock;
 
         [TestMethod]
         public void ShouldGetSection()
         {
             // Arrange
             var wordService = new WordService(_cacheMock.Object);
-            var packageService = new PackageService(_cacheMock.Object, wordService);
+            var packageService = new PackageService(_cacheMock.Object, wordService, _complexWordServiceMock.Object);
             var sectionService = new SectionService(_cacheMock.Object, packageService);
 
             // Action
@@ -63,6 +64,7 @@ namespace Services.Tests
         {
             _cacheMock = new Mock<ICacheService>();
             _packagesServiceMock = new Mock<IPackageService>();
+            _complexWordServiceMock = new Mock<IComplexWordService>();
 
             _cacheMock.Setup(c => c.Sections).Returns(
                 new List<Section>

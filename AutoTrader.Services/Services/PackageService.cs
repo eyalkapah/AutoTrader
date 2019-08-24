@@ -15,11 +15,13 @@ namespace AutoTrader.Services.Services
     {
         private readonly ICacheService _cacheService;
         private readonly IWordService _wordService;
+        private readonly IComplexWordService _complexWordService;
 
-        public PackageService(ICacheService cacheService, IWordService wordService)
+        public PackageService(ICacheService cacheService, IWordService wordService, IComplexWordService complexWordService)
         {
             _cacheService = cacheService;
             _wordService = wordService;
+            _complexWordService = complexWordService;
         }
 
         public List<Package> GetPackages()
@@ -42,8 +44,9 @@ namespace AutoTrader.Services.Services
                 throw new InvalidPackageException(packageId);
 
             var words = _wordService.GetWords();
+            var complexWords = _complexWordService.GetComplexWords();
 
-            return package.IsPackageValid(words, text, contants);
+            return package.IsPackageValid(words, complexWords, text, contants);
         }
     }
 }

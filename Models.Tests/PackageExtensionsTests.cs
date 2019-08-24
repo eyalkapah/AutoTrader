@@ -23,7 +23,7 @@ namespace Models.Tests
         public void ShouldMustPackage()
         {
             // Action
-            var isValid = _packageWithMust.IsPackageValid(_words, "Treisor_Luke-Internal-WEB-2019-KLIN", _constants);
+            var isValid = _packageWithMust.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2019-KLIN", _constants);
 
             // Assert
             Assert.IsTrue(isValid);
@@ -33,7 +33,7 @@ namespace Models.Tests
         public void ShouldNotMustPackage()
         {
             // Action
-            var isValid = _packageWithMust.IsPackageValid(_words, "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+            var isValid = _packageWithMust.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
 
             // Assert
             Assert.IsTrue(!isValid);
@@ -43,7 +43,7 @@ namespace Models.Tests
         public void ShouldBanPackage()
         {
             // Action
-            var isValid = _packageWithBan.IsPackageValid(_words, "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+            var isValid = _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
 
             // Assert
             Assert.IsTrue(!isValid);
@@ -56,7 +56,7 @@ namespace Models.Tests
             word.IgnorePattern = "-Int-";
 
             // Action
-            var isValid = _packageWithBan.IsPackageValid(_words, "Treisor_Luke-Int-WEB-2016-KLIN", _constants);
+            var isValid = _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Int-WEB-2016-KLIN", _constants);
 
             // Assert
             Assert.IsTrue(isValid);
@@ -66,7 +66,7 @@ namespace Models.Tests
         public void ShouldPackageNotBeValidForBannedApplicability()
         {
             // Action
-            var isValid = _packageWithBan.IsPackageValid(_words, "Treisor_Luke-WEB-2016-KLIN", _constants);
+            var isValid = _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-WEB-2016-KLIN", _constants);
 
             // Assert
             Assert.IsTrue(isValid);
@@ -80,7 +80,7 @@ namespace Models.Tests
             _packageWithBan.WordId = "NoWord";
 
             // Action
-            _packageWithBan.IsPackageValid(_words, "Treisor_Luke-WEB-2016-KLIN", _constants);
+            _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-WEB-2016-KLIN", _constants);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Models.Tests
             _packageWithBan.WordId = "NoWord";
 
             // Action
-            _packageWithBan.IsPackageValid(null, "Treisor_Luke-WEB-2016-KLIN", _constants);
+            _packageWithBan.IsPackageValid(null, new List<ComplexWord>(), "Treisor_Luke-WEB-2016-KLIN", _constants);
         }
 
         [TestInitialize]

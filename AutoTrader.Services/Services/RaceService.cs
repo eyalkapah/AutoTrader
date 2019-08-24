@@ -25,9 +25,11 @@ namespace AutoTrader.Services.Services
         private readonly ISectionService _sectionService;
         private readonly ISiteService _siteService;
         private readonly IWordService _wordService;
+        private readonly IComplexWordService _complexWordService;
         private RaceManager _raceManager;
 
-        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService, IPreDbService preDbService)
+        public RaceService(IReleaseService releaseService, ICategoryService categoryService, ISectionService sectionService, ISiteService siteService, IPackageService packageService, IWordService wordService,
+            IComplexWordService complexWordService, IPreDbService preDbService)
         {
             _raceManager = new RaceManager();
             _releaseService = releaseService;
@@ -36,6 +38,7 @@ namespace AutoTrader.Services.Services
             _siteService = siteService;
             _packageService = packageService;
             _wordService = wordService;
+            _complexWordService = complexWordService;
             _preDbService = preDbService;
         }
 
@@ -100,7 +103,7 @@ namespace AutoTrader.Services.Services
 
             var release = await _releaseService.BuildReleaseAsync(command.ReleaseName, category.Type, section.Delimiter);
 
-            var race = new Race(section, release, _siteService.GetSites(), _packageService.GetPackages(), _wordService.GetWords());
+            var race = new Race(section, release, _siteService.GetSites(), _packageService.GetPackages(), _wordService.GetWords(), _complexWordService.GetComplexWords());
             await race.InitAsync();
 
             return race;
