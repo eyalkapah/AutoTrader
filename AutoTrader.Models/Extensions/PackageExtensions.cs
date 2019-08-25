@@ -20,23 +20,32 @@ namespace AutoTrader.Models.Extensions
             {
                 foreach (var wordId in complexWord.WordIds)
                 {
-                    if (!IsValidWord(package, words, text, contatns))
-                        return false;
+                    if (package.Applicability == PackageApplicability.Banned)
+                    {
+                        if (!IsValidWord(package, wordId, words, text, contatns))
+                            return false;
+                    }
+
+                    if (package.Applicability == PackageApplicability.Must)
+                    {
+                        if (IsValidWord(package, wordId, words, text, contatns))
+                            return true;
+                    }
                 }
 
-                return true;
+                return package.Applicability == PackageApplicability.Banned ? true : false;
             }
 
-            return IsValidWord(package, words, text, contatns);
+            return IsValidWord(package, package.WordId, words, text, contatns);
         }
 
-        private static bool IsValidWord(Package package, List<Word> words, string text, Dictionary<string, string> contatns)
+        private static bool IsValidWord(Package package, string wordId, List<Word> words, string text, Dictionary<string, string> contatns)
         {
             // Handle a WORD only
-            var word = words?.FirstOrDefault(w => w.Id.Equals(package.WordId));
+            var word = words?.FirstOrDefault(w => w.Id.Equals(wordId));
 
             if (word == null)
-                throw new InvalidWordException(package.Id, package.WordId);
+                throw new UnknownWordException(wordId);
 
             var result = word.GetMatch(text, contatns);
 

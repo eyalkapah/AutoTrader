@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoTrader.Models.Exceptions
 {
-    public class InvalidWordException : Exception
+    public class UnknownWordException : Exception
     {
-        public InvalidWordException(string packageId, string wordId) : base($"Can't find word {wordId} for package {packageId}")
+        public UnknownWordException(string wordId) : base($"Can't find word with ID: {wordId}")
         {
         }
     }

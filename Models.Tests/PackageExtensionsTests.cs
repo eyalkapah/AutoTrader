@@ -14,10 +14,34 @@ namespace Models.Tests
     [TestClass]
     public class PackageExtensionsTests
     {
+        private List<ComplexWord> _complexWords;
+        private Dictionary<string, string> _constants;
         private Package _packageWithBan;
         private Package _packageWithMust;
         private List<Word> _words;
-        private Dictionary<string, string> _constants;
+
+        [TestMethod]
+        public void ShouldBanPackage()
+        {
+            // Action
+            var isValid = _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+
+            // Assert
+            Assert.IsTrue(!isValid);
+        }
+
+        [TestMethod]
+        public void ShouldBanPackageWithComplexWord()
+        {
+            // Arrange
+            _packageWithBan.WordId = _complexWords[0].Id;
+
+            // Action
+            var isValid = _packageWithBan.IsPackageValid(_words, _complexWords, "Treisor_Luke-FM-WEB-2016-KLIN", _constants);
+
+            // Assert
+            Assert.IsTrue(!isValid);
+        }
 
         [TestMethod]
         public void ShouldMustPackage()
@@ -30,23 +54,16 @@ namespace Models.Tests
         }
 
         [TestMethod]
-        public void ShouldNotMustPackage()
+        public void ShouldMustPackageWithComplexWord()
         {
+            // Arrange
+            _packageWithMust.WordId = _complexWords[0].Id;
+
             // Action
-            var isValid = _packageWithMust.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+            var isValid = _packageWithMust.IsPackageValid(_words, _complexWords, "Treisor_Luke-SAT-WEB-2016-KLIN", _constants);
 
             // Assert
-            Assert.IsTrue(!isValid);
-        }
-
-        [TestMethod]
-        public void ShouldBanPackage()
-        {
-            // Action
-            var isValid = _packageWithBan.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
-
-            // Assert
-            Assert.IsTrue(!isValid);
+            Assert.IsTrue(isValid);
         }
 
         [TestMethod]
@@ -63,6 +80,29 @@ namespace Models.Tests
         }
 
         [TestMethod]
+        public void ShouldNotBanPackageWithComplexWord()
+        {
+            // Arrange
+            _packageWithBan.WordId = _complexWords[0].Id;
+
+            // Action
+            var isValid = _packageWithBan.IsPackageValid(_words, _complexWords, "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+
+            // Assert
+            Assert.IsTrue(isValid);
+        }
+
+        [TestMethod]
+        public void ShouldNotMustPackage()
+        {
+            // Action
+            var isValid = _packageWithMust.IsPackageValid(_words, new List<ComplexWord>(), "Treisor_Luke-Internal-WEB-2016-KLIN", _constants);
+
+            // Assert
+            Assert.IsTrue(!isValid);
+        }
+
+        [TestMethod]
         public void ShouldPackageNotBeValidForBannedApplicability()
         {
             // Action
@@ -73,7 +113,7 @@ namespace Models.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidWordException))]
+        [ExpectedException(typeof(UnknownWordException))]
         public void ShouldThrowExceptionForNoWordsDefined()
         {
             // Arrange
@@ -84,7 +124,7 @@ namespace Models.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidWordException))]
+        [ExpectedException(typeof(UnknownWordException))]
         public void ShouldThrowExceptionForUnknownWord()
         {
             // Arrange
@@ -138,6 +178,47 @@ namespace Models.Tests
                     Classification = "YEAR",
                     Description = "Current year",
                     Pattern = "[%delimiter%](%current_year%)[%delimiter%]"
+                },
+                new Word
+                {
+                    Id = "0f8fad5b-d9cb-469f-a165-70867728951e",
+                    Name = "FRESHFM",
+                    Classification = "SOURCES",
+                    Description = "FreshFM regex",
+                    Pattern = "[%delimiter%](freshfm)[%delimiter%]"
+                },
+                new Word
+                {
+                    Id = "0f8fad5b-d9cb-469f-a165-70867728951g",
+                    Name = "SAT",
+                    Classification = "SOURCES",
+                    Description = "SAT regex",
+                    Pattern = "[%delimiter%](SAT)[%delimiter%]"
+                },
+                new Word
+                {
+                    Id = "0f8fad5b-d9cb-469f-a165-70867728951f",
+                    Name = "FM",
+                    Classification = "SOURCES",
+                    Description = "FM regex",
+                    Pattern = "[%delimiter%](FM)[%delimiter%]"
+                }
+            };
+
+            _complexWords = new List<ComplexWord>
+            {
+                new ComplexWord
+                {
+                    Id = "cf8fad5b-d9cb-469f-a165-708677289510",
+                    Classification = "SOURCES",
+                    Description = "Live Regex",
+                    Name = "Live",
+                    WordIds = new List<string>
+                    {
+                        "0f8fad5b-d9cb-469f-a165-70867728951e",
+                        "0f8fad5b-d9cb-469f-a165-70867728951f",
+                        "0f8fad5b-d9cb-469f-a165-70867728951g"
+                    }
                 }
             };
 
